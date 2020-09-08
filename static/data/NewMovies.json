@@ -1,0 +1,69 @@
+{
+  "header": "New Movies",
+  "assets": [
+    {
+      "title": "No Time to Die",
+      "url": "images/vod/Tile1.png",
+      "category": "Action",
+      "descriptiontitle": "No Time to Die",
+      "description": "The movie is about a forthcoming British spy film & the twenty-fifth instalment in The James Bond Film Series produced by Eon Productions.",
+      "Duration": "2:30 hr",
+      "Cost": "$ 19.99",
+      "Ratingone": "images/vod/Star.png",
+      "Ratingtwo": "images/vod/Star.png",
+      "Ratingthree": "images/vod/Star.png",
+      "Ratingfour": "images/vod/Star.png",
+      "Ratingfive": "images/vod/Star-outline.png",
+      "Channelnumber": "images/vod/PG-13.png",
+      "Quality": "images/vod/HD.png"
+    },
+    {
+      "title": "Black Panther",
+      "url": "images/vod/Tile2.png",
+      "category": "Drama",
+      "descriptiontitle": "Black Panther",
+      "description": "Description of Black Panther",
+      "Duration": "2:00 hr",
+      "Cost": "$ 19.99",
+      "Ratingone": "images/vod/Star.png",
+      "Ratingtwo": "images/vod/Star.png",
+      "Ratingthree": "images/vod/Star.png",
+      "Ratingfour": "images/vod/Star.png",
+      "Ratingfive": "images/vod/Star-outline.png",
+      "Channelnumber": "images/vod/PG-13.png",
+      "Quality": "images/vod/HD.png"
+    },
+    {
+      "title": "Ride Along",
+      "url": "images/vod/Tile3.png",
+      "category": "Action",
+      "descriptiontitle": "Ride Along",
+      "description": "Description of Ride Along",
+      "Duration": "2:00 hr",
+      "Cost": "$ 19.99",
+      "Ratingone": "images/vod/Star.png",
+      "Ratingtwo": "images/vod/Star.png",
+      "Ratingthree": "images/vod/Star.png",
+      "Ratingfour": "images/vod/Star.png",
+      "Ratingfive": "images/vod/Star-outline.png",
+      "Channelnumber": "images/vod/PG-13.png",
+      "Quality": "images/vod/HD.png"
+    },
+    {
+      "title": "Find",
+      "url": "images/vod/Tile4.png",
+      "category": "Comedy",
+      "descriptiontitle": "Find",
+      "description": "Description of Find",
+      "Duration": "1:30 hr",
+      "Cost": "$ 19.99",
+      "Ratingone": "images/vod/Star.png",
+      "Ratingtwo": "images/vod/Star.png",
+      "Ratingthree": "images/vod/Star.png",
+      "Ratingfour": "images/vod/Star.png",
+      "Ratingfive": "images/vod/Star-outline.png",
+      "Channelnumber": "images/vod/PG-13.png",
+      "Quality": "images/vod/HD.png"
+    }
+  ]
+}

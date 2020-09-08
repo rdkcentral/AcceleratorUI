@@ -1,0 +1,21 @@
+{
+  "appSettings": {
+    "stage": {
+      "clearColor": "0x00000000",
+      "useImageWorker": true
+    },
+    "debug": false
+  },
+  "platformSettings": {
+    "path": "./static",
+    "log": true,
+    "showVersion": false,
+    "inspector": false,
+    "showFps": false
+  },
+  "showFps": {
+    "interval": 120,
+    "log": true,
+    "threshold": 3
+  }
+}

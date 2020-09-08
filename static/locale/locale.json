@@ -1,0 +1,14 @@
+{
+    "en" :{
+      "Home": "Home",
+      "Recommended for you":"Recommended for you",
+      "Premium Apps":"Premium Apps",
+      "Metrological Appstore Experience":"Metrological Appstore Experience"
+    },
+    "it": {
+        "Home": "Casa",
+        "Recommended for you":"raccomandato per te",
+        "Premium Apps":"App Premium",
+        "Metrological Appstore Experience":"Esperienza nell'app Store metrologico"
+    }
+  }

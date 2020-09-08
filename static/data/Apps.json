@@ -1,0 +1,35 @@
+{
+    "header": "Premium Apps",
+    "assets": [
+        {
+            "title": "Youtube",
+            "url": "images/home/galleryview/apps/YouTube.png",
+            "appUrl": "https://www.youtube.com/tv"
+        },{
+                "title": "Amazon",
+                "url": "images/home/galleryview/apps/AmazonPrime.jpg",
+                "appUrl": "https://www.amazon.com"
+            },
+            {
+                "title": "Netflix",
+                "url": "images/home/galleryview/apps/Netflix.png",
+                "appUrl" : "https://www.netflix.com/"
+            },
+            {
+                "title": "Games",
+                "url": "images/home/galleryview/apps/Gaming.png",
+                "appUrl": "https://www.aol.com/games/"
+        },
+        {
+            "title": "Ted",
+            "url": "images/home/galleryview/apps/Ted.png",
+            "appUrl":"https://www.ted.com/"
+        },
+        {
+            "title": "Hulu",
+            "url": "images/home/galleryview/apps/Hulu.png",
+            "appUrl": "https://www.hulu.com/welcome"
+        }
+
+    ]
+}
