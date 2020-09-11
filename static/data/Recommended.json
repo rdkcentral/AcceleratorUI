@@ -37,7 +37,7 @@
         {
             "title": "Find",
             "url": "images/home/galleryview/recommended/Tile4.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "videourl": "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8",
             "category": "Comedy",
             "description": "",
             "Duration": "1:30 hr",
@@ -48,7 +48,7 @@
         {
             "title": "No Time to Die",
             "url": "images/home/galleryview/recommended/Tile1.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+            "videourl": "https://media.axprod.net/TestVectors/v7-Clear/Manifest.mpd",
             "category": "Action",
             "description": "",
             "Duration": "1:00 hr",
@@ -59,7 +59,7 @@
         {
             "title": "Black Panther",
             "url": "images/home/galleryview/recommended/Tile2.png",
-            "videourl": "https://www.radiantmediaplayer.com/media/big-buck-bunny-360p.mp4",
+            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
             "category": "Drama",
             "description": "",
             "Duration": "2:00 hr",

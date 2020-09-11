@@ -1,30 +1,30 @@
 # **Accelerator-UI**
 
-## **Getting started**
-
-> Before you follow the steps below, make sure you have the
-> [Lightning-CLI](https://github.com/WebPlatformForEmbedded/Lightning-CLI) installed _globally_ on your system
-
-```
-npm install -g rdkcentral/Lightning-CLI
-```
+Accelerator UI using Lightning application Framework for RDK’s Video Accelerator Platforms
 
 ## **Building the App**
 
 1. Pre-requisites:
-   Installation of Node.js 10.x, npm and Lightning-CLI (reference)
-2. Clone the Accelerator-UI project
-   git clone
-3. Navigate to the project location in terminal
-4. Run: `npm install`\
-   It downloads all the dependent packages.
-5. `lng build` : will create a standalone bundle that you can run in the browser.
-6. `lng serve` : will start a local webserver and run the App.
-   The port information of the server will be shown in the terminal.
-7. `lng dev` : will build the App and start the webserver.
-   Besides it watches for the changes while running the App.\
+   * Install Node.js 10.x and npm 
+   * Install Lightning-CLI globally\
+       `npm install -g rdkcentral/Lightning-CLI`
+   
 
-   Application will be up and running locally on local host (http://127.0.0.1:8080)
+  
+       
+2. Clone the Accelerator-UI project using 
+   `git clone git@github.com:rdkcentral/AcceleratorUI.git`
+
+3. Navigate to the project folder in terminal
+4. Run: `npm install` or  `sudo npm install`\
+   It will download all the dependent packages.
+5. Run `lng build` : will create a standalone bundle that you can run in the browser.
+6. Run `lng serve` : will start a local webserver and run the App.
+   The port information of the server will be shown in the terminal.
+   Application will be up and will run locally on local host (http://127.0.0.1:8080)
+7. `lng dev` : will build the App and start the webserver.Besides it watches for the changes while running the App thus automatically restarts the local webserver for changes.
+
+   
 
 ## **Keys Used for Navigation**
 
@@ -36,9 +36,9 @@ npm install -g rdkcentral/Lightning-CLI
 | Right Arrow            | Right Arrow           |
 | Left Arrow             | Left Arrow            |
 | OK                     | Enter                 |
-| Volume Up              | W                     |
-| Volume Down            | S                     |
-| Mute                   | M                     |
+| Volume Up              |  -                    |
+| Volume Down            |  -                    |
+| Mute                   |  -                    |
 
 
 ## **Known Issues**
@@ -50,4 +50,3 @@ npm install -g rdkcentral/Lightning-CLI
 ## **Documentation**
 
 For  further information refer https://wiki.rdkcentral.com/display/ASP/Tata+Elxsi+Accelerator+UI
-
