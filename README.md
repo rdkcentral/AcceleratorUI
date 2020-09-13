@@ -1,6 +1,6 @@
 # **Accelerator-UI**
 
-User Interface developed using Lightning Application Framework for RDK’s Video Accelerator Platforms
+User Interface developed using Lightning Application Framework for RDK’s Video Accelerator Platform
 
 ## **Building the App**
 
