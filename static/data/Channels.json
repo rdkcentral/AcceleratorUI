@@ -6,7 +6,7 @@
       "logoPath": "images/channels/HBO.png",
       "title": "GOT",
       "category": "Action/Fantasy",
-      "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+      "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     },
     {
       "name": "National geographic",
@@ -22,7 +22,7 @@
       "logoPath": "images/channels/StarMovies.png",
       "title": "Angel has Fallen",
       "category": "Action/Thriller",
-      "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+      "videourl": "https://media.axprod.net/TestVectors/v7-Clear/Manifest.mpd"
     }
   ]
 }

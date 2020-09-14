@@ -20,12 +20,20 @@ User Interface developed using Lightning Application Framework for RDK’s Video
 5. Run `lng build` : will create a standalone bundle that you can run in the browser.
 
 6. Run `lng serve` : will start a local webserver and run the App.
-   The port information of the server will be shown in the terminal.
-   Application will be up and will run locally on local host (http://127.0.0.1:8080)
+   The port information  and the host IP information of the server will be shown in the terminal.
+   Application will be up and will run at (http://{hostIP}:8080)\
+   eg: http://127.0.0.1:8080, http://192.168.1.8:8080
    
-7. `lng dev` : will build the App and start the webserver. Besides it watches for the changes while running the App thus automatically restarts the local webserver for changes.
+## **Launch the application on Accelerator box**
 
-   
+Prerequisites - The device and your machine should be connected to the same network.
+
+1. Launch Thunder Controller UI in your web browser by giving IP address of the device/box (eg: http://192.168.1.6/ ).
+2. In Thunder Controller UI, navigate to UX tab
+3. Enter the Application URL ( URL of the application getting from 'lng serve' ) in 'Custom URL' field and click on 'SET' button. 
+4. The Lightning accelerator UI will get loaded in the UX(webkit browser instance)
+
+ 
 
 ## **Keys Used for Navigation**
 
