@@ -1,21 +1,21 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Lightning, Utils } from 'wpe-lightning-sdk'
 import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
@@ -113,34 +113,27 @@ export class GalleryView extends Lightning.Component {
       }
     })
     this.tag('GalleryRowList').items[1].header = v[1].data.header
-    if (process.env.APP_AMAZON == 'false' && process.env.APP_NETFLIX == 'false') {
-      this.tag('GalleryRowList').items[1].items = [v[1].data.assets[0]].map((data, index) => {
-        return {
-          ref: 'Tile_' + index,
-          type: Tile,
-          image: data.url,
-          w: 240,
-          h: 135,
-          scaleX: 1.2,
-          scaleY: 1.2,
-          appData: { url: data.appUrl, title: data.title }
-        }
-      })
+    let apps = new Array()
+    apps.push(v[1].data.assets[0])
+    if (process.env.APP_AMAZON == 'true') {
+      apps.push(v[1].data.assets[1])
     }
-    else {
-      this.tag('GalleryRowList').items[1].items = v[1].data.assets.map((data, index) => {
-        return {
-          ref: 'Tile_' + index,
-          type: Tile,
-          image: data.url,
-          w: 240,
-          h: 135,
-          scaleX: 1.2,
-          scaleY: 1.2,
-          appData: { url: data.appUrl, title: data.title }
-        }
-      })
+    if (process.env.APP_NETFLIX == 'true') {
+      apps.push(v[1].data.assets[2])
     }
+
+    this.tag('GalleryRowList').items[1].items = apps.map((data, index) => {
+      return {
+        ref: 'Tile_' + index,
+        type: Tile,
+        image: data.url,
+        w: 240,
+        h: 135,
+        scaleX: 1.2,
+        scaleY: 1.2,
+        appData: { url: data.appUrl, title: data.title }
+      }
+    })
     this.tag('GalleryRowList').items[2].patch({ y: -140, alpha: 1 })
     this.tag('GalleryRowList').items[2].header = v[2].data.header
     this.tag('GalleryRowList').items[2].items = v[2].data.assets.map((data, index) => {
@@ -187,9 +180,9 @@ export class GalleryView extends Lightning.Component {
           return this.current
         }
         /**
-        * Set next gallery row if not on the last row or Remain in the same row on pressing Down Arrow
-        * Reset the current row
-        */
+         * Set next gallery row if not on the last row or Remain in the same row on pressing Down Arrow
+         * Reset the current row
+         */
         _handleDown() {
           if (this.tag('GalleryRowList').length - 1 != this.tag('GalleryRowList').index) {
             this.tag('GalleryRowList').element._reset()
@@ -198,8 +191,8 @@ export class GalleryView extends Lightning.Component {
           this.current = this.tag('GalleryRowList').element
         }
         /**
-        * Set Apps or Set Player
-        */
+         * Set Apps or Set Player
+         */
         _handleEnter() {
           let currentTile = this.current.tag('Wrapper').element
           if (this.tag('GalleryRowList').index == 0) {
@@ -214,8 +207,8 @@ export class GalleryView extends Lightning.Component {
           }
         }
         /**
-        * Set previous row and reset the gallery tiles
-        */
+         * Set previous row and reset the gallery tiles
+         */
         _handleUp() {
           if (0 != this.tag('GalleryRowList').index) {
             this.tag('GalleryRowList').element._reset()

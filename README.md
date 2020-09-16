@@ -50,11 +50,16 @@ Prerequisites - The device and your machine should be connected to the same netw
 | Mute                   |  -                    |
 
 
-## **Known Issues**
-1. In Bluetooth Pairing, connected devices will remain as ‘Ready’,  even after disconnect operation
+## **How to enable Premium Apps**
 
-2. Sometimes a black overlay is shown over Volume UI on continuous key presses
+   
+The premium apps - Amazon Prime, Netflix and YouTube are integrated in the application. By default, only YouTube is enabled. To enable/disable Amazon prime and Netflix, follow the below steps:
 
+1. Open '.env' file in the application folder - AcceleratorUI (might needs 'ls -la' since it is a dot file).
+2. To enable an app, set corresponding variable in .env file to 'true'.
+Eg: To enable Netflix, set 'APP_NETFLIX=true'.
+3. Save the changes, rebuild (lng build) and relaunch (lng serve) the application
+4. Enabled app will be available under 'Homescreen -> Premium Apps' section.
 
 ## **Documentation**
 
