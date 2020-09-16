@@ -39,7 +39,7 @@ Prerequisites - The device and your machine should be connected to the same netw
 
 | Keys used in Remote    | Keys used in Keyboard |
 | :--------------------- | :-------------------- |
-| Menu                   | Backspace             |
+| Home                   | Backspace             |
 | Up Arrow               | Up Arrow              |
 | Down Arrow             | Down Arrow            |
 | Right Arrow            | Right Arrow           |
