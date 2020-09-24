@@ -1,30 +1,32 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Lightning, Log } from 'wpe-lightning-sdk'
 import ThunderJS from 'ThunderJS'
 
 /**
- * @export 
+ * @export
  * @class ThunderAppService
  * @extends Lightning.Component
  * Thunder  App calls
  */
+let browser = 'UX'
+let browserVisibility = 'visiblity@UX'
 export class ThunderAppService extends Lightning.Component {
   _construct() {
     Log.info('Thunder Service Constructor Called')
@@ -37,7 +39,40 @@ export class ThunderAppService extends Lightning.Component {
     } catch (err) {
       Log.error(err)
     }
-
+    //To verify if the application is loaded in UX or Webkitbrowser, in the assumption that if UX is loaded
+    // there will be only 'UX' in the compositor client list. If Webkit is loaded, there will be 'UX' and 'WebKitBrowser'
+    this.thunderJS.call('Compositor', 'clients', (err, result) => {
+      if (err) {
+        Log.warn('Error while getting clients ', JSON.stringify(err))
+      } else {
+        Log.info('\n Compositor Clients ', JSON.stringify(result))
+        if (result.includes('UX')) {
+          this.thunderJS.call('UX', 'state', (err, result) => {
+            if (err) {
+              Log.error(' Error fetching UX state')
+            } else {
+              Log.info('UX State is ', result)
+              if (result.includes('resumed') || result.includes('activated')) {
+                browser = 'UX'
+                browserVisibility = 'visiblity@UX'
+              }
+            }
+          })
+        } else if (result.includes('WebKitBrowser')) {
+          this.thunderJS.call('WebKitBrowser', 'state', (err, result) => {
+            if (err) {
+              Log.error(' Error fetching WebKitBrowser state')
+            } else {
+              Log.info('WebKitBrowser State is ', result)
+              if (result.includes('resumed') || result.includes('activated')) {
+                browser = 'WebKitBrowser'
+                browserVisibility = 'visiblity@WebKitBrowser'
+              }
+            }
+          })
+        }
+      }
+    })
     this.tempClient = ''
     this.appData = ''
     this.netflixActivated = false
@@ -54,10 +89,12 @@ export class ThunderAppService extends Lightning.Component {
     this.thunderJS.call('Amazon', 'state', 'suspended', () => {
       Log.info('Amazon Suspended')
     })
-    this.thunderJS.call('Compositor', 'putbelow', { client: 'Apps', relative: 'UX' }).catch(msg => {
-      Log.info(msg)
-    })
-    this.thunderJS.call('Compositor', 'select', { client: 'UX' }).catch(msg => {
+    this.thunderJS
+      .call('Compositor', 'putbelow', { client: 'Apps', relative: browser })
+      .catch(msg => {
+        Log.info(msg)
+      })
+    this.thunderJS.call('Compositor', 'select', { client: browser }).catch(msg => {
       Log.info(msg)
     })
 
@@ -97,10 +134,10 @@ export class ThunderAppService extends Lightning.Component {
                     Log.info(' Select Netflix' + msg)
                     Log.info('Successfully set focus Netflix')
                   })
-                this.thunderJS.call('Netflix', 'putontop', { client: 'UX' }, () => {
+                this.thunderJS.call('Netflix', 'putontop', { client: browser }, () => {
                   Log.info('Netflix putontop')
                 })
-                this.thunderJS.call('Compositor', 'visiblity@UX', 'hidden').catch(msg => {
+                this.thunderJS.call('Compositor', browserVisibility, 'hidden').catch(msg => {
                   Log.info(msg)
                 })
                 this.thunderJS
@@ -136,10 +173,10 @@ export class ThunderAppService extends Lightning.Component {
                     Log.info(' Select Amazon' + msg)
                     Log.info('Successfully set focus Amazon')
                   })
-                this.thunderJS.call('Amazon', 'putontop', { client: 'UX' }, () => {
+                this.thunderJS.call('Amazon', 'putontop', { client: browser }, () => {
                   Log.info('Amazon putontop')
                 })
-                this.thunderJS.call('Compositor', 'visiblity@UX', 'hidden').catch(msg => {
+                this.thunderJS.call('Compositor', browserVisibility, 'hidden').catch(msg => {
                   Log.info(msg)
                 })
                 this.thunderJS
@@ -154,30 +191,8 @@ export class ThunderAppService extends Lightning.Component {
       } else if (data.callsign == 'Cobalt') {
         Log.info('Cobalt Event !!! ')
         if (_data.state == 'activated') {
-          this.thunderJS.call('Cobalt', 'state', 'resumed', (err, result) => {
-            if (err) {
-              Log.warn('Error Resumed')
-            } else {
-              Log.info('cobalt resume')
-              setTimeout(() => {
-                this.thunderJS.call('Compositor', 'visiblity@UX', 'hidden').catch(msg => {
-                  Log.info(msg)
-                })
-                this.thunderJS.call('Cobalt', 'visiblity', 'visible').catch(msg => {
-                  Log.info(msg)
-                })
-                this.thunderJS.call('Cobalt', 'putontop', { client: 'UX' }, () => {
-                  Log.info('Cobalt putontop')
-                })
-                this.thunderJS.call('Compositor', 'select', { client: 'Cobalt' }).catch(msg => {
-                  Log.info(' Select Cobalt ' + msg)
-                  Log.info('Successfully set focus Cobalt')
-                })
-              }, 5000)
-            }
-          })
+          this.launchYoutube()
         }
-
         if (_data.suspended == true || _data.state == 'deactivated') {
           Log.info('Close Cobalt plugin success')
           this.closePlugin()
@@ -190,7 +205,7 @@ export class ThunderAppService extends Lightning.Component {
   _init() {
     Log.info('Thunder Service init')
   }
-  
+
   // Method to activate a plugin
   _activate(callSign) {
     this.thunderJS.Controller.activate({ callsign: callSign }, (err, result) => {
@@ -219,10 +234,10 @@ export class ThunderAppService extends Lightning.Component {
     this.thunderJS.call('Apps', 'state', 'resumed')
     this.thunderJS.call('Apps', 'url', app, () => {
       Log.info('\n Url for App set ')
-      this.thunderJS.call('Apps', 'putontop', { client: 'UX' }, () => {
-        Log.info('UX putontop')
+      this.thunderJS.call('Apps', 'putontop', { client: browser }, () => {
+        Log.info(browser + ' putontop')
       })
-      this.thunderJS.call('Compositor', 'visiblity@UX', 'hidden').catch(msg => {
+      this.thunderJS.call('Compositor', browserVisibility, 'hidden').catch(msg => {
         Log.info(msg)
       })
       this.thunderJS.call('Compositor', 'visiblity@Apps', 'visible').catch(msg => {
@@ -267,7 +282,7 @@ export class ThunderAppService extends Lightning.Component {
                   Log.info('\n Compositor Clients ', JSON.stringify(result))
                   this.tempClient = result.find(item => item.includes('essos-app'))
                   Log.info('\n Netflix Compositor item - Resume >>> ', this.tempClient)
-                  this.thunderJS.call('Compositor', 'visiblity@UX', 'hidden').catch(msg => {
+                  this.thunderJS.call('Compositor', browserVisibility, 'hidden').catch(msg => {
                     Log.info(msg)
                   })
                   this.thunderJS
@@ -297,7 +312,24 @@ export class ThunderAppService extends Lightning.Component {
     if (data.title == 'Youtube') {
       Log.info('Inside Youtube')
       this.activeApp = 'Cobalt'
-      this.thunderJS.Controller.activate({ callsign: 'Cobalt' }, (err, result) => { })
+      let response = ''
+      var request = new XMLHttpRequest()
+      request.open('GET', 'http://' + this.config.host + '/Service/Controller/Plugin/Cobalt', false) //makes synchronous request
+      request.send(null)
+      if (request.status === 200) {
+        console.log(request.responseText)
+        response = request.responseText
+      }
+      if (
+        response.includes('"state":"deactivation"') ||
+        response.includes('"state":"deactivated"')
+      ) {
+        Log.info('Cobalt State is deactivated, going to activate ')
+        this.thunderJS.Controller.activate({ callsign: 'Cobalt' }, (err, result) => {})
+      } else {
+        Log.info('Cobalt State is activated, going to continue with resume ')
+        this.launchYoutube()
+      }
     }
   }
 
@@ -313,15 +345,15 @@ export class ThunderAppService extends Lightning.Component {
       thunder.activeApp = ''
     }
 
-    this.thunderJS.call('Compositor', 'visiblity@UX', 'visible').catch(msg => {
+    this.thunderJS.call('Compositor', browserVisibility, 'visible').catch(msg => {
       Log.info(msg)
     })
 
-    this.thunderJS.call('Compositor', 'select', { client: 'UX' }, (err, result) => {
+    this.thunderJS.call('Compositor', 'select', { client: browser }, (err, result) => {
       if (err) {
-        Log.error(' Failed to select UX')
+        Log.error(' Failed to select ' + browser)
       } else {
-        Log.info('UX Selected')
+        Log.info(browser + ' Selected')
         thunder.parent._setState('HomeScreen')
       }
     })
@@ -336,20 +368,45 @@ export class ThunderAppService extends Lightning.Component {
       this.thunderJS.call('Compositor', 'visiblity@Apps', 'hidden').catch(msg => {
         Log.info(msg)
       })
-      this.thunderJS.call('Compositor', 'visiblity@UX', 'visible').catch(msg => {
+      this.thunderJS.call('Compositor', browserVisibility, 'visible').catch(msg => {
         Log.info(msg)
       })
 
       this.thunderJS
-        .call('Compositor', 'putbelow', { client: 'Apps', relative: 'UX' })
+        .call('Compositor', 'putbelow', { client: 'Apps', relative: browser })
         .catch(msg => {
           Log.info(msg)
         })
-      this.thunderJS.call('Compositor', 'select', { client: 'UX' }, () => {
-        Log.info('UX Selected')
+      this.thunderJS.call('Compositor', 'select', { client: browser }, () => {
+        Log.info(browser + ' Selected')
         thunder.parent._setState('HomeScreen')
       })
     })
   }
-}
 
+  launchYoutube() {
+    this.thunderJS.call('Cobalt', 'state', 'resumed', (err, result) => {
+      if (err) {
+        Log.warn('Cobalt Error Resumed')
+      } else {
+        Log.info('cobalt resumed !!!!!!!!!!')
+        setTimeout(() => {
+          this.thunderJS.call('Compositor', browserVisibility, 'hidden').catch(msg => {
+            Log.info(browser + ' hidden')
+          })
+          this.thunderJS.call('Cobalt', 'visiblity', 'visible').catch(msg => {
+            Log.info('Cobalt visible')
+          })
+
+          this.thunderJS.call('Cobalt', 'putontop', { client: browser }, () => {
+            Log.info('Cobalt putontop - ' + browser)
+          })
+          this.thunderJS.call('Compositor', 'select', { client: 'Cobalt' }).catch(msg => {
+            Log.info(' Select Cobalt ' + msg)
+            Log.info('Successfully set focus Cobalt')
+          })
+        }, 5000)
+      }
+    })
+  }
+}

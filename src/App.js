@@ -1,21 +1,21 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Lightning, Utils, Locale, Log } from 'wpe-lightning-sdk'
 import { HomeScreen } from './components/home/HomeScreen'
 import { Player } from './components/player/Player'
@@ -81,9 +81,9 @@ export default class App extends Lightning.Component {
   }
 
   /*  * Fire ancestor method
-  * Used to load different channel data on changing channels
-  * Upon executed stops the current video , resets the playercontrol UI and channelData is loaded
-  */
+   * Used to load different channel data on changing channels
+   * Upon executed stops the current video , resets the playercontrol UI and channelData is loaded
+   */
   $setPlayer(channelData) {
     Log.info('Channel Data ' + JSON.stringify(channelData))
     this.tag('LivePlayback').$stop()
@@ -112,7 +112,6 @@ export default class App extends Lightning.Component {
   }
 
   loadPlayer() {
-
     Log.info('\n In Load Player ----------')
     this.tag('LivePlayback').visible = true
     this.tag('LivePlayback').load({
@@ -189,7 +188,6 @@ export default class App extends Lightning.Component {
         $enter() {
           Log.info('\n In App State ')
           this.tag('LivePlayback').$stop()
-          this.tag('LivePlayback').alpha = 0
           this.visible = false
         }
 
@@ -198,6 +196,7 @@ export default class App extends Lightning.Component {
             ...this.channelData[this.channelIndex],
             loop: true
           })
+          this.visible = true
         }
       }
     ]
