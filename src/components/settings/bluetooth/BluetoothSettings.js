@@ -1,21 +1,21 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Lightning, Utils, Log } from 'wpe-lightning-sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
@@ -32,7 +32,6 @@ import ThunderJS from 'ThunderJS'
  * Renders the Bluetooth Component
  */
 export class Bluetooth extends Lightning.Component {
-  
   /**
    * @static
    * @returns
@@ -122,7 +121,7 @@ export class Bluetooth extends Lightning.Component {
   }
 
   /**
-   * Thunder calls for Bluetooth functionality
+   * Initialise thunder calls for Bluetooth functionality
    */
   _construct() {
     Log.info('Bluetooth Component ')
@@ -135,14 +134,20 @@ export class Bluetooth extends Lightning.Component {
     } catch (err) {
       Log.error(err)
     }
+    //scan complete event listener
     this.thunderJS.on('BluetoothControl', 'scancomplete', notification => {
       Log.info('<< Scan completed >>' + notification)
-      this._getDevices(() => {
+      this._showDevices('Discovered', () => {
         Log.info('\n Bluetooth Loop completed')
       })
     })
   }
 
+  /**
+   * Starts scanning for devices
+   * @param {*} timeoutval - timeout for scanning
+   * @param {*} devicetype - Type of the device, say 'Low Energy'
+   */
   _startScan(timeoutval, devicetype) {
     this.thunderJS.call(
       'BluetoothControl',
@@ -160,6 +165,10 @@ export class Bluetooth extends Lightning.Component {
       }
     )
   }
+
+  /**
+   * Execution waits for the time specified in milliseconds
+   */
   wait_promise(ms) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -168,51 +177,89 @@ export class Bluetooth extends Lightning.Component {
     })
   }
 
-  async _getDevices() {
-    let bluetooth = this
+  /**
+   * Gets the devices and its status from Thunder UI and renders the device tiles in Main screen or scan result screen
+   * @param {*} view - For scan results - Discovered and For main bluetooth page - 'Paired'
+   */
+  async _showDevices(view) {
+    // Determines which are the states and tags to be set based on the parameter
+    let setState
+    let tag
+    let bluetoothTile
+    switch (view) {
+      case 'Discovered':
+        setState = 'DiscoveredRemote'
+        tag = 'DiscoveredRemotes'
+        bluetoothTile = 'Remote'
+        break
+      case 'Paired':
+        setState = 'DiscoverRemote'
+        tag = 'PairedRemotes'
+        bluetoothTile = 'PairedRemote'
+        break
+    }
+
+    let devices = [] // to store devices array
+    this._setState(setState)
+    //Gets the details of devices connected to thunder UI
     this.thunderJS.call('BluetoothControl', 'devices', (err, result) => {
       if (err) {
         Log.error('Error in get Devices')
       } else {
         for (let i = 0; i < result.length; i++) {
           let mac = result[i]
+          //Gets the detailed status of each device based on the mac address
           this.thunderJS.call('BluetoothControl', 'device@' + result[i], (err, result) => {
             if (err) {
               Log.info('\n<< Error in Device property>>')
             } else {
               result.mac = mac
-              bluetooth.device.push(result)
+              devices.push(result)
               Log.info('\n Result Property ' + i + '-' + JSON.stringify(result))
             }
           })
         }
       }
     })
-    await bluetooth.wait_promise(2000)
-    Log.info('\n >>>>>>>>> ' + bluetooth.length)
-    Log.info('\n >>>>>>>>> ' + bluetooth.device)
-    bluetooth.tag('DiscoveredRemotes').items = bluetooth.device.map((data, index) => {
+    //Adding wait for the call back to finish before proceeding to next steps to get the complete list of devices
+    await this.wait_promise(1000)
+    this.secondarylabel = ''
+    this.readyStatus = false
+    // There is a chance that the devices array has repeated entries, so to avoid this only uniqdevices are taken
+    this.tag(tag).items = this.uniqDevices(devices, item => item.mac).map((data, index) => {
+      if (data.paired == true && data.connected == true) {
+        this.secondarylabel = 'Ready'
+        this.readyStatus = true
+      } else {
+        this.secondarylabel = 'Not Ready'
+        this.readyStatus = false
+      }
       return {
-        ref: 'Remote' + index,
+        ref: bluetoothTile + index,
         type: BluetoothTile,
         label: data.name,
         mac: data.mac,
-        secondarylabel: 'Not Ready',
-        ready: false
+        secondarylabel: this.secondarylabel,
+        ready: this.readyStatus
       }
     })
-    // Creates list of devices
-    bluetooth._setState('DiscoveredRemote')
   }
 
+  /**
+   * Performs thunder operations like assign and pair before connecting to bluetooth
+   * @param {*} addressval - mac address of the device
+   * @param {*} timeoutval - time out for pairing
+   */
   _pairDevice(addressval, timeoutval) {
     this.thunderJS.call('BluetoothRemoteControl', 'assign', { address: addressval })
     this.thunderJS.call('BluetoothControl', 'pair', { address: addressval, timeout: timeoutval })
   }
 
+  /**
+   * Performs bluetooth connect fron thunder, so that the paired remote get connected
+   * @param {*} addressval - mac address of the device
+   */
   _connectDevice(addressval) {
-    let paired = { name: this.selectedDevice, mac: this.selectedmac }
-    this.parent.parent.pairedDevices.push(paired)
     this.thunderJS.call('BluetoothControl', 'connect', { address: addressval })
     this.thunderJS.on(
       'BluetoothControl',
@@ -224,10 +271,18 @@ export class Bluetooth extends Lightning.Component {
     )
   }
 
+  /**
+   * Performs unpairing of device from thunder before disconnecting
+   * @param {*} addressval - mac address of the device
+   */
   _unpairDevice(addressval) {
     this.thunderJS.call('BluetoothControl', 'unpair', { address: addressval })
   }
 
+  /**
+   * Performs thunder disconnect and revoke for removing bluetooth connectivity
+   * @param {*} addressval - mac address of the device
+   */
   _disconnectDevice(addressval) {
     this.thunderJS.call('BluetoothControl', 'disconnect', { address: addressval })
     this.thunderJS.call('BluetoothRemoteControl', 'revoke')
@@ -244,21 +299,11 @@ export class Bluetooth extends Lightning.Component {
     Log.info('\n Bluetooth screen')
   }
 
+  /**
+   * This method gets invoked when the Bluetooth Settings page is active
+   */
   _active() {
-    this.tag('PairedRemotes').items = this.uniqDevices(
-      this.parent.parent.pairedDevices,
-      item => item.mac
-    ).map((data, index) => {
-      return {
-        ref: 'PairedRemote' + index,
-        type: BluetoothTile,
-        label: data.name,
-        mac: data.mac,
-        secondarylabel: 'Ready',
-        ready: true
-      }
-    })
-    this._setState('DiscoverRemote')
+    this._showDevices('Paired')
   }
 
   /**
@@ -270,8 +315,10 @@ export class Bluetooth extends Lightning.Component {
     return [...new Map(data.map(x => [key(x), x])).values()]
   }
 
+  /**
+   * Pair and connect method
+   */
   $pairConnect() {
-    //Pair and Connect method
     this.tag('Loading').visible = true
     this.tag('Loading').alpha = 1
     this._pairDevice(this.selectedmac, 10)
@@ -279,26 +326,26 @@ export class Bluetooth extends Lightning.Component {
     this.pairedFlag = setTimeout(this.remoteReady.bind(this), 12000)
   }
 
+  /**
+   * Disconnect the device
+   */
   $disconnectRemote() {
     this._unpairDevice(this.selectedmac)
     this._disconnectDevice(this.selectedmac)
   }
 
   remoteReady() {
-    this.$setBluetoothScreen()
     this.tag('Loading').visible = false
     this.tag('Loading').alpha = 0
-    this.tag('DiscoveredRemotes').element.patch({
-      secondarylabel: 'Ready',
-      ready: true
-    })
-    this._setState('DiscoveredRemote')
+    this.$setBluetoothScreen()
   }
 
+  /**
+   * Method invoked after exiting from pairing page to show the details of device in main bluetooth page
+   */
   $setBluetoothScreen() {
-    // Bluetooth Screen
     this.childList.remove(this.tag('PairingPage'))
-    this._setState('DiscoveredRemote')
+    this._showDevices('Paired')
   }
 
   /**
@@ -352,6 +399,9 @@ export class Bluetooth extends Lightning.Component {
           this.childList.a({ ref: 'PairingPage', type: BluetoothPairScreen, x: -960 })
           this._setState('ParingScreen')
         }
+        $exit() {
+          this.tag('DiscoveredRemotes').visible = false
+        }
       },
       class PairedRemotes extends this {
         _getFocused() {
@@ -383,7 +433,7 @@ export class Bluetooth extends Lightning.Component {
         }
       },
       class ParingScreen extends this {
-        $enter() { }
+        $enter() {}
         _getFocused() {
           return this.tag('PairingPage')
         }

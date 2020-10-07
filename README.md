@@ -63,4 +63,4 @@ Eg: To enable Netflix, set 'APP_NETFLIX=true'.
 
 ## **Documentation**
 
-For  further information refer https://wiki.rdkcentral.com/display/ASP/Tata+Elxsi+Accelerator+UI
+For  further information refer https://wiki.rdkcentral.com/display/RDK/Tata+Elxsi+UI

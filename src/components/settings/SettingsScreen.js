@@ -1,21 +1,21 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Lightning, Log } from 'wpe-lightning-sdk'
 import { SettingsMenuItem } from '../settings/SettingsMenuItem'
 import { TimeUtils } from '../../utils/TimeUtils'
@@ -24,14 +24,13 @@ import { ImageConstants } from '../../constants/ImageConstants'
 import { Colors } from '../../constants/ColorConstants'
 import { StringConstants } from '../../constants/StringConstants'
 /**
+ * Settings Page Component
  * @export
  * @class SettingsScreen
  * @extends Lightning.Component
- * Renders the SttingsScreen
+ * Renders the SettingsScreen
  */
-/* Settings Page Component  */
 export class SettingsScreen extends Lightning.Component {
-
   /**
    * @static
    * @returns
@@ -90,9 +89,7 @@ export class SettingsScreen extends Lightning.Component {
     }
   }
 
-  _construct() {
-    this.pairedDevices = []
-  }
+  _construct() {}
 
   _init() {
     this.updateTimebar()
@@ -125,8 +122,8 @@ export class SettingsScreen extends Lightning.Component {
   }
 
   /**
-  * Returns the current time
-  */
+   * Returns the current time
+   */
   updateTimebar() {
     this.time = new TimeUtils()
     this.timeText = this.time.getCurrentTime()
@@ -150,7 +147,7 @@ export class SettingsScreen extends Lightning.Component {
   static _states() {
     return [
       class MenuState extends this {
-        $enter() { }
+        $enter() {}
         _handleRight() {
           if (this.tag('SettingsMenu').length - 1 != this.tag('SettingsMenu').index) {
             this.tag('SettingsMenu').setNext()
@@ -181,11 +178,10 @@ export class SettingsScreen extends Lightning.Component {
         _getFocused() {
           return this.tag('SettingsMenu').element
         }
-        $exit() { }
+        $exit() {}
       },
       class SelectedState extends this {
-        $enter() {
-        }
+        $enter() {}
 
         _handleBack() {
           this.tag('SelectedSetting').childList.clear()
@@ -199,16 +195,16 @@ export class SettingsScreen extends Lightning.Component {
           this._setState('MenuState')
         }
 
-        _handleRight() { }
+        _handleRight() {}
 
-        _handleUp() { }
+        _handleUp() {}
 
-        _handleDown() { }
+        _handleDown() {}
 
         _getFocused() {
           return this.tag('SelectedSetting').tag('BluetoothScreen')
         }
-        $exit() { }
+        $exit() {}
       }
     ]
   }
