@@ -1,22 +1,22 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import { Utils, Lightning } from 'wpe-lightning-sdk'
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Utils, Lightning } from '@lightningjs/sdk'
 import { VODCategory } from './VodCategory'
 import { Colors } from '../../constants/ColorConstants'
 import { VODDescription } from './VodDescription'
@@ -31,7 +31,6 @@ import { TimeUtils } from '../../utils/TimeUtils'
  * Renders VOD Screen
  */
 export class VODScreen extends Lightning.Component {
-
   /**
    * @static
    * @returns
@@ -58,6 +57,7 @@ export class VODScreen extends Lightning.Component {
             }
           }
         },
+        Down: { x: 930, y: 980, src: Utils.asset(ImageConstants.DOWN), zIndex: 3, visible: true },
         VODCategory: { type: VODCategory }
       },
       VODBg: {
@@ -95,7 +95,7 @@ export class VODScreen extends Lightning.Component {
           }
         },
         GalleryRowList: {
-          x: 50,
+          x: 68,
           y: 50,
           w: 1740,
           h: 1000,
@@ -127,11 +127,13 @@ export class VODScreen extends Lightning.Component {
     setInterval(this.updateTimebar.bind(this), 60000)
     this._setState('VODCategoryState')
     this.prevIndex = -1
+    //flag to indicate that a VOD content is played just before entering the VOD screen
+    this.videoPlayedFlag = false
   }
 
   /**
-  * Returns the current time
-  */
+   * Returns the current time
+   */
   updateTimebar() {
     this.time = new TimeUtils()
     this.timeText = this.time.getCurrentTime()
@@ -139,10 +141,16 @@ export class VODScreen extends Lightning.Component {
   }
 
   /**
-    * While on screen and active sets to VODCategoryState
-    */
+   * While on screen and active sets to VODCategoryState
+   * if the view is active after exiting from VOD, then set the state to Gallery View State
+   */
   _active() {
-    this._setState('VODCategoryState')
+    if (this.videoPlayedFlag == true) {
+      this._setState('GalleryViewState')
+      this.videoPlayedFlag = false
+    } else {
+      this._setState('VODCategoryState')
+    }
   }
 
   /**
@@ -209,15 +217,32 @@ export class VODScreen extends Lightning.Component {
   }
 
   /**
-  * @static
-  * @returns
-  * @memberof VODScreen
-  * VODScreen States
-  */
+   * Resets the gallery view  on reentering VOD screen
+   */
+  resetGalleryRow() {
+    for (let j in this.tag('GalleryRowList').items) {
+      if (j == 0) {
+        this.tag('GalleryRowList').items[j].patch({ x: 207 })
+        this.tag('GalleryRowList').items[j].patch({ y: 3 })
+      } else if (j > 0) {
+        this.tag('GalleryRowList').items[j].patch({ x: 5 })
+      }
+    }
+    this.tag('VODCategory')._reset()
+    this.tag('GalleryRowList').setIndex(0)
+    this.fireAncestors('$setRows', this.tag('VODCategory').setRows())
+  }
+
+  /**
+   * @static
+   * @returns
+   * @memberof VODScreen
+   * VODScreen States
+   */
   static _states() {
     return [
       class VODCategoryState extends this {
-        $enter() { }
+        $enter() {}
 
         _getFocused() {
           return this.tag('VODCategory')
@@ -233,7 +258,7 @@ export class VODScreen extends Lightning.Component {
       class SeeAllState extends this {
         $enter() {
           /**
-           * On netring this state , the border is made visible
+           * On entering this state , the border is made visible
            */
           this.tag('SeeAllBorder').patch({ visible: true })
         }
@@ -250,6 +275,14 @@ export class VODScreen extends Lightning.Component {
            * On pressing the right arrow sets state to galleryViewState
            */
           this._setState('GalleryViewState')
+        }
+
+        _handleLeft() {
+          /**
+           * On pressing the left arrow sets state to SideNavState
+           */
+          this.parent._setState('SideNavState')
+          this.tag('SeeAllBorder').patch({ visible: false })
         }
 
         $exit() {
@@ -276,8 +309,16 @@ export class VODScreen extends Lightning.Component {
         }
 
         _handleDown() {
+          //To reset the focus when traversing through the rows
+          this.tag('GalleryRowList')
+            .element.tag('TileList')
+            ._reset()
           if (this.tag('GalleryRowList').length - 1 != this.tag('GalleryRowList').index) {
             this.tag('GalleryRowList').setNext()
+          }
+          //Make the down arrow invisible when we scroll to last row
+          if (this.tag('GalleryRowList').length - 1 == this.tag('GalleryRowList').index) {
+            this.tag('Down').visible = false
           }
         }
 
@@ -286,14 +327,23 @@ export class VODScreen extends Lightning.Component {
            * On pressing enter on a tile , the player is started
            */
           let currentTile = this.current.tag('TileList').element
+          this.videoPlayedFlag = true
           this.fireAncestors('$setPlayer', currentTile.videoData)
         }
 
         _handleUp() {
+          //To reset the focus when traversing through the rows
+          this.tag('GalleryRowList')
+            .element.tag('TileList')
+            ._reset()
           if (0 != this.tag('GalleryRowList').index) {
             this.tag('GalleryRowList').setPrevious()
           } else {
             this._setState('VODCategoryState')
+          }
+          //Make the down arrow visible on all other cases other than at the last row
+          if (this.tag('GalleryRowList').length - 1 != this.tag('GalleryRowList').index) {
+            this.tag('Down').visible = true
           }
         }
 

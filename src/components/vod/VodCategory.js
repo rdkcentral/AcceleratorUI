@@ -1,22 +1,22 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import { Lightning } from 'wpe-lightning-sdk'
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Lightning } from '@lightningjs/sdk'
 import { VODCategoryItem } from './VodCategoryItem'
 import { Colors } from '../../constants/ColorConstants'
 import { StringConstants } from '../../constants/StringConstants'
@@ -27,7 +27,6 @@ import { StringConstants } from '../../constants/StringConstants'
  * Renders the VOD category
  */
 export class VODCategory extends Lightning.Component {
-  
   /**
    * @static
    * @return
@@ -58,7 +57,7 @@ export class VODCategory extends Lightning.Component {
         horizontal: true,
         roll: true,
         rollMin: 0,
-        rollMax: 400,
+        rollMax: 300,
         spacing: 64,
         invertDirection: false,
         viewportSize: 1200
@@ -105,7 +104,6 @@ export class VODCategory extends Lightning.Component {
    * On pressing right arrow , sets to next element
    */
   _handleRight() {
-    
     if (this.tag('VODCategoryList').length - 1 != this.tag('VODCategoryList').index) {
       this.tag('VODCategoryList').setNext()
     }
@@ -116,7 +114,7 @@ export class VODCategory extends Lightning.Component {
    * If the index is greater than zero sets to previous element
    * or show the side navigation bar
    */
-  _handleLeft() {    
+  _handleLeft() {
     if (0 != this.tag('VODCategoryList').index) {
       this.tag('VODCategoryList').setPrevious()
     } else {
@@ -132,7 +130,23 @@ export class VODCategory extends Lightning.Component {
     this.tag('VODCategoryList').element._highlight()
   }
 
+  /**
+   * Function to reset VODCategory list
+   */
+  _reset() {
+    this.tag('VODCategoryList').setIndex(0)
+  }
+
   _handleEnter() {
+    this.setRows()
+    //Sets the state to see all state when enter is pressed
+    this.parent.parent._setState('SeeAllState')
+  }
+
+  /**
+   * Function to set Rows according to VOD category
+   */
+  setRows() {
     this.fireAncestors('$setRows', this.tag('VODCategoryList').element._menuName)
   }
 }

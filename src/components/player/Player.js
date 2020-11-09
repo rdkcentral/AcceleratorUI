@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log, Utils } from 'wpe-lightning-sdk'
+import { Lightning, Log, Utils } from '@lightningjs/sdk'
 import MediaPlayerExtended from './MediaPlayerExtended'
 import { PlayerUI } from './PlayerUI'
 import { ImageConstants } from '../../constants/ImageConstants'
@@ -52,7 +52,7 @@ export class Player extends Lightning.Component {
    * Function to hide the PlayerUI
    */
   hide() {
-    this.tag('DownArrow').visible = true
+    this.tag('DownArrow').visible = false
     this.tag('PlayerUI').hidePlayerUI()
     this._setState('PlaybackState')
   }
@@ -70,14 +70,6 @@ export class Player extends Lightning.Component {
     this.tag('PlayerUI').resetPlayerControls()
   }
 
-  set previousChannel(v) {
-    this._previousChannel = v
-  }
-
-  set nextChannel(v) {
-    this._nextChannel = v
-  }
-
   /* Loads the player with video URL.
    * @param {JSON} videoInfo the url and the info regarding the video like title.
    */
@@ -92,24 +84,6 @@ export class Player extends Lightning.Component {
       this.tag('MediaPlayer').openDash(videoInfo.videourl)
     }
     this.tag('PlayerUI').channelData = videoInfo
-  }
-
-  /**
-   * Function to load Previous video
-   */
-  $lastVideo() {
-    this.$stop()
-    this.reset()
-    this.load(this._previousChannel)
-  }
-
-  /**
-   * Function to load next video
-   */
-  $nextVideo() {
-    this.$stop()
-    this.reset()
-    this.load(this._nextChannel)
   }
 
   /**

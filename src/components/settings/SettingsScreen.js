@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from 'wpe-lightning-sdk'
+import { Lightning, Log } from '@lightningjs/sdk'
 import { SettingsMenuItem } from '../settings/SettingsMenuItem'
 import { TimeUtils } from '../../utils/TimeUtils'
 import { Bluetooth } from './bluetooth/BluetoothSettings'
@@ -78,7 +78,7 @@ export class SettingsScreen extends Lightning.Component {
           horizontal: true,
           roll: true,
           rollMin: 0,
-          rollMax: 360,
+          rollMax: 0,
           spacing: 30,
           invertDirection: false,
           viewportSize: 1300,
@@ -88,8 +88,6 @@ export class SettingsScreen extends Lightning.Component {
       SelectedSetting: { x: 960, y: 0, w: 960, h: 1080, visible: false }
     }
   }
-
-  _construct() {}
 
   _init() {
     this.updateTimebar()

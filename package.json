@@ -2,7 +2,7 @@
   "name": "accelerator-ui",
   "description": "accelerator-ui",
   "dependencies": {
-    "wpe-lightning-sdk": "rdkcentral/Lightning-SDK"
+    "@lightningjs/sdk": "^3.0.0"
   },
   "lint-staged": {
     "*.js": [

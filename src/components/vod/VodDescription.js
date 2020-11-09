@@ -1,22 +1,22 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import { Utils, Lightning } from 'wpe-lightning-sdk'
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Utils, Lightning } from '@lightningjs/sdk'
 import { Colors } from '../../constants/ColorConstants'
 /**
  * @export
@@ -25,7 +25,6 @@ import { Colors } from '../../constants/ColorConstants'
  * Renders the VODDescrption
  */
 export class VODDescription extends Lightning.Component {
-  
   /**
    * @static
    * @returns
@@ -76,8 +75,14 @@ export class VODDescription extends Lightning.Component {
           color: Colors.SLATE_GREY
         },
         Rating: {
-          x: 1358, y: 43, w: 200, rect: true, color: Colors.DARK_BLACK, flex: {
-            direction: 'row', wrap: true
+          x: 1358,
+          y: 43,
+          w: 200,
+          rect: true,
+          color: Colors.DARK_BLACK,
+          flex: {
+            direction: 'row',
+            wrap: true
           },
           Star1: {
             flexItem: {}
@@ -108,7 +113,7 @@ export class VODDescription extends Lightning.Component {
       }
     }
   }
-  
+
   /**
    * Sets the elements in Template using data
    */
