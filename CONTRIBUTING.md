@@ -1,8 +1,4 @@
-# **Contributing**
+Contributing
+============
 
-If you wish to make code contributions to this project, please follow the below steps
-
-* Latest  source is available in the master branch  
-* Create a branch for your changes from the 'master' branch. 
-* Check out your branch and push the changes to your branch 
-* Create a pullrequest  with details of the change you have added
+If you would like to contribute code to this project you can do so through GitHub by forking the repository and sending a pull request. Before RDK accepts your code into the project you must sign the RDK Contributor License Agreement (CLA).
