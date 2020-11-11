@@ -1,22 +1,22 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import { Lightning, Utils, Log } from 'wpe-lightning-sdk'
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Lightning, Utils, Log } from '@lightningjs/sdk'
 import { ImageConstants } from '../../constants/ImageConstants'
 import { ThunderVolumeService } from '../thunder/ThunderVolumeService'
 /**
@@ -27,7 +27,7 @@ import { ThunderVolumeService } from '../thunder/ThunderVolumeService'
  */
 
 /**
- * Variables made global to ensure accessibility across all classes 
+ * Variables made global to ensure accessibility across all classes
  */
 var endAngle = 273.6
 let percentage = 0
@@ -39,29 +39,29 @@ export class VolumeControl extends Lightning.Component {
       y: 770,
       Base: {
         src: Utils.asset(ImageConstants.BASE),
-        zIndex: 1,
+        zIndex: 1
       },
       VolumeBar: {
         x: 46,
         y: 46,
         zIndex: 2,
-        src: Utils.asset(ImageConstants.EMPTY_VOLUME_BAR),
+        src: Utils.asset(ImageConstants.EMPTY_VOLUME_BAR)
       },
       VolumeBarGradient: {
         x: 46,
         y: 46,
         zIndex: 3,
-        texture: Lightning.Tools.getCanvasTexture(VolumeControl._gradient),
+        texture: Lightning.Tools.getCanvasTexture(VolumeControl._gradient)
       },
       VolumeIcon: {
         x: 110,
         y: 95,
         zIndex: 2,
-        src: Utils.asset(ImageConstants.VOLUME_ICON),
+        src: Utils.asset(ImageConstants.VOLUME_ICON)
       },
       VolumeMarker: {
         zIndex: 4,
-        src: Utils.asset(ImageConstants.VOLUME_MARKER),
+        src: Utils.asset(ImageConstants.VOLUME_MARKER)
       },
       VolumePercentage: {
         x: 110,
@@ -87,7 +87,7 @@ export class VolumeControl extends Lightning.Component {
   }
 
   /**
-   * For dynamically drawing the circular colored bar as the volume marker moves 
+   * For dynamically drawing the circular colored bar as the volume marker moves
    */
   static _gradient(cb, stage) {
     let canvas = stage.platform.getDrawingCanvas()
@@ -135,8 +135,8 @@ export class VolumeControl extends Lightning.Component {
   }
 
   /**
-   * For calculating the the coordinates of the point on the circle to which the marker should move upon keypress 
-   * @param {*} percentage 
+   * For calculating the the coordinates of the point on the circle to which the marker should move upon keypress
+   * @param {*} percentage
    * Based on the percentage value passed
    */
 
@@ -153,10 +153,9 @@ export class VolumeControl extends Lightning.Component {
     this.y1 = this.y0 + this.radius * Math.sin(this.radian)
     this.tag('VolumeMarker').patch({ x: this.x1, y: this.y1 })
     this.tag('VolumeBarGradient').patch({
-      texture: Lightning.Tools.getCanvasTexture(VolumeControl._gradient),
+      texture: Lightning.Tools.getCanvasTexture(VolumeControl._gradient)
     })
   }
-
 
   /**
    *Function to increase volume and update UI according to that
@@ -181,16 +180,22 @@ export class VolumeControl extends Lightning.Component {
       if (percentage < 100) {
         percentage += 1
         if (percentage < 10) {
-          this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 120 })
+          this.tag('VolumePercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 120
+          })
         } else {
-          this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 110 })
+          this.tag('VolumePercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 110
+          })
         }
       }
     }
   }
 
   /**
-   *Function to decrease volume , goto mute if reduced below 1% and update UI accordingly 
+   *Function to decrease volume , goto mute if reduced below 1% and update UI accordingly
    */
   decreaseVolume() {
     if (this.toggle == 0) {
@@ -201,9 +206,15 @@ export class VolumeControl extends Lightning.Component {
         if (percentage > 0) {
           percentage -= 1
           if (percentage < 10) {
-            this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 120 })
+            this.tag('VolumePercentage').patch({
+              text: { fontSize: 32, text: percentage + '%' },
+              x: 120
+            })
           } else {
-            this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 110 })
+            this.tag('VolumePercentage').patch({
+              text: { fontSize: 32, text: percentage + '%' },
+              x: 110
+            })
           }
         }
         this.coordinates(percentage)
@@ -219,7 +230,7 @@ export class VolumeControl extends Lightning.Component {
   }
 
   /**
-   * Function to mute/unmute volume at any point 
+   * Function to mute/unmute volume at any point
    */
   muteVolume() {
     Log.info('mute function entered')
@@ -243,9 +254,15 @@ export class VolumeControl extends Lightning.Component {
         Log.info(this.index, 'in mute state')
         percentage = 0
         if (percentage < 10) {
-          this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 120 })
+          this.tag('VolumePercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 120
+          })
         } else {
-          this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 110 })
+          this.tag('VolumePercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 110
+          })
         }
         this.coordinates(percentage)
         this.tag('ThunderVolumeService')._volumeUp(percentage)
@@ -272,9 +289,15 @@ export class VolumeControl extends Lightning.Component {
           this.tag('VolumeMarker').visible = true
           this.tag('VolumeBarGradient').visible = true
           if (percentage < 10) {
-            this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 120 })
+            this.tag('VolumePercentage').patch({
+              text: { fontSize: 32, text: percentage + '%' },
+              x: 120
+            })
           } else {
-            this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: percentage + '%' }, x: 110 })
+            this.tag('VolumePercentage').patch({
+              text: { fontSize: 32, text: percentage + '%' },
+              x: 110
+            })
           }
         }
 
@@ -297,7 +320,7 @@ export class VolumeControl extends Lightning.Component {
         $exit() {
           this.toggle = 0
         }
-      },
+      }
     ]
   }
 }

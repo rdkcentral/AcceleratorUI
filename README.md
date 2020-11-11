@@ -7,7 +7,8 @@ User Interface developed using Lightning Application Framework for RDK’s Video
 1. Pre-requisites:
    * Install Node.js 10.x and npm 
    * Install Lightning-CLI globally\
-       `npm install -g rdkcentral/Lightning-CLI`   
+       `npm install -g @lightningjs/cli`  
+   (There is a new lightning version release dated 14 Oct 2020, if you are already using lightning , then please refer 'Lightning carbon release' section before moving to next steps)   
       
 2. Clone the Accelerator-UI project 
    `git clone git@github.com:rdkcentral/AcceleratorUI.git`
@@ -61,6 +62,17 @@ Eg: To enable Netflix, set 'APP_NETFLIX=true'.
 3. Save the changes, rebuild (lng build) and relaunch (lng serve) the application
 4. Enabled app will be available under 'Homescreen -> Premium Apps' section.
 
+## **Lightning Carbon Release**
+
+If you have already installed lightning cli version < 2.0.0 , then to upgrade to lightning CLI  2.0.0, please follow the below steps 
+
+1. Uninstall the old version: `npm uninstall -g wpe-lightning-cli`
+2. Install the latest lightning cli `npm install -g @lightningjs/cli`
+
+Release document - http://www.lightningjs.io/announcements/carbon-release
+
+
+
 ## **Documentation**
 
-For  further information refer https://wiki.rdkcentral.com/display/RDK/Tata+Elxsi+UI
+For  further information refer https://wiki.rdkcentral.com/display/ASP/Tata+Elxsi+Accelerator+UI

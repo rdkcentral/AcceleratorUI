@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils } from 'wpe-lightning-sdk'
+import { Lightning, Utils } from '@lightningjs/sdk'
 import { ImageConstants } from '../../constants/ImageConstants'
 import { GalleryView } from './galleryView/GalleryView'
 import { DataService } from '../../service/DataService'
@@ -218,6 +218,7 @@ export class HomeScreen extends Lightning.Component {
       class Vod extends this {
         $enter() {
           this.view = this.tag('Vod')
+          this.tag('Vod').resetGalleryRow()
           this.tag('SideNavBar')._highlight()
         }
 

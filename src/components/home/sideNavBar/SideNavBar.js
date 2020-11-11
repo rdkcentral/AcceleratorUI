@@ -1,22 +1,22 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-import { Utils, Lightning } from 'wpe-lightning-sdk'
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Utils, Lightning } from '@lightningjs/sdk'
 import { SideNavBarItem } from './SideNavBarItem'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
@@ -172,24 +172,24 @@ export class SideNavBar extends Lightning.Component {
            */
           this._expandedState()
         }
-        $exit() { }
+        $exit() {}
         /**
-        * Directs to corresponding page on pressing enter on sidenavbar item
-        */
+         * Directs to corresponding page on pressing enter on sidenavbar item
+         */
         _handleEnter() {
           this.fireAncestors('$setView', this.tag('MenuList').element._menuName)
         }
         /**
-        * Navigate to next sidenavbar item on pressing down arrow key
-        */
+         * Navigate to next sidenavbar item on pressing down arrow key
+         */
         _handleDown() {
           if (this.tag('MenuList').length - 1 != this.tag('MenuList').index) {
             this.tag('MenuList').setNext()
           }
         }
         /**
-        * navigate to previous sidenavbar item on pressing up arrow key
-        */
+         * navigate to previous sidenavbar item on pressing up arrow key
+         */
         _handleUp() {
           if (0 != this.tag('MenuList').index) {
             this.tag('MenuList').setPrevious()
@@ -203,7 +203,7 @@ export class SideNavBar extends Lightning.Component {
         $enter() {
           this._shrinkedState()
         }
-        $exit() { }
+        $exit() {}
       }
     ]
   }

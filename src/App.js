@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils, Locale, Log } from 'wpe-lightning-sdk'
+import { Lightning, Utils, Locale, Log } from '@lightningjs/sdk'
 import { HomeScreen } from './components/home/HomeScreen'
 import { Player } from './components/player/Player'
 import { ThunderAppService } from './components/thunder/ThunderAppService'
@@ -59,25 +59,52 @@ export default class App extends Lightning.Component {
 
   _init() {
     this.dataObj = new DataService()
-    this.channelIndex = 1
     Log.info('Start up ', 'App Started !!')
     this.dataObj.getChannelData().then(data => {
+      this.channelIndex = 1
       this.channelData = data[0].data.assets
-      Log.info('\n Channel data ----' + this.channelData)
+      Log.info('\n Channel data is ----' + this.channelData)
+      this.channelDataLength = this.channelData.length
       this.tag('LivePlayback').load({
         ...this.channelData[this.channelIndex],
         loop: true
       })
-      this.tag('LivePlayback').nextChannel = {
-        ...this.channelData[this.channelIndex + 1],
-        loop: true
-      }
-      this.tag('LivePlayback').previousChannel = {
-        ...this.channelData[this.channelIndex - 1],
-        loop: true
-      }
     })
     this._setState('LivePlayback')
+  }
+
+  /**
+   * Function to load Previous video
+   */
+  $lastVideo() {
+    this.tag('LivePlayback').$stop()
+    this.tag('LivePlayback').reset()
+    this.channelIndex = this.channelIndex - 1
+    Log.info('channel index' + this.channelIndex)
+    if (this.channelIndex == -1) {
+      this.channelIndex = this.channelDataLength - 1
+    }
+    this.tag('LivePlayback').load({
+      ...this.channelData[this.channelIndex],
+      loop: true
+    })
+  }
+
+  /**
+   * Function to load next video
+   */
+  $nextVideo() {
+    this.tag('LivePlayback').$stop()
+    this.tag('LivePlayback').reset()
+    this.channelIndex = this.channelIndex + 1
+    if (this.channelIndex == this.channelDataLength) {
+      this.channelIndex = 0
+    }
+    Log.info('channel index' + this.channelIndex)
+    this.tag('LivePlayback').load({
+      ...this.channelData[this.channelIndex],
+      loop: true
+    })
   }
 
   /*  * Fire ancestor method
@@ -147,6 +174,7 @@ export default class App extends Lightning.Component {
       class LivePlayback extends this {
         $enter() {
           this.tag('LivePlayback').visible = true
+          this.tag('LivePlayback').tag('DownArrow').visible = true
         }
         _getFocused() {
           Log.info('Focus Live playback !!')

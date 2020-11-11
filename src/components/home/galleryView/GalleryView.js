@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils } from 'wpe-lightning-sdk'
+import { Lightning, Utils } from '@lightningjs/sdk'
 import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
@@ -54,7 +54,7 @@ export class GalleryView extends Lightning.Component {
         rect: true,
         color: Colors.TRANSPARENT
       },
-      Down: { x: 930, y: 980, src: Utils.asset(ImageConstants.DOWN), zIndex: 3 }
+      Down: { x: 930, y: 980, src: Utils.asset(ImageConstants.DOWN), zIndex: 3, visible: true }
     }
   }
 
@@ -189,6 +189,10 @@ export class GalleryView extends Lightning.Component {
             this.tag('GalleryRowList').setNext()
           }
           this.current = this.tag('GalleryRowList').element
+          //Make the down arrow invisible when we scroll to last row
+          if (this.tag('GalleryRowList').length - 1 == this.tag('GalleryRowList').index) {
+            this.tag('Down').visible = false
+          }
         }
         /**
          * Set Apps or Set Player
@@ -215,6 +219,10 @@ export class GalleryView extends Lightning.Component {
             this.tag('GalleryRowList').setPrevious()
           }
           this.current = this.tag('GalleryRowList').element
+          //Make the down arrow visible on all other cases other than at the last row
+          if (this.tag('GalleryRowList').length - 1 != this.tag('GalleryRowList').index) {
+            this.tag('Down').visible = true
+          }
         }
       }
     ]
