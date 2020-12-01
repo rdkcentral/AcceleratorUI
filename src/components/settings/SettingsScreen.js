@@ -23,6 +23,8 @@ import { Bluetooth } from './bluetooth/BluetoothSettings'
 import { ImageConstants } from '../../constants/ImageConstants'
 import { Colors } from '../../constants/ColorConstants'
 import { StringConstants } from '../../constants/StringConstants'
+import { Diagnostic } from './diagnostics/DiagnosticScreen'
+import { Wifi_Class } from './Wifi/WifiSettings'
 /**
  * Settings Page Component
  * @export
@@ -72,7 +74,7 @@ export class SettingsScreen extends Lightning.Component {
           type: Lightning.components.ListComponent,
           x: 52,
           y: 344,
-          w: 1400,
+          w: 1700,
           h: 500,
           itemSize: 350,
           horizontal: true,
@@ -104,6 +106,14 @@ export class SettingsScreen extends Lightning.Component {
       {
         menuIcon: ImageConstants.NETWORK_INTERFACES,
         menuName: StringConstants.NETWORK_INTERFACES
+      },
+      {
+        menuIcon: ImageConstants.DIAGNOSTICS,
+        menuName: StringConstants.DIAGNOSTICS
+      },
+      {
+        menuIcon: ImageConstants.WIFILOGO,
+        menuName: StringConstants.WIFI
       },
       {
         menuIcon: ImageConstants.PARENTAL_CONTROL,
@@ -171,6 +181,29 @@ export class SettingsScreen extends Lightning.Component {
               w: 960,
               h: 1080
             })
+          }else if (this.tag('SettingsMenu').index == 3) {
+            this.tag('SelectedSetting').visible = true
+            this._setState('DiagnosticState')
+            this.tag('SelectedSetting').childList.a({
+              ref: 'DiagnosticScreen',
+              type: Diagnostic,
+              x: 0,
+              y: 0,
+              w: 960,
+              h: 1080
+            })
+          }
+          else if (this.tag('SettingsMenu').index == 4) {
+            this.tag('SelectedSetting').visible = true
+            this._setState('WifiSelectedState')
+            this.tag('SelectedSetting').childList.a({
+              ref: 'WifiScreen',
+              type: Wifi_Class,
+              x: 0,
+              y: 0,
+              w: 960,
+              h: 1080
+            })
           }
         }
         _getFocused() {
@@ -203,6 +236,51 @@ export class SettingsScreen extends Lightning.Component {
           return this.tag('SelectedSetting').tag('BluetoothScreen')
         }
         $exit() {}
+      }, class DiagnosticState extends this {
+        $enter() { }
+        _handleBack() {
+          this.tag('SelectedSetting').childList.clear()
+          this.tag('SelectedSetting').visible = false
+          this._setState('MenuState')
+        }
+        _handleLeft() {
+          this.tag('SelectedSetting').childList.clear()
+          this.tag('SelectedSetting').visible = false
+          this._setState('MenuState')
+        }
+        _handleRight() { }
+
+        _handleUp() { }
+
+        _handleDown() { }
+
+        _getFocused() {
+          return this.tag('SelectedSetting').tag('DiagnosticScreen')
+        }
+        $exit() { }
+      },
+      class WifiSelectedState extends this {
+        $enter() { }
+        _handleBack() {
+          this.tag('SelectedSetting').childList.clear()
+          this.tag('SelectedSetting').visible = false
+          this._setState('MenuState')
+        }
+        _handleLeft() {
+          this.tag('SelectedSetting').childList.clear()
+          this.tag('SelectedSetting').visible = false
+          this._setState('MenuState')
+        }
+        _handleRight() { }
+
+        _handleUp() { }
+
+        _handleDown() { }
+
+        _getFocused() {
+          return this.tag('SelectedSetting').tag('WifiScreen')
+        }
+        $exit() { }
       }
     ]
   }

@@ -1,3 +1,5 @@
+/* eslint-disable semi */
+/* eslint-disable prettier/prettier */
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
@@ -22,15 +24,15 @@ import { ImageConstants } from '../../../constants/ImageConstants'
 
 /**
  * @export
- * @class BluetoothTile
+ * @class WifiTile
  * @extends Lightning.Component
- * Renders the BluetoothTile
+ * Renders the WifiTile
  */
-export class BluetoothTile extends Lightning.Component {
+export class WifiTile extends Lightning.Component {
   /**
    * @static
    * @returns
-   * @memberof BluetoothTile
+   * @memberof WifiTile
    * Renders the template
    */
   static _template() {
@@ -52,7 +54,7 @@ export class BluetoothTile extends Lightning.Component {
           text: { text: '', fontSize: 32, textColor: Colors.LIGHTER_WHITE, fontFace: 'Medium' }
         },
         SecondaryLabel: {
-          x: 563,
+          x: 503,
           y: 29,
           text: { text: '', fontSize: 28, textColor: Colors.MEDIUM_GREY, fontFace: 'Medium' }
         },
@@ -73,6 +75,15 @@ export class BluetoothTile extends Lightning.Component {
   set secondarylabel(v) {
     this.tag('SecondaryLabel').text.text = v
   }
+  
+  set security (v) {
+    this._security = v;
+  }
+  
+  get security () {
+    return this._security;
+  }
+  
   set w(v) {}
 
   set ready(v) {

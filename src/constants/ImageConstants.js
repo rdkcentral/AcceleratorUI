@@ -84,5 +84,7 @@ export const ImageConstants = {
   GENERAL_SETTINGS: 'images/settings/general-settings.png',
   SETTINGS_MENU_HIGHLIGHT: '/images/settings/Tile-selection.png',
   BLUETOOTH_REMOTE: 'images/settings/Bluetooth/Discover.png',
-  BLUETOOTH_READY: 'images/settings/Bluetooth/Ready.png'
+  BLUETOOTH_READY: 'images/settings/Bluetooth/Ready.png',
+  DIAGNOSTICS: 'images/settings/diagnosticlogo.png',
+  WIFILOGO: 'images/settings/wifilogo.png',
 }

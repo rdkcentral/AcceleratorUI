@@ -21,11 +21,11 @@ import ThunderJS from 'ThunderJS'
 
 /**
  * @export
- * @class ThunderVolumeService
+ * @class ThunderAppService
  * @extends Lightning.Component
- * Volume Thunder calls
+ * Thunder  Diagnostic calls
  */
-export class ThunderVolumeService extends Lightning.Component {
+export class ThunderDiagnosticService extends Lightning.Component {
   _construct() {
     this.config = {
       host: '127.0.0.1',
@@ -37,32 +37,25 @@ export class ThunderVolumeService extends Lightning.Component {
     } catch (err) {
       Log.error(err)
     }
-    this.thunderJS.Controller.activate({ callsign: 'org.rdk.DisplaySettings' }, (err, result) => {
-      if (err) {
-        Log.error('Failed to activate  DisplaySettings plugin')
-      } else {
-        Log.info('Successfully activate DisplaySettings Plugin')
+  }
+
+  /**
+    * Function to call device Info thunder call 
+    */
+  _diagnostic() {
+    let diagObj = this
+    console.log('Enter diagnostics')
+    this.thunderJS.call('DeviceInfo', 'systeminfo',
+      (err, result) => {
+        if (err) {
+          Log.info('\n Diagnostic error')
+        } else {
+          Log.info('Diagnostic success', result)
+          Log.info('Diagnostic success', result.version)
+          let diagInfo = 'Version : \t' + result.version + "\n" + "\n Time : \t" + result.time + "\n" + "\n Up Time : \t" + result.uptime + "\n" + "\n Total RAM : \t" + result.totalram + "\n Free RAM : \t" + result.freeram + "\n" + "\n Device Name : \t" + result.devicename + "\n" + "\n CPU Load : \t" + result.cpuload + "\n" + "\n Serial Number : \t" + result.serialnumber
+          diagObj.tag('DiagnosticInfoLabel').patch({ text: { text: diagInfo } })
+        }
       }
-    })
-  }
-
-  /**
-   * Function to call volume change thunder call based on percentage value
-   * @param {*} volumeVal
-   */
-  _volumeUp(volumeVal) {
-    Log.info(volumeVal, 'value of volume')
-    this.volumeValue = volumeVal
-    this.thunderJS.call('org.rdk.DisplaySettings', 'setVolumeLevel', { audioPort: 'HDMI0', volumeLevel: this.volumeValue })
-  }
-
-  /**
-   * Function to call thundr call to mute/unmute volume based on boolean passed
-   * @param {*} muteBool
-   */
-  _volumeMute(muteBool) {
-    Log.info(muteBool, '_volumeMute function value')
-    this.muteBoolean = muteBool
-    this.thunderJS.call('org.rdk.DisplaySettings', 'setMuted ', { audioPort: 'HDMI0', muted: this.muteBoolean })
+    )
   }
 }

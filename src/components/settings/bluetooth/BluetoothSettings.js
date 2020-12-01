@@ -139,6 +139,7 @@ export class Bluetooth extends Lightning.Component {
    * This method gets invoked when the Bluetooth Settings page is active
    */
   _active() {
+    //TO display already saved devices
     this._showDevices('Saved')
   }
 
@@ -148,8 +149,8 @@ export class Bluetooth extends Lightning.Component {
   $pairConnect() {
     this.tag('Loading').visible = true
     this.tag('Loading').alpha = 1
-    this.tag('ThunderBluetoothService')._pairDevice(this.selectedmac, 10)
-    this.tag('ThunderBluetoothService')._connectDevice(this.selectedmac)
+    this.tag('ThunderBluetoothService')._pairDevice(this.selectedDeviceID)
+    this.tag('ThunderBluetoothService')._connectDevice(this.selectedDeviceID, this.selectedDeviceType)
     this.pairedFlag = setTimeout(this.remoteReady.bind(this), 12000)
   }
 
@@ -157,8 +158,8 @@ export class Bluetooth extends Lightning.Component {
    * Disconnect the device
    */
   $disconnectRemote() {
-    this.tag('ThunderBluetoothService')._unpairDevice(this.selectedmac)
-    this.tag('ThunderBluetoothService')._disconnectDevice(this.selectedmac)
+    this.tag('ThunderBluetoothService')._unpairDevice(this.selectedDeviceID)
+    this.tag('ThunderBluetoothService')._disconnectDevice(this.selectedDeviceID)
   }
 
   remoteReady() {
@@ -211,8 +212,8 @@ export class Bluetooth extends Lightning.Component {
      * The 'scan Completed' event can occur multiple times. SO devices array has repeated entries in the case of scanning
      * So as a work around only uniqdevices are taken
      */
-    this.tag(tag).items = this.uniqDevices(window.devices, item => item.mac).map((data, index) => {
-      if (data.paired == true && data.connected == true) {
+    this.tag(tag).items = this.uniqDevices(window.devices, item => item.deviceID).map((data, index) => {
+      if (data.paired == true || data.connected == true ) {
         this.secondarylabel = 'Ready'
         this.readyStatus = true
       } else {
@@ -223,7 +224,8 @@ export class Bluetooth extends Lightning.Component {
         ref: bluetoothTile + index,
         type: BluetoothTile,
         label: data.name,
-        mac: data.mac,
+        deviceID: data.deviceID,
+        deviceType: data.deviceType,
         secondarylabel: this.secondarylabel,
         ready: this.readyStatus
       }
@@ -296,8 +298,9 @@ export class Bluetooth extends Lightning.Component {
           }
         }
         _handleEnter() {
-          this.selectedmac = this.tag('DiscoveredRemotes').element.mac
+          this.selectedDeviceID = this.tag('DiscoveredRemotes').element.deviceID
           this.selectedDevice = this.tag('DiscoveredRemotes').element.label
+          this.selectedDeviceType = this.tag('DiscoveredRemotes').element.deviceType
           this.childList.a({ ref: 'PairingPage', type: BluetoothPairScreen, x: -960 })
           this._setState('ParingScreen')
         }
@@ -322,8 +325,9 @@ export class Bluetooth extends Lightning.Component {
           }
         }
         _handleEnter() {
-          this.selectedmac = this.tag('SavedRemotes').element.mac
+          this.selectedDeviceID = this.tag('SavedRemotes').element.deviceID
           this.selectedDevice = this.tag('SavedRemotes').element.label
+          this.selectedDeviceType = this.tag('SavedRemotes').element.deviceType
           this.childList.a({ ref: 'PairingPage', type: BluetoothPairScreen, x: -960 })
           this._setState('ParingScreen')
         }
@@ -348,7 +352,7 @@ export class Bluetooth extends Lightning.Component {
     this.tag('DiscoverRemote').alpha = 0
     this.tag('SavedRemotes').alpha = 0
     this.tag('DiscoverInfo').visible = true
-    this.tag('ThunderBluetoothService')._startScan(10, 'LowEnergy')
+    this.tag('ThunderBluetoothService')._startScan(10, 'DEFAULT')
     this.scanFlag = setTimeout(this.hideInfo.bind(this), 12000)
   }
 
