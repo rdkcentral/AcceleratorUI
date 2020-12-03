@@ -135,8 +135,8 @@ export default class App extends Lightning.Component {
   }
 
   $setExit() {
-    Log.info('Exit of Metroapps -------' )
-    this.tag('Apps').deactivateMetroPlugin()    
+    Log.info('Exit of Metroapps -------')
+    this.tag('Apps').deactivateMetroPlugin()
   }
 
   _handleBack() {
@@ -156,12 +156,12 @@ export default class App extends Lightning.Component {
     Log.info(event.code, 'for key name')
     Log.info(event.keyCode, 'for key code')
 
-    if ((event.keyCode === 36) && window.metroAppEnabled) {
-      Log.info("Metro App is enabled")
+    if (event.keyCode === 36 && window.metroAppEnabled) {
+      Log.info('Metro App is enabled')
       this.$setExit()
       window.metroAppEnabled = false
-    }else if(event.keyCode === 36 && !window.metroAppEnabled ){
-      Log.info("Metro App is disabled")
+    } else if (event.keyCode === 36 && !window.metroAppEnabled) {
+      Log.info('Metro App is disabled')
       this._setState('HomeScreen')
     }
     if (event.keyCode == 175) {

@@ -44,7 +44,6 @@ export class ThunderAppService extends Lightning.Component {
     this._activate('org.rdk.Wifi')
     this._activate('org.rdk.System')
 
-
     // Adding key intercept for 'Home Key' , as a work around for exit from metro apps
     this.thunderJS
       .call('org.rdk.RDKShell', 'addKeyIntercept', {
@@ -85,7 +84,7 @@ export class ThunderAppService extends Lightning.Component {
 
   /**
    * This method is to launch metro apps
-   * @param {*} appURL 
+   * @param {*} appURL
    */
   launchMetroApp(appURL) {
     Log.info('Going to launch metro apps !!!!!!!!!!!!!')
@@ -94,7 +93,7 @@ export class ThunderAppService extends Lightning.Component {
       .call('org.rdk.RDKShell', 'launch', {
         callsign: appPlugin,
         type: appPlugin,
-        uri: appURL,
+        uri: appURL
       })
       .then(() => {
         Log.info('Launch successful for MetroApps')
@@ -110,21 +109,26 @@ export class ThunderAppService extends Lightning.Component {
 
   /**
    * This method is for launching premium apps
-   * @param {*} data 
+   * @param {*} data
    */
   launchPremiumApp(data) {
-    //Launching Youtube via Controller
+    /**Launching Youtube via Controller , because on launching youtube via RDK services we are getting resolution issues
+     To be modified later*/
     if (data.title == 'Youtube') {
       Log.info('Inside Youtube')
       this.activeApp = 'Cobalt'
       let response = ''
       var request = new XMLHttpRequest()
       //This is to get the state of a plugin, if activated already then proceed to resume. If not then activate
-      request.open('GET', 'http://' + this.config.host + ':' + this.config.port + '/Service/Controller/Plugin/Cobalt', false) //makes synchronous request
+      request.open(
+        'GET',
+        'http://' + this.config.host + ':' + this.config.port + '/Service/Controller/Plugin/Cobalt',
+        false
+      ) //makes synchronous request
       request.send(null)
       if (request.status === 200) {
         response = request.responseText
-        Log.info("State of cobalt plugin is", response)
+        Log.info('State of cobalt plugin is', response)
       }
       if (
         response.includes('"state":"deactivation"') ||
@@ -133,9 +137,9 @@ export class ThunderAppService extends Lightning.Component {
         Log.info('Cobalt State is deactivated, going to activate ')
         this.thunderJS.Controller.activate({ callsign: 'Cobalt' }, (err, result) => {
           if (err) {
-            Log.error('Failed to activate cobalt ' + callSign)
+            Log.error('Failed to activate cobalt')
           } else {
-            Log.info('Successfully activated  cobalt' + callSign)
+            Log.info('Successfully activated  cobalt')
           }
         })
       } else {
@@ -144,7 +148,6 @@ export class ThunderAppService extends Lightning.Component {
       }
     }
   }
-
 
   /**
    * This method is called from keyhandler to deactivateMetroPlugin
@@ -155,7 +158,6 @@ export class ThunderAppService extends Lightning.Component {
     this.closePlugin()
   }
 
-
   /**
    * Move the focus to Acceleerator UI/Browser on exiting from an App
    */
@@ -164,7 +166,6 @@ export class ThunderAppService extends Lightning.Component {
     this.setVisibility('ResidentApp', true)
     this.parent._setState('HomeScreen')
   }
-
 
   /**
    * This method resumes Cobalt plugin and move Cobalt to the front
@@ -175,7 +176,7 @@ export class ThunderAppService extends Lightning.Component {
         Log.warn('Cobalt Error Resumed')
       } else {
         setTimeout(() => {
-          this.setVisibility("ResidentApp", false)
+          this.setVisibility('ResidentApp', false)
           this.moveAppToFrontAndFocus('Cobalt')
         }, 5000)
       }
@@ -188,11 +189,14 @@ export class ThunderAppService extends Lightning.Component {
    * @param {*} visible Boolean - true or false
    */
   setVisibility(client, visible) {
-    this.thunderJS.call('org.rdk.RDKShell', 'setVisibility', { client: client, visible: visible }).then(() => {
-      Log.info("Visibility set to" + visible)
-    }).catch(err => {
-      Log.info('Error on setting visibility ' + JSON.stringify(err))
-    })
+    this.thunderJS
+      .call('org.rdk.RDKShell', 'setVisibility', { client: client, visible: visible })
+      .then(() => {
+        Log.info('Visibility set to' + visible)
+      })
+      .catch(err => {
+        Log.info('Error on setting visibility ' + JSON.stringify(err))
+      })
   }
 
   /**
@@ -200,20 +204,26 @@ export class ThunderAppService extends Lightning.Component {
    * @param {*} clientName clientName say -ResidentApp, WebKitbrowser etc
    */
   moveAppToFrontAndFocus(clientName) {
-    this.thunderJS.call('org.rdk.RDKShell', 'moveToFront', { client: clientName }).then(result => {
-      Log.info(clientName + ' moveToFront Success', JSON.stringify(result))
-    }).catch(err => {
-      Log.error('Error in moving the app' + clientName + ' to front', err)
-    })
-    this.thunderJS.call('org.rdk.RDKShell', 'setFocus', { client: clientName }).then(result => {
-      Log.info(clientName + ' setting Focus Success', JSON.stringify(result))
-    }).catch(err => {
-      Log.error('Error in setting focus of the app' + clientName + ' to front', err)
-    })
+    this.thunderJS
+      .call('org.rdk.RDKShell', 'moveToFront', { client: clientName })
+      .then(result => {
+        Log.info(clientName + ' moveToFront Success', JSON.stringify(result))
+      })
+      .catch(err => {
+        Log.error('Error in moving the app' + clientName + ' to front', err)
+      })
+    this.thunderJS
+      .call('org.rdk.RDKShell', 'setFocus', { client: clientName })
+      .then(result => {
+        Log.info(clientName + ' setting Focus Success', JSON.stringify(result))
+      })
+      .catch(err => {
+        Log.error('Error in setting focus of the app' + clientName + ' to front', err)
+      })
   }
 
-   // Method to activate a plugin
-   _activate(callSign) {
+  // Method to activate a plugin
+  _activate(callSign) {
     this.thunderJS.Controller.activate({ callsign: callSign }, (err, result) => {
       if (err) {
         Log.error('Failed to activate ' + callSign)
@@ -222,5 +232,4 @@ export class ThunderAppService extends Lightning.Component {
       }
     })
   }
-
 }

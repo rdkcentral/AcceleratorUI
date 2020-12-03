@@ -198,28 +198,28 @@ export class ThunderWifiService extends Lightning.Component {
     Log.info('WifiUI: ThunderWifiService startScan.')
     this.connect()
       .catch(error => {
-        Log.info("WifiUI: web socket can't be opened: " + JSON.stringify(error, ["message", "arguments", "type", "name"]))
+        Log.info("WifiUI: web socket can't be opened: " + JSON.stringify(error, ['message', 'arguments', 'type', 'name']))
       })
       .then(() => {
         return this.invoke(
           'register',
           { event: 'onAvailableSSIDs', id: 1 },
           undefined,
-          result => {}
+          result => { }
         )
       })
       .then(() => {
-        return this.invoke('startScan', { incremental: false }, undefined, result => {})
+        return this.invoke('startScan', { incremental: false }, undefined, result => { })
       })
       .then(() => {
-        return this.waitEvent('onAvailableSSIDs', 1, params => {})
+        return this.waitEvent('onAvailableSSIDs', 1)
       })
       .then(() => {
         return this.invoke(
           'unregister',
           { event: 'onAvailableSSIDs', id: 1 },
           undefined,
-          result => {}
+          result => { }
         )
       }).
       then(() => {
@@ -256,7 +256,7 @@ export class ThunderWifiService extends Lightning.Component {
       })
       .then(() => {
         // Start listening to errors
-        return this.invoke('register', { event: 'onError', id: 3 }, undefined, result => {})
+        return this.invoke('register', { event: 'onError', id: 3 }, undefined, result => { })
       })
       .then(() => {
         // Start listening to wifi state changes
@@ -264,7 +264,7 @@ export class ThunderWifiService extends Lightning.Component {
           'register',
           { event: 'onWIFIStateChanged', id: 4 },
           undefined,
-          result => {}
+          result => { }
         )
       })
       .then(() => {
@@ -283,7 +283,7 @@ export class ThunderWifiService extends Lightning.Component {
           })
         );
         wait.then(() => {
-          return this.invoke('unregister', { event: 'onError', id: 3 }, undefined, result => {})
+          return this.invoke('unregister', { event: 'onError', id: 3 }, undefined, result => { })
         })
       })
       .then(() => {
@@ -302,7 +302,7 @@ export class ThunderWifiService extends Lightning.Component {
           'unregister',
           { event: 'onWIFIStateChanged', id: 4 },
           undefined,
-          result => {}
+          result => { }
         )
       }).
       then(() => {
@@ -323,7 +323,7 @@ export class ThunderWifiService extends Lightning.Component {
           'register',
           { event: 'onWIFIStateChanged', id: 4 },
           undefined,
-          result => {}
+          result => { }
         )
       })
       .then(() => {
@@ -343,7 +343,7 @@ export class ThunderWifiService extends Lightning.Component {
           'unregister',
           { event: 'onWIFIStateChanged', id: 4 },
           undefined,
-          result => {}
+          result => { }
         )
       })
       .then(() => {
