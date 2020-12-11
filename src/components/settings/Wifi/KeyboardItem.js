@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi */
+/* eslint-disable prettier/prettier */
 /*
  * If not stated otherwise in this file or this component's Licenses.txt file the
  * following copyright and licenses apply:
@@ -17,19 +20,18 @@
  * limitations under the License.
  */
 import { Utils, Lightning } from '@lightningjs/sdk'
-import { ImageConstants } from '../../constants/ImageConstants'
-import { Colors } from '../../constants/ColorConstants'
+import { Colors } from '../../../constants/ColorConstants'
 /**
  * @export
- * @class VODCategoryItem
+ * @class KeyboardItem
  * @extends Lightning.Component
- * Renders the VODCategoryItem
+ * KeyboardItem
  */
-export class VODCategoryItem extends Lightning.Component {
+export class KeyboardItem extends Lightning.Component {
   /**
    * @static
    * @returns
-   * @memberof VODCategoryItem
+   * @memberof export class KeyboardItem extends Lightning.Component {
    * Renders the template
    */
   static _template() {
@@ -42,12 +44,14 @@ export class VODCategoryItem extends Lightning.Component {
       Label: {
         x: 63,
         y: 21,
-        h: 34,
+        h: 37,
+        rect:true,
         text: {
           text: '',
           fontFace: 'Medium',
-          fontSize: 28,
-          textColor: Colors.DIM_GREY
+          fontSize: 35,
+          fontStyle:'Bold',
+          textColor: Colors.FLUORESCENT_GREEN
         }
       }
     }
@@ -58,9 +62,6 @@ export class VODCategoryItem extends Lightning.Component {
    */
   set items(v) {
     this._menuName = v.menuName
-  }
-
-  _init() {
     this.patch({
       Label: {
         text: {
@@ -70,17 +71,17 @@ export class VODCategoryItem extends Lightning.Component {
     })
   }
 
-  /**
-   * Function to update the highlight element of template
-   */
-  _highlight() {
-    this.tag('HighLight').patch({
-      src: Utils.asset(ImageConstants.COLLAPSED_BACKGROUND),
-      visible: true
-    })
-    this.tag('Label').patch({
-      text: { textColor: Colors.FLUORESCENT_GREEN }
-    })
+  _init() {
+    
+    this.animation = this.tag('Label').animation({
+      duration: 0.25,
+      repeat: 0,
+      stopMethod: 'reverse',
+      actions: [
+        {p: 'alpha', v: {0: 0.9, 0.25: 1, 0.5: 1}},
+        {p: 'scale', v: {0: 1, 0.25: 1.2, 0.5: 1.3}}
+      ]
+    });
   }
 
   /**
@@ -89,30 +90,31 @@ export class VODCategoryItem extends Lightning.Component {
   _focus() {
     this.patch({
       HighLight: {
-        src: Utils.asset(ImageConstants.CATEGORY_SELECTION),
-        visible: true
-      }
-    })
-    this.patch({
+        visible: true,
+      },
       Label: {
         text: {
-          textColor: Colors.LIGHTER_WHITE
+          textColor: Colors.WHITE,
         }
       }
     })
+    this.animation.start();
   }
 
   /**
    * While not on focus
    */
   _unfocus() {
-    this.patch({ HighLight: { visible: false } })
-    this.patch({
+    this.patch({ 
+      HighLight: { 
+        visible: false 
+      },
       Label: {
         text: {
-          textColor: Colors.DIM_GREY
-        }
+          textColor: Colors.FLUORESCENT_GREEN,
+         }
       }
     })
+    this.animation.stop();
   }
 }

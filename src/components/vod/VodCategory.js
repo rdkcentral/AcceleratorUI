@@ -140,7 +140,7 @@ export class VODCategory extends Lightning.Component {
   _handleEnter() {
     this.setRows()
     //Sets the state to see all state when enter is pressed
-    this.parent.parent._setState('SeeAllState')
+    this.fireAncestors('$setSeeAllState')
   }
 
   /**
