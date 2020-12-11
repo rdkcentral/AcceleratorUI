@@ -216,6 +216,10 @@ export class VODScreen extends Lightning.Component {
     this.current = this.tag('GalleryRowList').element
   }
 
+  $setSeeAllState(){
+    this._setState('SeeAllState')
+  }
+
   /**
    * Resets the gallery view  on reentering VOD screen
    */
@@ -281,7 +285,7 @@ export class VODScreen extends Lightning.Component {
           /**
            * On pressing the left arrow sets state to SideNavState
            */
-          this.parent._setState('SideNavState')
+          this.fireAncestors('$setSideNav')
           this.tag('SeeAllBorder').patch({ visible: false })
         }
 

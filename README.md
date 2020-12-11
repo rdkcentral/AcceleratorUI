@@ -29,10 +29,10 @@ User Interface developed using Lightning Application Framework for RDK’s Video
 
 Prerequisites - The device and your machine should be connected to the same network.
 
-1. Launch Thunder Controller UI in your web browser by giving IP address of the device/box (eg: http://192.168.1.6/ ).
-2. In Thunder Controller UI, navigate to UX tab
+1. Launch Controller UI in your web browser by giving IP address and port number of the device/box (eg: http://192.168.1.6:9998/ ).
+2. In  Controller UI, navigate to Resident App tab
 3. Enter the Application URL ( URL of the application getting from 'lng serve' ) in 'Custom URL' field and click on 'SET' button. 
-4. The Lightning accelerator UI will get loaded in the UX(webkit browser instance)
+4. The Lightning accelerator UI will get loaded in the Resident App(webkit browser instance)
 
  
 
@@ -51,16 +51,6 @@ Prerequisites - The device and your machine should be connected to the same netw
 | Mute                   |  -                    |
 
 
-## **How to enable Premium Apps**
-
-   
-The premium apps - Amazon Prime, Netflix and YouTube are integrated in the application. By default, only YouTube is enabled. To enable/disable Amazon prime and Netflix, follow the below steps:
-
-1. Open '.env' file in the application folder - AcceleratorUI (might needs 'ls -la' since it is a dot file).
-2. To enable an app, set corresponding variable in .env file to 'true'.
-Eg: To enable Netflix, set 'APP_NETFLIX=true'.
-3. Save the changes, rebuild (lng build) and relaunch (lng serve) the application
-4. Enabled app will be available under 'Homescreen -> Premium Apps' section.
 
 ## **Lightning Carbon Release**
 
@@ -75,4 +65,4 @@ Release document - http://www.lightningjs.io/announcements/carbon-release
 
 ## **Documentation**
 
-For  further information refer https://wiki.rdkcentral.com/display/ASP/Tata+Elxsi+Accelerator+UI
+For  further information refer https://wiki.rdkcentral.com/display/RDK/Tata+Elxsi+Accelerator+UI
