@@ -19,7 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Utils, Lightning } from '@lightningjs/sdk'
+import { Lightning } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 /**
  * @export
@@ -42,15 +42,15 @@ export class KeyboardItem extends Lightning.Component {
         visible: false
       },
       Label: {
-        x: 63,
+        x: 30,
         y: 21,
-        h: 37,
-        rect:true,
+        h: 45,
+        rect: true,
         text: {
           text: '',
           fontFace: 'Medium',
           fontSize: 35,
-          fontStyle:'Bold',
+          fontStyle: 'Bold',
           textColor: Colors.FLUORESCENT_GREEN
         }
       }
@@ -58,28 +58,44 @@ export class KeyboardItem extends Lightning.Component {
   }
 
   /**
-   * Sets the name of the menu
+   * Sets the first row of keyboard elements
    */
+
   set items(v) {
     this._menuName = v.menuName
     this.patch({
       Label: {
         text: {
-          text: this._menuName
+          text: v.menuName
+        }
+      }
+    })
+  }
+
+  /**
+   * Sets the second row of keyboard elements
+   */
+
+  set alphabets(v) {
+    this._menuName = v.menuName
+    this.patch({
+      Label: {
+        y: 40,
+        text: {
+          text: v.menuName
         }
       }
     })
   }
 
   _init() {
-    
     this.animation = this.tag('Label').animation({
       duration: 0.25,
       repeat: 0,
       stopMethod: 'reverse',
       actions: [
-        {p: 'alpha', v: {0: 0.9, 0.25: 1, 0.5: 1}},
-        {p: 'scale', v: {0: 1, 0.25: 1.2, 0.5: 1.3}}
+        { p: 'alpha', v: { 0: 0.9, 0.25: 1, 0.5: 1 } },
+        { p: 'scale', v: { 0: 1, 0.25: 1.2, 0.5: 1.3 } }
       ]
     });
   }
@@ -87,6 +103,7 @@ export class KeyboardItem extends Lightning.Component {
   /**
    * On focus Hightlight and Label elements are patched
    */
+
   _focus() {
     this.patch({
       HighLight: {
@@ -96,7 +113,7 @@ export class KeyboardItem extends Lightning.Component {
         text: {
           textColor: Colors.WHITE,
         }
-      }
+      },
     })
     this.animation.start();
   }
@@ -104,16 +121,17 @@ export class KeyboardItem extends Lightning.Component {
   /**
    * While not on focus
    */
+
   _unfocus() {
-    this.patch({ 
-      HighLight: { 
-        visible: false 
+    this.patch({
+      HighLight: {
+        visible: false
       },
       Label: {
         text: {
           textColor: Colors.FLUORESCENT_GREEN,
-         }
-      }
+        }
+      },
     })
     this.animation.stop();
   }

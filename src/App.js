@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils, Locale, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Language, Log } from '@lightningjs/sdk'
 import { HomeScreen } from './components/home/HomeScreen'
 import { Player } from './components/player/Player'
 import { ThunderAppService } from './components/thunder/ThunderAppService'
@@ -39,9 +39,11 @@ export default class App extends Lightning.Component {
    * Language Support.
    * Define language specific string in locale/locale.json
    */
-  static getLocale() {
-    Locale.setLanguage('en')
-    return Utils.asset('locale/locale.json')
+  static language() {
+    return {
+      file: Utils.asset('locale/locale.json'),
+      language: 'en'
+    }
   }
 
   static _template() {
