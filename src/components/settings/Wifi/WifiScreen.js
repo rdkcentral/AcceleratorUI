@@ -91,7 +91,7 @@ export class WifiScreen extends Lightning.Component {
         }
       },  
       Button: { x: 1041, y: 434, type: WifiTile },
-      OKButton: { x: 1041, y: 556, type: WifiTile, label: 'OK' },
+      BackButton: { x: 1041, y: 556, type: WifiTile, label: 'Back' },
       KeyBoardScreen: { type: Keyboardscreen , visible: false},
       ThunderWifiService: { type: ThunderWifiService }
     }
@@ -208,13 +208,13 @@ export class WifiScreen extends Lightning.Component {
           return this.tag('Button')
         }
         _handleDown() {
-          this._setState('OK')
+          this._setState('BackButton')
         }
 		    _handleBack() {
           this.fireAncestors('$setWifiScreen')
 		    }
       },
-      class OK extends this {
+      class BackButton extends this {
         $enter() {
           Log.info('Enter')
         }
@@ -222,7 +222,7 @@ export class WifiScreen extends Lightning.Component {
           this.fireAncestors('$setWifiScreen')
         }
         _getFocused() {
-          return this.tag('OKButton')
+          return this.tag('BackButton')
         }
         _handleUp() {
           this._setState('Button')
@@ -234,7 +234,7 @@ export class WifiScreen extends Lightning.Component {
 	    class InputText extends this {
         $enter() {
         this.tag('Button').visible = false;
-	       this.tag('OKButton').visible = false;
+	       this.tag('BackButton').visible = false;
          this.tag('KeyBoardScreen').visible=true;
         }
         _getFocused() {
