@@ -21,6 +21,7 @@ import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
+import { AppConstants } from '../../../constants/AppConstants'
 /**
  * @export
  * @class GalleryView
@@ -87,8 +88,8 @@ export class GalleryView extends Lightning.Component {
    * Sets data in Tile component through data passed from JSON file
    */
   set data(v) {
-    this.tag('GalleryRowList').items[0].header = v[0].data.header
-    this.tag('GalleryRowList').items[0].items = v[0].data.assets.map((data, index) => {
+    this.tag('GalleryRowList').items[AppConstants.RECOMMENDED_POSITION].header = v[AppConstants.RECOMMENDED_POSITION].data.header
+    this.tag('GalleryRowList').items[AppConstants.RECOMMENDED_POSITION].items = v[AppConstants.RECOMMENDED_POSITION].data.assets.map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
@@ -112,17 +113,17 @@ export class GalleryView extends Lightning.Component {
         }
       }
     })
-    this.tag('GalleryRowList').items[1].header = v[1].data.header
+    this.tag('GalleryRowList').items[AppConstants.PREMIUM_POSITION].header = v[AppConstants.PREMIUM_POSITION].data.header
     let apps = new Array()
-    apps.push(v[1].data.assets[0])
+    apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[0])
     if (process.env.APP_AMAZON == 'true') {
-      apps.push(v[1].data.assets[1])
+      apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[1])
     }
     if (process.env.APP_NETFLIX == 'true') {
-      apps.push(v[1].data.assets[2])
+      apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[2])
     }
 
-    this.tag('GalleryRowList').items[1].items = apps.map((data, index) => {
+    this.tag('GalleryRowList').items[AppConstants.PREMIUM_POSITION].items = apps.map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
@@ -134,9 +135,9 @@ export class GalleryView extends Lightning.Component {
         appData: { url: data.appUrl, title: data.title }
       }
     })
-    this.tag('GalleryRowList').items[2].patch({ y: -140, alpha: 1 })
-    this.tag('GalleryRowList').items[2].header = v[2].data.header
-    this.tag('GalleryRowList').items[2].items = v[2].data.assets.map((data, index) => {
+    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].patch({ y: -140, alpha: 1 })
+    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].header = v[AppConstants.METRO_POSITION].data.header
+    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].items = v[AppConstants.METRO_POSITION].data.assets.map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
