@@ -44,6 +44,9 @@ export class ThunderAppService extends Lightning.Component {
     this._activate('org.rdk.Wifi')
     this._activate('org.rdk.System')
 
+    this.thunderJS.call('Amazon', 'state', 'suspended', () => {
+      Log.info('Amazon Suspended');
+    });
 
     // Adding key intercept for 'Home Key' , as a work around for exit from metro apps
     this.thunderJS
@@ -63,6 +66,7 @@ export class ThunderAppService extends Lightning.Component {
     this.thunderJS.on('Controller', 'all', data => {
       let _data = data.data ? data.data : {}
       Log.info('Controller event >>>:', JSON.stringify(data))
+      //For Youtube launch and exit
       if (data.callsign == 'Cobalt') {
         Log.info('Cobalt Event !!! ')
         //When cobalt is activated , then 'activated' event is obtained and then Cobalt plugin is resumed
@@ -75,6 +79,18 @@ export class ThunderAppService extends Lightning.Component {
           this.closePlugin()
         }
       }
+      //For Amazon prime launch and exit
+      else if(data.callsign == 'Amazon'){
+        Log.info('Amazon Event >>>>>' + JSON.stringify(data));
+        if (_data.suspended == true || _data.state == 'deactivated') {
+          Log.info('Amazon close plugin >>>>>>');
+          this.closePlugin();
+        }
+        if (_data.state == 'activated') {
+         this.launchApp('Amazon');
+        }
+      }
+
     })
   }
 
@@ -144,8 +160,36 @@ export class ThunderAppService extends Lightning.Component {
         this.launchYoutube()
       }
     }
+    if (data.title == 'Amazon') {
+      this.activeApp = 'Amazon';
+      Log.info('Launch Amazon !!!!');
+      this.thunderJS.Controller.activate({ callsign: 'Amazon' }, (err, result) => {
+        if (err) {
+          Log.error('Failed to activate Amazon');
+        } else {
+          Log.info('Successfully activated Amazon', result);
+        }
+      });
+    }
   }
 
+
+  /**
+   * Method to launch an application
+   * @param {*} plugin 
+   */
+  launchApp(plugin){
+    this.thunderJS.call(plugin, 'state', 'resumed', (err, result) => {
+      if (err) {
+        Log.warn(plugin +'Error Resumed');
+      } else {
+        setTimeout(() => {
+          this.setVisibility("ResidentApp", false);
+          this.moveAppToFrontAndFocus(plugin);
+        }, 5000);
+      }
+    });
+  }
 
   /**
    * This method is called from keyhandler to deactivateMetroPlugin
@@ -161,6 +205,11 @@ export class ThunderAppService extends Lightning.Component {
    * Move the focus to Accelerator UI/Browser on exiting from an App
    */
   closePlugin() {
+    if (this.activeApp == 'Amazon') {
+      Log.info('deactivate Amazon !!!!');
+      this.thunderJS.Controller.deactivate({ callSign: 'Amazon' });
+      thunder.activeApp = '';
+    }
     this.moveAppToFrontAndFocus('ResidentApp')
     this.setVisibility('ResidentApp', true)
     this.fireAncestors('$setHomeScreenState')
