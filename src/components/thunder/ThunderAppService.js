@@ -44,11 +44,40 @@ export class ThunderAppService extends Lightning.Component {
     this._activate('org.rdk.Wifi')
     this._activate('org.rdk.System')
 
-    this.thunderJS.call('Amazon', 'state', 'suspended', () => {
-      Log.info('Amazon Suspended');
+    this.thunderJS.call('Netflix', 'state', 'suspended', () => {
+      Log.info('Netflix Suspended');
     });
 
-    // Adding key intercept for 'Home Key' , as a work around for exit from metro apps
+    // Adding key intercept for 'Xfinity button' ,for exit from apps (for XR remote)
+    this.thunderJS
+      .call('org.rdk.RDKShell', 'addKeyIntercept', {
+        client: 'ResidentApp',
+        keyCode: 77,
+        modifiers: ["ctrl"]
+      })
+      .then(result => {
+        Log.info('Adding KeyIntercept success for Keycode 77', result)
+      })
+      .catch(err => {
+        Log.error('Error in adding Key Intercept', err)
+      })
+
+     // Adding key intercept for 'Guide Key' , for exit from all apps(for BT RCU)
+     this.thunderJS
+        .call('org.rdk.RDKShell', 'addKeyIntercept', {
+          client: 'ResidentApp',
+          keyCode: 114,
+          modifiers: []
+        })
+        .then(result => {
+          Log.info('Adding KeyIntercept success for Keycodee 114', result)
+        })
+        .catch(err => {
+          Log.error('Error in adding Key Intercept', err)
+        })
+
+
+    // Adding key intercept for 'Home Key' , for exit from all apps(for keyboard)
     this.thunderJS
       .call('org.rdk.RDKShell', 'addKeyIntercept', {
         client: 'ResidentApp',
@@ -71,23 +100,27 @@ export class ThunderAppService extends Lightning.Component {
         Log.info('Cobalt Event !!! ')
         //When cobalt is activated , then 'activated' event is obtained and then Cobalt plugin is resumed
         if (_data.state == 'activated') {
-          this.launchYoutube()
+          this.launchApp('Cobalt')
+          //Flag to be set on enabling Youtube
+          window.cobaltAppEnabled = true
         }
         // When the app is deactivated via Controller, 'deactivated' event is received
         if (_data.suspended == true || _data.state == 'deactivated') {
           Log.info('Close Cobalt plugin success')
-          this.closePlugin()
+          this.exitPlugin()
         }
       }
-      //For Amazon prime launch and exit
-      else if(data.callsign == 'Amazon'){
-        Log.info('Amazon Event >>>>>' + JSON.stringify(data));
+      //For Netflix launch and exit
+      else if(data.callsign == 'Netflix'){
+        Log.info('Netflix Event >>>>>' + JSON.stringify(data));
         if (_data.suspended == true || _data.state == 'deactivated') {
-          Log.info('Amazon close plugin >>>>>>');
-          this.closePlugin();
+          Log.info('Netflix close plugin >>>>>>');
+          this.exitPlugin();
         }
         if (_data.state == 'activated') {
-         this.launchApp('Amazon');
+         this.launchApp('Netflix');
+         //Flag to be set on enabling Netflix
+         window.netflixAppEnabled = true
         }
       }
 
@@ -97,7 +130,9 @@ export class ThunderAppService extends Lightning.Component {
   //Init method
   _init() {
     Log.info('Thunder Service init')
-  }
+    this._activate('org.rdk.DisplaySettings')
+    setTimeout(()=>{this._setresolution()},1000)  
+}
 
   /**
    * This method is to launch metro apps
@@ -148,28 +183,44 @@ export class ThunderAppService extends Lightning.Component {
         response.includes('"state":"deactivated"')
       ) {
         Log.info('Cobalt State is deactivated, going to activate ')
-        this.thunderJS.Controller.activate({ callsign: 'Cobalt' }, (err, result) => {
-          if (err) {
-            Log.error('Failed to activate cobalt')
-          } else {
-            Log.info('Successfully activated  cobalt')
-          }
+        this.thunderJS
+          .call('org.rdk.RDKShell', 'launch', {
+            callsign: 'Cobalt',
+            type: 'Cobalt',
+          })
+        .then(() => {
+          Log.info('Launch successful for Cobalt')
         })
+        .catch(err => {
+          Log.info('Error in launching  ' + JSON.stringify(err))
+        })
+        //Flag to be set on enabling Youtube
+        window.cobaltAppEnabled = true
       } else {
         Log.info('Cobalt State is already activated, going to continue with resume ')
-        this.launchYoutube()
+          this.launchApp('Cobalt')
+          //Flag to be set on enabling Youtube
+          window.cobaltAppEnabled = true
       }
+
     }
-    if (data.title == 'Amazon') {
-      this.activeApp = 'Amazon';
-      Log.info('Launch Amazon !!!!');
-      this.thunderJS.Controller.activate({ callsign: 'Amazon' }, (err, result) => {
-        if (err) {
-          Log.error('Failed to activate Amazon');
-        } else {
-          Log.info('Successfully activated Amazon', result);
-        }
-      });
+    if (data.title == 'Netflix') {
+        this.activeApp = 'Netflix';
+      Log.info('Launch Netflix !!!!');
+      this.thunderJS
+        .call('org.rdk.RDKShell', 'launch', {
+          callsign: 'Netflix',
+          type: 'Netflix',
+        })
+      .then(() => {
+        Log.info('Launch successful for Netflix')
+      })
+      .catch(err => {
+        Log.info('Error in launching  ' + JSON.stringify(err))
+      })
+      //Flag to be set on enabling Netflix
+      window.netflixAppEnabled = true
+
     }
   }
 
@@ -186,6 +237,10 @@ export class ThunderAppService extends Lightning.Component {
         setTimeout(() => {
           this.setVisibility("ResidentApp", false);
           this.moveAppToFrontAndFocus(plugin);
+          Log.info('Resuming the apps and setting the visibility true !!!!');
+          Log.info('Plugin Value is  ' + plugin);
+          this.setVisibility(plugin, true);
+          this.activeApp = plugin;
         }, 5000);
       }
     });
@@ -197,7 +252,7 @@ export class ThunderAppService extends Lightning.Component {
   deactivateMetroPlugin() {
     //Deactivating via RDK shell
     this.thunderJS.call('org.rdk.RDKShell', 'destroy', { callsign: 'LightningApp' })
-    this.closePlugin()
+    this.exitPlugin()
   }
 
 
@@ -205,32 +260,44 @@ export class ThunderAppService extends Lightning.Component {
    * Move the focus to Accelerator UI/Browser on exiting from an App
    */
   closePlugin() {
-    if (this.activeApp == 'Amazon') {
-      Log.info('deactivate Amazon !!!!');
-      this.thunderJS.Controller.deactivate({ callSign: 'Amazon' });
-      thunder.activeApp = '';
+    if (this.activeApp == 'Cobalt') {
+      Log.info('Suspending Cobalt app !!!!');
+      this.thunderJS.call('org.rdk.RDKShell', 'suspend', { callsign: 'Cobalt' })
+      .then(() => {
+        Log.info('suspend successful for Cobalt ')
+      })
+      .catch(err => {
+        Log.info('Error in suspending Cobalt  ' + JSON.stringify(err))
+      })
+      Log.info('Setting Cobalt visibility false !!!!');
+      this.setVisibility('Cobalt', false)
+      this.activeApp = '';
     }
-    this.moveAppToFrontAndFocus('ResidentApp')
-    this.setVisibility('ResidentApp', true)
-    this.fireAncestors('$setHomeScreenState')
+    if (this.activeApp == 'Netflix') {
+      Log.info('Suspending Netflix app !!!!');
+      this.thunderJS.call('org.rdk.RDKShell', 'suspend', { callsign: 'Netflix' })
+      .then(() => {
+        Log.info('suspend successful for Netflix ')
+      })
+      .catch(err => {
+        Log.info('Error in suspending Netflix ' + JSON.stringify(err))
+      })
+      Log.info('Setting Netflix visibility false !!!!');
+      this.setVisibility('Netflix', false)
+      this.activeApp = '';
+    }
   }
-
 
   /**
-   * This method resumes Cobalt plugin and move Cobalt to the front
+   * Move the focus to Accelerator UI/Browser on exiting from an App
    */
-  launchYoutube() {
-    this.thunderJS.call('Cobalt', 'state', 'resumed', (err, result) => {
-      if (err) {
-        Log.warn('Cobalt Error Resumed')
-      } else {
-        setTimeout(() => {
-          this.setVisibility("ResidentApp", false)
-          this.moveAppToFrontAndFocus('Cobalt')
-        }, 5000)
-      }
-    })
+  exitPlugin() {
+    this.fireAncestors('$setHomeScreenState')
+    this.moveAppToFrontAndFocus('ResidentApp')
+    this.setVisibility('ResidentApp', true)
   }
+
+
 
   /**
    * Utility function for setting visibility via RDK shell
@@ -272,5 +339,33 @@ export class ThunderAppService extends Lightning.Component {
       }
     })
   }
-
+//To set best resolution
+   _setresolution(){
+     console.log("Display settings inside set resolution")
+     this.thunderJS.call('org.rdk.DisplaySettings','getSupportedResolutions',{"videoDisplay":"HDMI0"},
+         (err, result) => {
+           if (err) {
+             Log.info('\n Display settings get error')
+           } else {
+             Log.info('\n Display settings get success', result.supportedResolutions)
+               let display_array=result.supportedResolutions.slice()
+               Log.info('\n Display settings get display_array', display_array)
+               let display_array_length=display_array.length
+               let highest_resolution=display_array[display_array_length-1]
+               Log.info('\n Display settings get result length' + display_array_length)
+               Log.info('\n Display settings get highest resolution' + highest_resolution)
+               this.thunderJS.call('org.rdk.DisplaySettings','setCurrentResolution',{"videoDisplay":"HDMI0", "resolution":highest_resolution,"persist":true},
+                   (err, result) => {
+                     if (err) {
+                       Log.info('\n Display settings set error')
+                         this.thunderJS.call('org.rdk.DisplaySettings','setCurrentResolution',{"videoDisplay":"HDMI0", "resolution":"    1080p60"    , "persist":true})
+                         Log.info('Resolution set on default to: 1080p')
+                     } else {
+                       Log.info('\n Display settings set success to:' + highest_resolution )
+                     }
+                   }
+                   )
+           }
+         } )
+   }
 }

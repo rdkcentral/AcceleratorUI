@@ -10,45 +10,15 @@
                 "url": "images/home/galleryview/metroApps/vimeo.jpg",
                 "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.VimeoRelease"
             },
-            {
-                "title": "WeatherNetwork",
-                "url": "images/home/galleryview/metroApps/weather.jpg",
-                "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.WeatherNetwork"
-        },
-        {
-            "title": "EuroNews",
-            "url": "images/home/galleryview/metroApps/euronews.jpg",
-            "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.Euronews"
-        },
-        {
-            "title": "AccuWeather",
-            "url": "images/home/galleryview/metroApps/accuweather.jpg",
-            "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.AccuWeather"
-        },
-        {
-            "title": "BaebleMusic",
-            "url": "images/home/galleryview/metroApps/baeble.jpg",
-            "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.BaebleMusic"
-        },
-        {
+       {
             "title": "Aljazeera",
             "url": "images/home/galleryview/metroApps/aljazeera.jpg",
             "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.Aljazeera"
         },
-        {
-            "title": "GuessThatCity",
-            "url": "images/home/galleryview/metroApps/guessthatcity.jpg",
-            "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.GuessThatCity"
-        },
-        {
+       {
             "title": "Radioline",
             "url": "images/home/galleryview/metroApps/Radioline.jpg",
             "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.Radioline"
-        },
-        {
-            "title": "WallStreetJournal",
-            "url": "images/home/galleryview/metroApps/wsj.jpg",
-            "appUrl": "https://widgets.metrological.com/lightning/rdk/d431ce8577be56e82630650bf701c57d#app:com.metrological.app.WallStreetJournal"
         }
-    ]
+   ]
 }

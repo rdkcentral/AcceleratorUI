@@ -128,20 +128,28 @@ export class Player extends Lightning.Component {
   /**
    * Function to perform fast rewind of the video content.
    */
-  $rewind() {
-    if (this.playbackRateIndex > 0) {
-      this.playbackRateIndex--
-    }
-    this.rate = this.playbackSpeeds[this.playbackRateIndex]
-    this.tag('MediaPlayer').videoEl.playbackRate = this.rate
-  }
+ $rewind() {
+if (this.playbackRateIndex >= 0) {
+this.playbackRateIndex--
+}
+if (this.playbackRateIndex == -1)
+{
+this.rate = 0.5
+}
+else
+{
+this.rate = this.playbackSpeeds[this.playbackRateIndex]
+}
+this.tag('MediaPlayer').videoEl.playbackRate = this.rate
+}
 
   /**
    * Event handler that gets fired when the media content ends.
    */
   $mediaplayerEnded() {
     if (this._videoInfo.loop == true) {
-      this.load(this._videoInfo)
+      //this.load(this._videoInfo)
+      this.doPlay();
     }
     Log.info('End of Playback')
   }

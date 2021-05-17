@@ -57,7 +57,8 @@ export class SettingsMenuItem extends Lightning.Component {
           fontSize: 26,
           lineHeight: 25,
           textColor: Colors.LIGHTER_WHITE,
-          textAlign: 'center'
+         //  textColor: 0xffe1ac27,
+           textAlign: 'center'
         }
       },
       HighLight: {
@@ -73,7 +74,16 @@ export class SettingsMenuItem extends Lightning.Component {
   set items(v) {
     this._menuName = v.menuName
     this._menuIcon = v.menuIcon
+     
   }
+  set fontColor(v)
+{
+
+ this.tag('Label').patch({text:{textColor:v}});
+
+}
+
+
 
   _init() {
     this.patch({
@@ -84,6 +94,7 @@ export class SettingsMenuItem extends Lightning.Component {
       }
     })
     this.patch({ Icon: { src: Utils.asset(this._menuIcon) } })
+    
   }
 
   /**

@@ -75,11 +75,11 @@ export class VODCategoryItem extends Lightning.Component {
    */
   _highlight() {
     this.tag('HighLight').patch({
-      src: Utils.asset(ImageConstants.COLLAPSED_BACKGROUND),
+      src: Utils.asset(ImageConstants.CATEGORY_SELECTION),
       visible: true
     })
     this.tag('Label').patch({
-      text: { textColor: Colors.FLUORESCENT_GREEN }
+      text: { textColor: Colors.LIGHTER_WHITE }
     })
   }
 
@@ -106,7 +106,7 @@ export class VODCategoryItem extends Lightning.Component {
    * While not on focus
    */
   _unfocus() {
-    this.patch({ HighLight: { visible: false } })
+    this.patch({ HighLight: {visible: false } })
     this.patch({
       Label: {
         text: {

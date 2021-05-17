@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 import { Utils } from '@lightningjs/sdk'
+import { AppsConfiguration } from '../utils/appconfig'
 /**
  * @export
  * @class DataService
@@ -52,12 +53,28 @@ export class DataService {
    * Method to return the GalleryView Data.
    */
   async _getGalleryData() {
+  
+    this.serviceobj = new AppsConfiguration()
+    var recommendedData = this.serviceobj.getRecommendedData()
+    if(typeof(recommendedData) == "undefined")
+    {
     const recommended = await fetch(Utils.asset('data/Recommended.json'))
-    const recommendedData = await recommended.json()
+     recommendedData = await recommended.json()
+    }
+    var appsData = this.serviceobj.getAppStatus()
+    if(typeof(appsData) == "undefined")
+    {
     const apps = await fetch(Utils.asset('data/Apps.json'))
-    const appsData = await apps.json()
+     appsData = await apps.json()
+    }
+    console.log('appsData',appsData)
+   var metroappsData = this.serviceobj.getMetroAppStatus()
+    if(typeof(metroappsData) == "undefined")
+    {
     const metroapps = await fetch(Utils.asset('data/MetroApps.json'))
-    const metroappsData = await metroapps.json()
+     metroappsData = await metroapps.json()
+    }
+    console.log('MetroAppsData',metroappsData)
     return [
       { ref: 'Recommended for you ', data: recommendedData },
       { ref: 'Premium Apps', data: appsData },

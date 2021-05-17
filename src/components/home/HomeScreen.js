@@ -42,7 +42,14 @@ export class HomeScreen extends Lightning.Component {
   static _template() {
     return {
       TextureBg: {
-        src: Utils.asset(ImageConstants.TEXTURE)
+       // src: Utils.asset(ImageConstants.TEXTURE),
+      // rect:true,
+        x: 0,
+        y: 0,
+        w: 1920,
+        h: 1080,
+      // color:0xffe1ac27,
+        alpha: 0.56
       },
       InfoBar: { type: InfoBar },
       Gallery: { type: GalleryView },
@@ -74,14 +81,36 @@ export class HomeScreen extends Lightning.Component {
     /**
      * DataService is called to add data in JSON files
      */
+    this.tag('TextureBg').patch({ src: Utils.asset(ImageConstants.TEXTURE)});
     this.dataObj = new DataService()
-    this.dataObj.getAppData().then(data => {
-      this.tag('Gallery').data = data[0]
-    })
-    this.dataObj.getVodData().then(data => {
+   this.dataObj.getVodData().then(data => {
       this.tag('Vod').data = data[0]
     })
     this._setState('GalleryState')
+      
+  }
+  
+  set items(v)
+  {
+  this.tag('Gallery').data = v[0]
+  }
+  
+  set theme(v)
+  {
+  console.log(v["home"].bg_image)
+  if(v["home"].bg_image)
+  {
+  this.tag('TextureBg').patch({ src: Utils.asset(v["home"].bg_image)});
+  
+  }
+ else if(v["home"].bg_color)
+  {   
+      this.tag('TextureBg').rect = true;
+      this.tag('TextureBg').color = v["home"].bg_color;
+  
+  }
+  this.tag('Settings').theme=v
+   this.tag('Gallery').theme=v
   }
 
   set view(currentview) {

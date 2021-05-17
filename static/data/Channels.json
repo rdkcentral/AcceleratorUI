@@ -1,28 +1,28 @@
 {
   "assets": [
     {
-      "name": "HB0",
+      "name": "VR Playhouse",
       "number": "001",
-      "logoPath": "images/channels/HBO.png",
-      "title": "GOT",
-      "category": "Action/Fantasy",
-      "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+      "logoPath": "images/channels/VRPlayhouse.png",
+      "title": "VR Playhouse Sizzle Reel",
+      "category": "AR/VR",
+      "videourl": "https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560.m3u8"
     },
     {
       "name": "National geographic",
       "number": "002",
       "logoPath": "images/channels/Nationalgeographic.png",
-      "title": "Sony Wild Life ",
-      "category": "Wild life ",
-      "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      "title": "Red Bull Art of Motion",
+      "category": "Sports",
+      "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     },
     {
       "name": "Star Movies",
       "number": "003",
       "logoPath": "images/channels/StarMovies.png",
-      "title": "Angel has Fallen",
-      "category": "Action/Thriller",
-      "videourl": "https://media.axprod.net/TestVectors/v7-Clear/Manifest.mpd"
+      "title": "Star Trek",
+      "category": "Science-fiction",
+      "videourl": "https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8"
     }
   ]
 }

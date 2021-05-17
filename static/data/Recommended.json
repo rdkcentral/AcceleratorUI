@@ -2,70 +2,48 @@
     "header": "Recommended for you ",
     "assets": [
         {
-            "title": "No Time to Die",
+            "title": "Tears of Steel",
             "url": "images/home/galleryview/recommended/Tile1.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-            "category": "Action",
+            "videourl": "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8",
+            "category": "Science Fiction",
             "description": "",
-            "Duration": "2:30 hr",
-            "logoPath": "images/channels/HBO.png",
-            "name": "HB0",
+            "Duration": "12:14 min",
+	    "logoPath": "images/channels/StarMovies.png",
+            "name": "Star Movies Select",
             "number": "001"
         },
         {
-            "title": "Black Panther",
+            "title": "Red Bull Art of Motion",
             "url": "images/home/galleryview/recommended/Tile2.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            "category": "Drama",
+            "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+            "category": "Sports",
             "description": "",
-            "Duration": "2:00 hr",
-            "logoPath": "images/channels/StarMovies.png",
-            "name": "Star Movies",
-            "number": "002"
-        },
-        {
-            "title": "Ride Along",
-            "url": "images/home/galleryview/recommended/Tile3.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-            "category": "Action",
-            "description": "",
-            "Duration": "2:00 hr",
+            "Duration": "1:00 hr",
             "logoPath": "images/channels/Nationalgeographic.png",
             "name": "National geographic",
+	    "number": "002"
+        },
+        {
+            "title": "Black Panther",
+            "url": "images/home/galleryview/recommended/Tile3.png",
+            "videourl": "http://127.0.0.1:50050/build/static/videos/BlackPanther/blackpanther.m3u8",
+            "category": "Action",
+            "description": "",
+            "Duration": "2:15 hr",
+	    "logoPath": "images/channels/StarMovies.png",
+            "name": "Star Select HD",
             "number": "003"
         },
         {
-            "title": "Find",
-            "url": "images/home/galleryview/recommended/Tile4.png",
-            "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-            "category": "Comedy",
-            "description": "",
-            "Duration": "1:30 hr",
-            "logoPath": "images/channels/StarMovies.png",
-            "name": "Star Movies Select",
-            "number": "004"
-        },
-        {
             "title": "No Time to Die",
-            "url": "images/home/galleryview/recommended/Tile1.png",
-            "videourl": "https://media.axprod.net/TestVectors/v7-Clear/Manifest.mpd",
+            "url": "images/home/galleryview/recommended/Tile4.png",
+            "videourl": "http://127.0.0.1:50050/build/static/videos/NoTimeToDie/notimetodie.m3u8",
             "category": "Action",
             "description": "",
-            "Duration": "1:00 hr",
+            "Duration": "2:43 hr",
             "logoPath": "images/channels/HBO.png",
-            "name": "HB0 GO",
-            "number": "005"
-        },
-        {
-            "title": "Black Panther",
-            "url": "images/home/galleryview/recommended/Tile2.png",
-            "videourl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
-            "category": "Drama",
-            "description": "",
-            "Duration": "2:00 hr",
-            "logoPath": "images/channels/StarMovies.png",
-            "name": "Star Select HD",
-            "number": "006"
+            "name": "HB0",
+	    "number": "004"
         }
     ]
 }

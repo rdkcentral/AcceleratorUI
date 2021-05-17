@@ -1,21 +1,16 @@
 {
     "header": "Premium Apps",
     "assets": [
-        {
+       {
+        "title": "Netflix",
+        "url": "images/home/galleryview/apps/Netflix.png",
+        "appUrl" : "https://www.netflix.com/"
+       },
+
+              {
             "title": "Youtube",
             "url": "images/home/galleryview/apps/YouTube.png",
             "appUrl": "https://www.youtube.com/tv"
-        },
-        {
-                "title": "Amazon",
-                "url": "images/home/galleryview/apps/AmazonPrime.jpg",
-                "appUrl": "https://www.amazon.com"
-        },
-        {
-                "title": "Netflix",
-                "url": "images/home/galleryview/apps/Netflix.png",
-                "appUrl" : "https://www.netflix.com/"
         }
-
-    ]
+      ]
 }

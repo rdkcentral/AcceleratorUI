@@ -54,11 +54,13 @@ export const ImageConstants = {
   SETTINGS_ICON_NORMAL: 'images/menu/Settings-normal.png',
   SETTINGS_ICON_SELECTION: 'images/menu/Settings-selection.png',
   SETTINGS_ICON_SELECTED: 'images/menu/Settings-selected.png',
+  SETTINGS_BG: 'images/settings/settings-bg.png',
   SIDEBAR_SELECTION_GRADIENT: 'images/menu/ExpandedmenuselectionGradient.png',
   COLLAPSED_BACKGROUND: 'images/menu/Collapsed-transperancy.png',
   DOWN: 'images/home/galleryview/Down-arrow.png',
   LOGO: 'images/info/Logo.png',
   WIFI: 'images/info/wifi.png',
+  NO_NETWORK: 'images/info/no_network.png',
   BLUETOOTH: 'images/info/bluetooth.png',
   WEATHER: 'images/info/weather.png',
   SEE_ALL_SELECTION: 'images/vod/See-all-selection.png',
@@ -87,4 +89,5 @@ export const ImageConstants = {
   BLUETOOTH_READY: 'images/settings/Bluetooth/Ready.png',
   DIAGNOSTICS: 'images/settings/diagnosticlogo.png',
   WIFILOGO: 'images/settings/wifilogo.png',
+  ETHERNET: 'images/info/ethernet.png'
 }

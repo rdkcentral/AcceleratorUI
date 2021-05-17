@@ -21,7 +21,9 @@ import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
-import { AppConstants } from '../../../constants/AppConstants'
+var List = [];
+var header_Font="";
+var header_fontColor='0xfff1f1f1';
 /**
  * @export
  * @class GalleryView
@@ -48,7 +50,7 @@ export class GalleryView extends Lightning.Component {
         roll: true,
         rollMin: 0,
         rollMax: 400,
-        itemSize: 400,
+        itemSize: 250,
         viewportSize: 700,
         invertDirection: true,
         clipping: true,
@@ -59,37 +61,92 @@ export class GalleryView extends Lightning.Component {
     }
   }
 
-  _init() {
-    this.tag('GalleryRowList').items = {
-      Recommended: {
-        type: ScrollableList,
-        horizontal: true,
-        itemSize: 520,
-        spacing: 50,
-        rollMax: 1400
-      },
-      Apps: {
-        type: ScrollableList,
-        horizontal: true,
-        itemSize: 260,
-        spacing: 20
-      },
-      MetroApps: {
-        type: ScrollableList,
-        horizontal: true,
-        itemSize: 260,
-        spacing: 20
+    _init() {
+     const xhr = new XMLHttpRequest();    
+           xhr.open('GET', "http://"+ window.serverdata.Server_ip + ":" + window.serverdata.Server_port +"/CustomUI/getPosition?customer_id="+window.serverdata.serial_number);
+           xhr.responseType = 'json';
+           xhr.onload = () => {
+             if(xhr.status === 200) {
+              List = xhr.response;
+              this.getData()             
+             }  
+           };
+           xhr.send();
+           this.current = this.tag('GalleryRowList').element
+       this._setState('GalleryViewState') 
       }
-    }
-    this.current = this.tag('GalleryRowList').element
-    this._setState('GalleryViewState')
+
+  getData() {
+      for (var i = 0; i < List.length; i++) {
+        if (List[i] == "Recommended for you") {
+          this.tag('GalleryRowList').items = {
+            Recommended: {
+              type: ScrollableList,
+              horizontal: true,
+              itemSize: 520,
+              spacing: 70,
+              rollMax: 1400,
+              headerFont:header_Font,
+              headerfontColor:header_fontColor
+            }
+          }
+        }
+        else if (List[i] == "premium Apps") {
+          this.tag('GalleryRowList').items = {
+            Apps: {
+              type: ScrollableList,
+              horizontal: true,
+              itemSize: 260,
+              spacing: 20,
+              headerFont:header_Font,
+             headerfontColor:header_fontColor
+            }
+          }
+        }
+        else if (List[i] == "metro Apps") {
+          this.tag('GalleryRowList').items = {
+            MetroApps: {
+              type: ScrollableList,
+              horizontal: true,
+              itemSize: 260,
+              spacing: 20,
+              headerFont:header_Font,
+              headerfontColor:header_fontColor
+            }
+          }
+        }
+      }
+      if(List.indexOf("Recommended for you") == 0) {
+        this.tag('GalleryRowList').itemSize = 400;
+        this.tag('GalleryRowList').items[2].patch({ y: -140, alpha: 1 })
+      } else if(List.indexOf("Recommended for you") == 1) {
+        this.tag('GalleryRowList').itemSize = 250;
+        this.tag('GalleryRowList').items[2].patch({ y: 140, alpha: 1 })
+      }      
+  }
+  
+  set theme(v)
+  {
+  console.log(v["home"].bg_image)
+ 
+   header_Font= v["home"].fontFace;
+   header_fontColor =v["home"].text_fontColor
   }
   /**
    * Sets data in Tile component through data passed from JSON file
    */
+   
   set data(v) {
-    this.tag('GalleryRowList').items[AppConstants.RECOMMENDED_POSITION].header = v[AppConstants.RECOMMENDED_POSITION].data.header
-    this.tag('GalleryRowList').items[AppConstants.RECOMMENDED_POSITION].items = v[AppConstants.RECOMMENDED_POSITION].data.assets.map((data, index) => {
+    if(List.length == 0) {
+      List = ["Recommended for you","premium Apps","metro Apps"]
+      this.getData()
+    }
+    for(var i=0;i<v.length;i++)
+  {
+  if(v[i].ref == "Recommended for you ")
+  {
+    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
@@ -113,17 +170,11 @@ export class GalleryView extends Lightning.Component {
         }
       }
     })
-    this.tag('GalleryRowList').items[AppConstants.PREMIUM_POSITION].header = v[AppConstants.PREMIUM_POSITION].data.header
-    let apps = new Array()
-    apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[0])
-    if (process.env.APP_AMAZON == 'true') {
-      apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[1])
-    }
-    if (process.env.APP_NETFLIX == 'true') {
-      apps.push(v[AppConstants.PREMIUM_POSITION].data.assets[2])
-    }
-
-    this.tag('GalleryRowList').items[AppConstants.PREMIUM_POSITION].items = apps.map((data, index) => {
+  }
+  if(v[i].ref == "Premium Apps")
+    {
+    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
@@ -135,9 +186,12 @@ export class GalleryView extends Lightning.Component {
         appData: { url: data.appUrl, title: data.title }
       }
     })
-    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].patch({ y: -140, alpha: 1 })
-    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].header = v[AppConstants.METRO_POSITION].data.header
-    this.tag('GalleryRowList').items[AppConstants.METRO_POSITION].items = v[AppConstants.METRO_POSITION].data.assets.map((data, index) => {
+  }
+  if(v[i].ref == "Metrological Appstore Experience")
+    {
+   //this.tag('GalleryRowList').items[List.indexOf("metro Apps")].patch({ y: 140, alpha: 1 })
+    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,
         type: Tile,
@@ -149,6 +203,8 @@ export class GalleryView extends Lightning.Component {
         appUrl: data.appUrl
       }
     })
+  }
+  }
   }
 
   _focus() {
@@ -200,13 +256,13 @@ export class GalleryView extends Lightning.Component {
          */
         _handleEnter() {
           let currentTile = this.current.tag('Wrapper').element
-          if (this.tag('GalleryRowList').index == 0) {
+          if (currentTile.videoData) {
             let channelData = currentTile.videoData
             this.fireAncestors('$setPlayer', channelData)
-          } else if (this.tag('GalleryRowList').index == 1) {
+          } else if (this.current.tag('Wrapper').element.appData) {
             let appData = this.current.tag('Wrapper').element.appData
             this.fireAncestors('$setPremiumApp', appData)
-          } else if (this.tag('GalleryRowList').index == 2) {
+          } else if (this.current.tag('Wrapper').element.appUrl) {
             let url = this.current.tag('Wrapper').element.appUrl
             this.fireAncestors('$setMetroApp', url)
           }

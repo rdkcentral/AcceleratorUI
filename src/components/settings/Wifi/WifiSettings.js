@@ -95,7 +95,7 @@ export class Wifi_Class extends Lightning.Component {
           itemSize: 120,
           horizontal: false,
           roll: true,
-          rollMax: 0,
+          rollMax: 1080,
           rollMin: 0,
           invertDirection: true
         },

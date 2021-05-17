@@ -158,8 +158,8 @@ export class Bluetooth extends Lightning.Component {
    * Disconnect the device
    */
   $disconnectRemote() {
-    this.tag('ThunderBluetoothService')._unpairDevice(this.selectedDeviceID)
     this.tag('ThunderBluetoothService')._disconnectDevice(this.selectedDeviceID)
+    this.tag('ThunderBluetoothService')._unpairDevice(this.selectedDeviceID)
   }
 
   remoteReady() {

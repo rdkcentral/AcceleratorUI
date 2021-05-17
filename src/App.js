@@ -22,7 +22,7 @@ import { Player } from './components/player/Player'
 import { ThunderAppService } from './components/thunder/ThunderAppService'
 import { DataService } from './service/DataService'
 import { VolumeControl } from './components/volume/VolumeControl'
-
+import { AppsConfiguration } from './utils/appconfig'
 export default class App extends Lightning.Component {
   /**
    * Fonts to be used in accelerator UI
@@ -54,12 +54,36 @@ export default class App extends Lightning.Component {
       VolumeControl: { type: VolumeControl, visible: false, zIndex: 1 }
     }
   }
-
+      
   _construct() {
+
+    const xhr = new XMLHttpRequest();
+    
+      xhr.open('GET', "http://"+ window.serverdata.Server_ip + ":" + window.serverdata.Server_port +"/CustomUI/getThemeConfig?customer_id="+window.serverdata.serial_number);
+      xhr.responseType = 'json';
+
+      xhr.onload = () => {
+       window.themejson = xhr.response;  
+       this.tag('HomeScreen').theme = window.themejson
+       console.log('returned theme data ',window.themejson);
+      };
+      xhr.send();
     Log.info('App Constructor Called')
+    
+    
   }
 
   _init() {
+  
+   new AppsConfiguration().loadData().then(()=> {
+     this.dataObj = new DataService()
+     this.dataObj.getAppData().then(data => {
+      this.tag('HomeScreen').items = data
+    })
+     
+     console.log('returned appdata'+window.recommendeddataJSON);
+      
+})
     this.dataObj = new DataService()
     Log.info('Start up ', 'App Started !!')
     this.dataObj.getChannelData().then(data => {
@@ -145,6 +169,10 @@ export default class App extends Lightning.Component {
     this.tag('Apps').deactivateMetroPlugin()
   }
 
+  $setAppExit() {
+    Log.info('Exit of OTTapps -------')
+    this.tag('Apps').closePlugin()
+  }
   _handleBack() {
     // Empty handle back to remove exit of Application
   }
@@ -161,13 +189,42 @@ export default class App extends Lightning.Component {
   _handleKey(event) {
     Log.info(event.code, 'for key name')
     Log.info(event.keyCode, 'for key code')
+ 
+    if (event.keyCode == 48) {
+      Log.info('YouTube pressed', event.keyCode);
+      let appData = {"url":"https://www.youtube.com/tv","title":"Youtube"}
+      this.$setPremiumApp(appData)
+    } else if (event.keyCode == 50) {
+      Log.info('Netflix pressed', event.keyCode);
+      let appData = {"url":"https://www.netflix.com/","title":"Netflix"}
+      this.$setPremiumApp(appData)
+    }
 
-    if ((event.keyCode === 36) && window.metroAppEnabled) {
+    if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && window.metroAppEnabled) {
       Log.info("Metro App is enabled")
       this.$setExit()
       window.metroAppEnabled = false
-    } else if (event.keyCode === 36 && !window.metroAppEnabled) {
+    } else if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && !window.metroAppEnabled) {
       Log.info("Metro App is disabled")
+      this._setState('HomeScreen')
+      
+    }
+    if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && window.cobaltAppEnabled) {
+      Log.info("Cobalt App is enabled")
+      this.$setAppExit()
+      window.cobaltAppEnabled = false
+    } else if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && !window.cobaltAppEnabled) {
+      Log.info("Cobalt App is disabled")
+      this._setState('HomeScreen')
+      
+    }
+
+    if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && window.netflixAppEnabled) {
+      Log.info("Netflix App is enabled")
+      this.$setAppExit()
+      window.netflixAppEnabled = false
+    } else if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && !window.netflixAppEnabled) {
+      Log.info("Netflix App is disabled")
       this._setState('HomeScreen')
     }
     if (event.keyCode == 175) {
