@@ -47,6 +47,9 @@ export class ThunderAppService extends Lightning.Component {
     this.thunderJS.call('Netflix', 'state', 'suspended', () => {
       Log.info('Netflix Suspended');
     });
+    this.thunderJS.call('Amazon', 'state', 'suspended', () => {
+      Log.info('Amazon Suspended');
+    });
 
     // Adding key intercept for 'Xfinity button' ,for exit from apps (for XR remote)
     this.thunderJS
@@ -123,7 +126,18 @@ export class ThunderAppService extends Lightning.Component {
          window.netflixAppEnabled = true
         }
       }
-
+      else if(data.callsign == 'Amazon'){
+        Log.info('Amazon Event >>>>>' + JSON.stringify(data));
+        if (_data.suspended == true || _data.state == 'deactivated') {
+          Log.info('Amazon close plugin >>>>>>');
+          this.exitPlugin();
+        }
+        if (_data.state == 'activated') {
+         this.launchApp('Amazon');
+         //Flag to be set on enabling Amazon
+         window.amazonAppEnabled = true
+        }
+      }
     })
   }
 
@@ -222,6 +236,31 @@ export class ThunderAppService extends Lightning.Component {
       window.netflixAppEnabled = true
 
     }
+    if (data.title == 'Amazon') {
+      this.activeApp = 'Amazon';
+      Log.info('Launch Amazon !!!!');
+      
+      /*this.thunderJS.Controller.activate({ callsign: 'Amazon' }, (err, result) => {
+        if (err) {
+          Log.error('Failed to activate Amazon');
+        } else {
+          Log.info('Successfully activated Amazon', result);
+        }
+      })*/
+      this.thunderJS
+        .call('org.rdk.RDKShell', 'launch', {
+          callsign: 'Amazon',
+          type: 'Amazon',
+        })
+      .then(() => {
+        Log.info('Launch successful for Amazon')
+      })
+      .catch(err => {
+        Log.info('Error in launching  ' + JSON.stringify(err))
+      })
+      //Flag to be set on enabling Netflix
+      window.amazonAppEnabled = true
+    }
   }
 
 
@@ -284,6 +323,19 @@ export class ThunderAppService extends Lightning.Component {
       })
       Log.info('Setting Netflix visibility false !!!!');
       this.setVisibility('Netflix', false)
+      this.activeApp = '';
+    }
+    if (this.activeApp == 'Amazon') {
+      Log.info('Suspending Amazon app !!!!');
+      this.thunderJS.call('org.rdk.RDKShell', 'suspend', { callsign: 'Amazon' })
+      .then(() => {
+        Log.info('suspend successful for Amazon ')
+      })
+      .catch(err => {
+        Log.info('Error in suspending Amazon ' + JSON.stringify(err))
+      })
+      Log.info('Setting Amazon visibility false !!!!');
+      this.setVisibility('Amazon', false)
       this.activeApp = '';
     }
   }
