@@ -40,12 +40,18 @@ export class VODScreen extends Lightning.Component {
   static _template() {
     return {
       VODCategoryBg: {
-        rect: true,
+        /*rect: true,
         w: 1740,
         h: 230,
         x: 182,
-        color: Colors.GREY,
-        Time: {
+        color: Colors.GREY,*/
+        src: Utils.asset(ImageConstants.VOD_TEXTURE),
+        x: 0,
+        y: 0,
+        w: 1920,
+        h: 1080,
+        alpha: 0.56,
+        /*Time: {
           x: 1515,
           y: 61,
           text: {
@@ -56,7 +62,7 @@ export class VODScreen extends Lightning.Component {
               textColor: Colors.LIGHTER_WHITE
             }
           }
-        },
+        },*/
         Down: { x: 930, y: 980, src: Utils.asset(ImageConstants.DOWN), zIndex: 3, visible: true },
         VODCategory: { type: VODCategory }
       },
@@ -66,7 +72,7 @@ export class VODScreen extends Lightning.Component {
         w: 1740,
         x: 182,
         y: 230,
-        color: Colors.LIGHT_GREY,
+        color: Colors.BLACK,
         SeeAllComponent: {
           rect: true,
           w: 160,
@@ -123,8 +129,9 @@ export class VODScreen extends Lightning.Component {
      * Sets state to VODCategoryState
      * Sets previous index as -1
      */
-    this.updateTimebar()
-    setInterval(this.updateTimebar.bind(this), 60000)
+    //this.updateTimebar()
+    //this.time = new TimeUtils()
+    //setInterval(this.updateTimebar.bind(this), 30000)
     this._setState('VODCategoryState')
     this.prevIndex = -1
     //flag to indicate that a VOD content is played just before entering the VOD screen
@@ -134,11 +141,10 @@ export class VODScreen extends Lightning.Component {
   /**
    * Returns the current time
    */
-  updateTimebar() {
-    this.time = new TimeUtils()
-    this.timeText = this.time.getCurrentTime()
+  /*async updateTimebar() {
+    this.timeText = await this.time.getCurrentTime()
     this.tag('Time').patch({ text: { text: this.timeText } })
-  }
+  }*/
 
   /**
    * While on screen and active sets to VODCategoryState
@@ -256,7 +262,7 @@ export class VODScreen extends Lightning.Component {
          * On pressing the down key , sets state to SeeAllState
          */
         _handleDown() {
-          this._setState('SeeAllState')
+          this._setState('SeeAllState')   
         }
       },
       class SeeAllState extends this {

@@ -17,7 +17,7 @@
 * limitations under the License.
 */
 export const AppConstants = {
-    RECOMMENDED_POSITION: 0,
+    RECOMMENDED_POSITION:0,
     PREMIUM_POSITION: 1,
     METRO_POSITION: 2
   }

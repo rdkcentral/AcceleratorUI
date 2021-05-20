@@ -40,7 +40,7 @@ export class ScrollableList extends Lightning.Component {
       Header: {
         x: 0,
         y: 0,
-        text: { text: '', fontFace: 'Regular', fontSize: 30 }
+        text: { text: '', fontFace: 'Regular', fontSize: 30}
       },
       Wrapper: {
         type: Lightning.components.ListComponent,
@@ -89,7 +89,16 @@ export class ScrollableList extends Lightning.Component {
   set header(v) {
     this.tag('Header').text.text = v
   }
-
+  set headerFont(v)
+  {
+   this.tag('Header').text.fontFace = v
+    }
+    
+   set headerfontColor(v)
+   {
+   this.tag('Header').text.textColor = v
+   
+   }
   set items(v) {
     this.tag('Wrapper').items = v
     this._setState('Filled')

@@ -219,4 +219,37 @@ export class ThunderBluetoothService extends Lightning.Component {
   uniqDevices(data, key) {
     return [...new Map(data.map(x => [key(x), x])).values()]
   }
+  
+  /**
+   * Function returns bluetooth connection status
+   */
+  
+  getbluetoothstatus(){
+      let bluetoothObj = this
+      return new Promise(function (resolve, reject) {
+      var Bluetooth_connection_status   
+     bluetoothObj.thunderJS.call('org.rdk.Bluetooth', 'getConnectedDevices',
+     (err, result) => {
+     Log.info('Btag: Enter thunder Bluetooth')
+     if (err) {
+     Log.info('\n Btag:thunder Bluetooth error')
+     reject();
+     } else {
+     Log.info('\n Btag:thunder Bluetooth success', result)
+     let Bluetooth_array=result.connectedDevices
+     Log.info('\n Btag:thunder Bluetooth result.connectedDevices', result.connectedDevices)
+     if(Bluetooth_array.length ===0)
+     {
+     Bluetooth_connection_status= 'false';
+     }
+     else
+     {
+     Bluetooth_connection_status= 'true';
+     }
+     Log.info("Btag: Bluetooth_connection_status =",Bluetooth_connection_status)
+     resolve(Bluetooth_connection_status);
+     }
+     })
+     })
+ }
 }

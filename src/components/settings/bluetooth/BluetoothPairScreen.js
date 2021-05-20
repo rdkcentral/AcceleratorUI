@@ -57,8 +57,8 @@ export class BluetoothPairScreen extends Lightning.Component {
           x: 160,
           y: 518,
           text: {
-            text: 'Do you want to pair and connect this \n \n Bluetooth Remote Control?',
-            fontSize: 36,
+            text: 'To pair and connect your BT RCU \n \n1.Press and hold "OK" and "VOL UP" keys in RCU \n \n2. Select "Pair and Connect" option. \n \n3. Release the keys',
+            fontSize: 21,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Regular'
           }

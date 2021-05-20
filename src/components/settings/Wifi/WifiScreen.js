@@ -60,7 +60,7 @@ export class WifiScreen extends Lightning.Component {
           x: 160,
           y: 518,
           text: {
-            fontSize: 36,
+            fontSize: 21,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Regular'
           }
