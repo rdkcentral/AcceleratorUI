@@ -22,7 +22,7 @@ import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
 var List = [];
-var header_Font="";
+var header_Font='Regular';
 var header_fontColor='0xfff1f1f1';
 /**
  * @export
