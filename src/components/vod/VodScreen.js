@@ -40,29 +40,11 @@ export class VODScreen extends Lightning.Component {
   static _template() {
     return {
       VODCategoryBg: {
-        /*rect: true,
-        w: 1740,
-        h: 230,
-        x: 182,
-        color: Colors.GREY,*/
         src: Utils.asset(ImageConstants.VOD_TEXTURE),
         x: 0,
         y: 0,
         w: 1920,
         h: 1080,
-        alpha: 0.56,
-        /*Time: {
-          x: 1515,
-          y: 61,
-          text: {
-            text: {
-              text: ' ',
-              fontFace: 'Medium',
-              fontSize: 32,
-              textColor: Colors.LIGHTER_WHITE
-            }
-          }
-        },*/
         Down: { x: 930, y: 980, src: Utils.asset(ImageConstants.DOWN), zIndex: 3, visible: true },
         VODCategory: { type: VODCategory }
       },

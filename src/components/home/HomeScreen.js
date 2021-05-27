@@ -42,14 +42,10 @@ export class HomeScreen extends Lightning.Component {
   static _template() {
     return {
       TextureBg: {
-       // src: Utils.asset(ImageConstants.TEXTURE),
-      // rect:true,
         x: 0,
         y: 0,
         w: 1920,
-        h: 1080,
-      // color:0xffe1ac27,
-        alpha: 0.56
+        h: 1080
       },
       InfoBar: { type: InfoBar },
       Gallery: { type: GalleryView },

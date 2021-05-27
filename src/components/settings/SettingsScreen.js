@@ -44,8 +44,8 @@ export class SettingsScreen extends Lightning.Component {
   static _template() {
     return {
       SettingsBg: {
-       /*rect: true,
-        color: Colors.PURPLE,*/
+       rect: true,
+        color: Colors.PURPLE,
        // src: Utils.asset(ImageConstants.SETTINGS_BG),
         w: 1740,
         h: 1080,
@@ -101,7 +101,7 @@ export class SettingsScreen extends Lightning.Component {
   _init() {
    // this.updateTimebar()
   //  setInterval(this.updateTimebar.bind(this), 60000)
-    this.tag('SettingsBg').patch({ src: Utils.asset(ImageConstants.SETTINGS_BG)});
+    //this.tag('SettingsBg').patch({ src: Utils.asset(ImageConstants.SETTINGS_BG)});
     this.tag('SettingsMenu').items = [
       {
         menuIcon: ImageConstants.GENERAL_SETTINGS,
