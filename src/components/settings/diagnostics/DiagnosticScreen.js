@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 /* eslint-disable no-undef */
-import { Lightning, Utils, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Log, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import ThunderJS from 'ThunderJS'
@@ -52,7 +52,7 @@ export class Diagnostic extends Lightning.Component {
           x: 133,
           y: 54,
           text: {
-            text: 'Settings',
+            text: Language.translate('Settings'),
             fontSize: 28,
             textColor: Colors.TRANSPARENT_GREY,
             fontFace: 'Regular'
@@ -62,7 +62,7 @@ export class Diagnostic extends Lightning.Component {
           x: 82,
           y: 113,
           text: {
-            text: 'Diagnostics',
+            text: Language.translate('Diagnostics'),
             fontSize: 36,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Medium',
@@ -130,10 +130,12 @@ export class Diagnostic extends Lightning.Component {
 
 _diagnostic(){
 
+let diagvers="Version :\t" + "1.1" + "\n"
+Log.info('@@@Dtag: DeviceInfo.systeminfo diagvers: ', diagvers)
+this.tag('DiagnosticVersionLabel').patch({text: {text: diagvers}})
+
 this.tag('ThunderDiagnosticService')._diagnostic().then(data => {
 console.log("@@@inside diag screen",data);
-let version = this.tag('ThunderDiagnosticService').version
-this.tag('DiagnosticVersionLabel').patch({text: {text: version}})
 this.tag('DiagnosticInfoLabel').patch({text: {text: data}})
 })
 this.tag('ThunderDiagnosticService')._diagnosticVersion().then(data => {

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from '@lightningjs/sdk'
+import { Lightning, Log ,Storage} from '@lightningjs/sdk'
 import ThunderJS from 'ThunderJS'
 
 /**
@@ -93,6 +93,51 @@ export class ThunderAppService extends Lightning.Component {
       .catch(err => {
         Log.error('Error in adding Key Intercept', err)
       })
+    // Adding key intercept for 'Vol Key' , for exit from all apps(for keyboard)
+     this.thunderJS
+     .call('org.rdk.RDKShell', 'addKeyIntercept', {
+     client: 'ResidentApp',
+     keyCode: 173,
+     modifiers: []
+     })
+     .then(result => {
+     Log.info('Adding KeyIntercept success for Keycode 173', result);
+     })
+     .catch(err => {
+     Log.error('Error in adding Key Intercept', err);
+     });
+     
+      
+     // Adding key intercept for 'Vol Key' , for exit from all apps(for keyboard)
+     this.thunderJS
+     .call('org.rdk.RDKShell', 'addKeyIntercept', {
+     client: 'ResidentApp',
+     keyCode: 174,
+     modifiers: []
+     })
+     .then(result => {
+     Log.info('Adding KeyIntercept success for Keycode 174', result);
+     })
+     .catch(err => {
+     Log.error('Error in adding Key Intercept', err);
+     });
+    
+     
+    
+    
+    // Adding key intercept for 'Vol Key' , for exit from all apps(for keyboard)
+    this.thunderJS
+    .call('org.rdk.RDKShell', 'addKeyIntercept', {
+    client: 'ResidentApp',
+    keyCode: 175,
+    modifiers: []
+    })
+    .then(result => {
+    Log.info('Adding KeyIntercept success for Keycode 175', result);
+    })
+    .catch(err => {
+    Log.error('Error in adding Key Intercept', err);
+    });
 
     //Event listener for all the controller events
     this.thunderJS.on('Controller', 'all', data => {
@@ -403,7 +448,7 @@ export class ThunderAppService extends Lightning.Component {
                let display_array=result.supportedResolutions.slice()
                Log.info('\n Display settings get display_array', display_array)
                let display_array_length=display_array.length
-               let highest_resolution=display_array[display_array_length-1]
+               let highest_resolution= Storage.get('lastsetresolution') || display_array[display_array_length-1]
                Log.info('\n Display settings get result length' + display_array_length)
                Log.info('\n Display settings get highest resolution' + highest_resolution)
                this.thunderJS.call('org.rdk.DisplaySettings','setCurrentResolution',{"videoDisplay":"HDMI0", "resolution":highest_resolution,"persist":true},
@@ -420,4 +465,22 @@ export class ThunderAppService extends Lightning.Component {
            }
          } )
    }
+   
+     VolumeIncrease()
+   {
+    this.setVisibility('ResidentApp', true)
+    this.moveAppToFrontAndFocus('ResidentApp') 
+   }
+   SetBacktoAppState()
+   {
+   this.moveAppToFrontAndFocus(this.activeApp)
+    this.setVisibility('ResidentApp', false)
+   }
+     moveToBack(clientName) {
+    this.thunderJS.call('org.rdk.RDKShell', 'moveToBack', { client: clientName }).then(result => {
+      Log.info(clientName + ' moveToBack Success', JSON.stringify(result))
+    }).catch(err => {
+      Log.error('Error in moving the app' + clientName + ' to back', err)
+    })
+  }
 }

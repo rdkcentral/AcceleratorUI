@@ -19,7 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from  '@lightningjs/sdk'
+import { Lightning, Log, Language } from  '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { WifiTile } from './WifiTile'
 import { Keyboardscreen } from './Keyboard'
@@ -82,7 +82,7 @@ export class WifiScreen extends Lightning.Component {
           x: 10,
           y: 10,
           text: {
-            text: "Wrong password",
+            text: Language.translate('Wrong password'),
             textColor: Colors.RED,
             fontFace: 'Medium',
             fontSize: 28,

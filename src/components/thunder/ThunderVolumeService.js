@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from '@lightningjs/sdk'
+import { Lightning, Log, Storage } from '@lightningjs/sdk'
 import ThunderJS from 'ThunderJS'
 
 /**
@@ -54,6 +54,8 @@ export class ThunderVolumeService extends Lightning.Component {
     Log.info(volumeVal, 'value of volume')
     this.volumeValue = volumeVal
     this.thunderJS.call('org.rdk.DisplaySettings', 'setVolumeLevel', { audioPort: 'HDMI0', volumeLevel: this.volumeValue })
+    Storage.set("lastsetvolume", this.volumeValue)
+
   }
 
   /**
