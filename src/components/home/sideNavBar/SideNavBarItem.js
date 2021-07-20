@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Utils, Lightning } from '@lightningjs/sdk'
+import { Utils, Lightning, Language } from '@lightningjs/sdk'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
 /**
@@ -63,7 +63,7 @@ export class SideNavBarItem extends Lightning.Component {
     this.patch({
       Label: {
         text: {
-          text: this._menuName,
+          text: Language.translate(this._menuName),
           fontSize: 24,
           textColor: Colors.LIGHT_WHITE,
           fontFace: 'Medium'

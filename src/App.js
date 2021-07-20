@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils, Language, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Language, Log, Storage } from '@lightningjs/sdk'
 import { HomeScreen } from './components/home/HomeScreen'
 import { Player } from './components/player/Player'
 import { ThunderAppService } from './components/thunder/ThunderAppService'
@@ -42,7 +42,7 @@ export default class App extends Lightning.Component {
   static language() {
     return {
       file: Utils.asset('locale/locale.json'),
-      language: 'en'
+      language: Storage.get('selectedLanguage') || 'en'
     }
   }
 
@@ -207,7 +207,6 @@ export default class App extends Lightning.Component {
     } else if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && !window.metroAppEnabled) {
       Log.info("Metro App is disabled")
       this._setState('HomeScreen')
-      
     }
     if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && window.cobaltAppEnabled) {
       Log.info("Cobalt App is enabled")
@@ -216,7 +215,6 @@ export default class App extends Lightning.Component {
     } else if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && !window.cobaltAppEnabled) {
       Log.info("Cobalt App is disabled")
       this._setState('HomeScreen')
-      
     }
 
     if (((event.keyCode === 77) || (event.keyCode === 36) || (event.keyCode === 114)) && window.netflixAppEnabled) {
@@ -228,11 +226,47 @@ export default class App extends Lightning.Component {
       this._setState('HomeScreen')
     }
     if (event.keyCode == 175) {
+    if(this._getState() == 'AppsState')
+    {
+     this.tag('Apps').VolumeIncrease()
       this.tag('VolumeControl').increaseVolume()
+      setTimeout(() => {
+       this.tag('Apps').SetBacktoAppState()
+      this._setState('AppsState')
+      },3000)
+      }
+      else
+      {
+      this.tag('VolumeControl').increaseVolume()
+      }
     } else if (event.keyCode == 174) {
+     if(this._getState() == 'AppsState')
+    {
+    this.tag('Apps').VolumeIncrease()
       this.tag('VolumeControl').decreaseVolume()
+       setTimeout(() => {
+       this.tag('Apps').SetBacktoAppState()
+      this._setState('AppsState')
+      },3000)
+      }
+      else
+      {
+      this.tag('VolumeControl').decreaseVolume()
+      }
     } else if (event.keyCode == 173) {
+      if(this._getState() == 'AppsState')
+    {
+    this.tag('Apps').VolumeIncrease()
       this.tag('VolumeControl').muteVolume()
+       setTimeout(() => {
+       this.tag('Apps').SetBacktoAppState()
+      this._setState('AppsState')
+      },3000)
+      }
+      else
+      {
+      this.tag('VolumeControl').muteVolume()
+      }
     } else {
       this.tag('VolumeControl').hideVolumeControl()
       return false
@@ -289,7 +323,7 @@ export default class App extends Lightning.Component {
         $enter() {
           Log.info('\n In App State ')
           this.tag('LivePlayback').$stop()
-          this.visible = false
+          this.visible = true
         }
 
         $exit() {

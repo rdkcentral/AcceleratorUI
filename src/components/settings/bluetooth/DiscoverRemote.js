@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils } from '@lightningjs/sdk'
+import { Lightning, Utils, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
 
@@ -40,7 +40,7 @@ export class DiscoverRemoteInfo extends Lightning.Component {
         x: 295,
         y: 113,
         text: {
-          text: 'How to Discover',
+          text: Language.translate('How to Discover'),
           fontSize: 36,
           textColor: Colors.LIGHTER_WHITE,
           fontFace: 'Bold'
@@ -62,7 +62,7 @@ export class DiscoverRemoteInfo extends Lightning.Component {
         x: 279,
         y: 974,
         text: {
-          text: '( Until scan results load automatically )',
+          text: Language.translate('BT_LOAD_MESSAGE'),
           fontSize: 24,
           textColor: Colors.MEDIUM_GREY,
           fontFace: 'Regular'

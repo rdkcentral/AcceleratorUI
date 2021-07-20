@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning } from '@lightningjs/sdk'
+import { Lightning, Language } from '@lightningjs/sdk'
 import { VODCategoryItem } from './VodCategoryItem'
 import { Colors } from '../../constants/ColorConstants'
 import { StringConstants } from '../../constants/StringConstants'
@@ -41,7 +41,7 @@ export class VODCategory extends Lightning.Component {
         w: 237,
         h: 37,
         text: {
-          text: 'Video on Demand',
+          text: Language.translate('Video on Demand'),
           fontFace: 'Regular',
           textColor: Colors.MIXED_GREY,
           fontSize: 30

@@ -92,7 +92,7 @@ export class Tile extends Lightning.Component {
    */
   set image(v) {
     this.tag('TileImage').patch({
-      texture: { src: Utils.asset(v) }
+       texture: { src: (v.search("http") == 0) ? v : Utils.asset(v) }
     })
   }
 

@@ -19,7 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from '@lightningjs/sdk'
+import { Lightning, Log, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { StringConstants } from '../../../constants/StringConstants'
 import { KeyboardItem } from './KeyboardItem'
@@ -92,7 +92,7 @@ export class Keyboardscreen extends Lightning.Component {
         x: 1041,
         y: 400,
         text: {
-          text: 'Enter the wifi password here',
+          text: Language.translate('ENTER_WIFI_PWD'),
           fontSize: 36,
           textColor: Colors.LIGHTER_WHITE,
           fontFace: 'Regular'

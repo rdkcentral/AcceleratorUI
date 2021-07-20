@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils } from '@lightningjs/sdk'
+import { Lightning, Utils, Language } from '@lightningjs/sdk'
 import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
@@ -145,7 +145,7 @@ export class GalleryView extends Lightning.Component {
   {
   if(v[i].ref == "Recommended for you ")
   {
-    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].header = Language.translate(v[i].data.header)|| ""
     this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,
@@ -173,7 +173,7 @@ export class GalleryView extends Lightning.Component {
   }
   if(v[i].ref == "Premium Apps")
     {
-    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].header = Language.translate(v[i].data.header)|| ""
     this.tag('GalleryRowList').items[List.indexOf("premium Apps")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,
@@ -190,7 +190,7 @@ export class GalleryView extends Lightning.Component {
   if(v[i].ref == "Metrological Appstore Experience")
     {
    //this.tag('GalleryRowList').items[List.indexOf("metro Apps")].patch({ y: 140, alpha: 1 })
-    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].header = v[i].data.header|| ""
+    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].header = Language.translate(v[i].data.header)|| ""
     this.tag('GalleryRowList').items[List.indexOf("metro Apps")].items = (v[i].data.assets || []).map((data, index) => {
       return {
         ref: 'Tile_' + index,

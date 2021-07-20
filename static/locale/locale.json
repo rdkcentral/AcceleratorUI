@@ -1,14 +1,13 @@
 {
-    "en" :{
-      "Home": "Home",
-      "Recommended for you":"Recommended for you",
-      "Premium Apps":"Premium Apps",
-      "Metrological Appstore Experience":"Metrological Appstore Experience"
-    },
-    "it": {
-        "Home": "Casa",
-        "Recommended for you":"raccomandato per te",
-        "Premium Apps":"App Premium",
-        "Metrological Appstore Experience":"Esperienza nell'app Store metrologico"
+  "meta": {
+    "names": {
+        "en": "English",
+        "it": "Italian-Italiana",
+        "zh": "Chinese-中国人"
     }
-  }
+  },
+  "en": "locale/translations/en.json",
+  "it": "locale/translations/it.json",
+  "zh": "locale/translations/zh.json"
+  
+}

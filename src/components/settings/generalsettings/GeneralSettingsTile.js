@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils } from '@lightningjs/sdk'
+import { Lightning, Utils, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
 
@@ -28,7 +28,7 @@ import { ImageConstants } from '../../../constants/ImageConstants'
  * @extends Lightning.Component
  * Renders the ResolutionTile
  */
-export class ResolutionTile extends Lightning.Component {
+export class GeneralSettingsTile extends Lightning.Component {
   /**
    * @static
    * @returns
@@ -65,7 +65,7 @@ export class ResolutionTile extends Lightning.Component {
   }
 
   set label(v) {
-    this.tag('Label').text.text = v
+    this.tag('Label').text.text = Language.translate(v)
   }
 
   get label() {
