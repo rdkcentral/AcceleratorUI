@@ -96,7 +96,7 @@ export class HomeScreen extends Lightning.Component {
   console.log(v["home"].bg_image)
   if(v["home"].bg_image)
   {
-  this.tag('TextureBg').patch({ src: Utils.asset(v["home"].bg_image)});
+   this.tag('TextureBg').patch({ src: v["home"].bg_image});
   
   }
  else if(v["home"].bg_color)
