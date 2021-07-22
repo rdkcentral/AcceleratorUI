@@ -466,21 +466,21 @@ export class ThunderAppService extends Lightning.Component {
          } )
    }
    
-     VolumeIncrease()
-   {
-    this.setVisibility('ResidentApp', true)
-    this.moveAppToFrontAndFocus('ResidentApp') 
+      setViewResidentApp()
+    {
+     this.setVisibility('ResidentApp', true)
+     this.moveAppToFrontAndFocus('ResidentApp') 
+    }
+    setBacktoAppState()
+    {
+    this.moveAppToFrontAndFocus(this.activeApp)
+     this.setVisibility('ResidentApp', false)
+    }
+   moveToBack(clientName) {
+     this.thunderJS.call('org.rdk.RDKShell', 'moveToBack', { client: clientName }).then(result => {
+       Log.info(clientName + ' moveToBack Success', JSON.stringify(result))
+     }).catch(err => {
+       Log.error('Error in moving the app' + clientName + ' to back', err)
+     })
    }
-   SetBacktoAppState()
-   {
-   this.moveAppToFrontAndFocus(this.activeApp)
-    this.setVisibility('ResidentApp', false)
-   }
-     moveToBack(clientName) {
-    this.thunderJS.call('org.rdk.RDKShell', 'moveToBack', { client: clientName }).then(result => {
-      Log.info(clientName + ' moveToBack Success', JSON.stringify(result))
-    }).catch(err => {
-      Log.error('Error in moving the app' + clientName + ' to back', err)
-    })
-  }
 }

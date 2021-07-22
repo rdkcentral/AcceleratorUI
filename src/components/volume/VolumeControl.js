@@ -80,8 +80,8 @@ export class VolumeControl extends Lightning.Component {
     this.toggle = 0
     this.timeoutToggle = 0
     this.muteStateIdentifier = 0
-    this.novolume = Storage.get("lastsetnovolume") || 0
-    if (this.novolume != 0 && Storage.get("lastsetindex") == 0)
+    this.noVolume = Storage.get("lastsetnovolume") || 0
+    if (this.noVolume != 0 && Storage.get("lastsetindex") == 0)
      {
      this.index = 0
      percentage = 0
@@ -145,7 +145,7 @@ export class VolumeControl extends Lightning.Component {
  displayvolume()
   {
  Storage.set("lastsetindex", this.index)
- Storage.set("lastsetnovolume", this.novolume)
+ Storage.set("lastsetnovolume", this.noVolume)
    if (percentage < 10) {
           this.tag('Volumepercentage').patch({
             text: { fontSize: 32, text: percentage + '%' },
@@ -190,10 +190,9 @@ export class VolumeControl extends Lightning.Component {
    */
   increaseVolume() {
   console.log("Inside increase volume")
-  this.novolume=0
+  this.noVolume=0
     this.timeout()
     if (this.index < 100) {
-      //this.timeout()
       /**
        *  added to get back to volume state if volume increase key is pressed while in mute state
        * won't execute if already in volume state
@@ -212,11 +211,10 @@ export class VolumeControl extends Lightning.Component {
       }
 
       if (percentage <= 100) {
-       //percentage += 1
         this.displayvolume()
       }
     }
-    Storage.set("lastsetnovolume", this.novolume)
+    Storage.set("lastsetnovolume", this.noVolume)
   }
 
   /**
@@ -225,8 +223,7 @@ export class VolumeControl extends Lightning.Component {
   decreaseVolume() {
     this.timeout()
     if (this.toggle == 0) {
-      //this.timeout()
-      this.novolume = 0
+      this.noVolume = 0
       if (this.index > 0) {
         this.index -= 1
         console.log("Inside decrease volume this.index=",this.index)
@@ -243,13 +240,13 @@ export class VolumeControl extends Lightning.Component {
         this.tag('ThunderVolumeService')._volumeMute(true)
         this.index = 0
         percentage = 0
-        this.novolume = 1
+        this.noVolume = 1
         Storage.set("lastsetindex", this.index)
         Storage.set("lastsetvolume", percentage)
      
       }
     }
-    Storage.set("lastsetnovolume", this.novolume)
+    Storage.set("lastsetnovolume", this.noVolume)
   }
 
   /**
@@ -263,7 +260,7 @@ export class VolumeControl extends Lightning.Component {
     if (this.toggle == 0) {
       this._setState('MuteState')
       this.tag('ThunderVolumeService')._volumeMute(true)
-      this.novolume = 1
+      this.noVolume = 1
     } else {
       this._setState('VolumeState')
       this.tag('ThunderVolumeService')._volumeMute(false)
@@ -284,7 +281,7 @@ export class VolumeControl extends Lightning.Component {
     }
     Storage.set("lastsetindex", this.index)
     Storage.set("lastsetvolume", percentage)
-    Storage.set("lastsetnovolume", this.novolume)
+    Storage.set("lastsetnovolume", this.noVolume)
   }
   
  
