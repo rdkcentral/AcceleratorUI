@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 /* eslint-disable no-undef */
-import { Lightning, Utils, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Log, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { ThunderWifiService } from '../../thunder/ThunderWifiService'
@@ -52,7 +52,7 @@ export class Wifi_Class extends Lightning.Component {
           x: 133,
           y: 54,
           text: {
-            text: 'Settings',
+            text: Language.translate('Settings'),
             fontSize: 28,
             textColor: Colors.TRANSPARENT_GREY,
             fontFace: 'Regular'
@@ -62,7 +62,7 @@ export class Wifi_Class extends Lightning.Component {
           x: 82,
           y: 113,
           text: {
-            text: ' WIFI',
+            text: Language.translate('WIFI'),
             fontSize: 36,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Medium'
@@ -72,14 +72,14 @@ export class Wifi_Class extends Lightning.Component {
         DiscoverWifi: {
           x: 81,
           y: 209,
-          label: 'Discover Wifi Networks',
+          label: Language.translate('Discover Wifi Networks'),
           type: WifiTile
         },
         NetworkControl: {
          x: 85,
          y: 325,
          text: {
-           text: 'Wifi Networks ',
+           text: Language.translate('Wifi Networks'),
            fontSize: 34,
            textColor: Colors.TRANSPARENT_GREY,
            fontFace: 'Regular'
@@ -126,7 +126,7 @@ export class Wifi_Class extends Lightning.Component {
   startScanWifi() {
     Log.info('WifiUI: startScanWifi enter.')
     this.tag('NetworkControl').patch({
-        text: { text: 'Searching for networks...' }
+        text: { text: Language.translate('SEARCH_NETWORK') }
     })
     this.tag('ThunderWifiService')._startScan()
 	  setTimeout( ()=> {
@@ -135,7 +135,7 @@ export class Wifi_Class extends Lightning.Component {
       if (this.availableWifi === "") {
         this.tag('DiscoverWifi').visible = true
         this.tag('NetworkControl').patch({
-          text: { text: 'Could not find any network. Please try again..' } 
+          text: { text: Language.translate('FIND_NO_NETWORK') } 
         })
         this._setState('DiscoverWifi');
       }

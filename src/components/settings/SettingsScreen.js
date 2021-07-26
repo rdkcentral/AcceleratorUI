@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log,  Utils } from '@lightningjs/sdk'
+import { Lightning, Log,  Utils, Language } from '@lightningjs/sdk'
 import { SettingsMenuItem } from '../settings/SettingsMenuItem'
 import { TimeUtils } from '../../utils/TimeUtils'
 import { Bluetooth } from './bluetooth/BluetoothSettings'
@@ -25,7 +25,7 @@ import { Colors } from '../../constants/ColorConstants'
 import { StringConstants } from '../../constants/StringConstants'
 import { Diagnostic } from './diagnostics/DiagnosticScreen'
 import { Wifi_Class } from './Wifi/WifiSettings'
-import { Resolution_Class } from './generalsettings/ResolutionSettings'
+import { GeneralSettings } from './generalsettings/GeneralSettingsScreen'
 var label_fontColor ="";
 /**
  * @export
@@ -44,7 +44,7 @@ export class SettingsScreen extends Lightning.Component {
   static _template() {
     return {
       SettingsBg: {
-       rect: true,
+        rect: true,
         color: Colors.PURPLE,
        // src: Utils.asset(ImageConstants.SETTINGS_BG),
         w: 1740,
@@ -57,7 +57,7 @@ export class SettingsScreen extends Lightning.Component {
           w: 131,
           h: 43,
           text: {
-            text: 'Settings',
+            text: Language.translate('Settings'),
            fontFace: 'Regular',
             textColor: Colors.MIXED_GREY,
             fontSize: 36
@@ -214,10 +214,10 @@ export class SettingsScreen extends Lightning.Component {
           Log.info('\n Selected Menu ----')
          if (this.tag('SettingsMenu').index == 0  ) {
           this.tag('SelectedSetting').visible = true
-          this._setState('ResolutionState')
+          this._setState('GeneralSettingsState')
           this.tag('SelectedSetting').childList.a({
-            ref: 'ResolutionScreen',
-            type: Resolution_Class,
+            ref: 'GeneralSettingsScreen',
+            type: GeneralSettings,
             x: 0,
             y: 0,
             w: 960,
@@ -336,7 +336,7 @@ export class SettingsScreen extends Lightning.Component {
         }
         $exit() {}
       },
-      class ResolutionState extends this {
+      class GeneralSettingsState extends this {
         $enter() {}
         _handleBack() {
           this.tag('SelectedSetting').childList.clear()
@@ -355,7 +355,7 @@ export class SettingsScreen extends Lightning.Component {
         _handleDown() {}
 
         _getFocused() {
-          return this.tag('SelectedSetting').tag('ResolutionScreen')
+          return this.tag('SelectedSetting').tag('GeneralSettingsScreen')
         }
         $exit() {}
       }

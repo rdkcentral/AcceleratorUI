@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Log, Storage} from '@lightningjs/sdk'
 import { ImageConstants } from '../../constants/ImageConstants'
 import { ThunderVolumeService } from '../thunder/ThunderVolumeService'
 /**
@@ -30,7 +30,7 @@ import { ThunderVolumeService } from '../thunder/ThunderVolumeService'
  * Variables made global to ensure accessibility across all classes
  */
 var endAngle = 273.6
-let percentage = 0
+ let percentage
 
 export class VolumeControl extends Lightning.Component {
   static _template() {
@@ -63,7 +63,7 @@ export class VolumeControl extends Lightning.Component {
         zIndex: 4,
         src: Utils.asset(ImageConstants.VOLUME_MARKER)
       },
-      VolumePercentage: {
+      Volumepercentage: {
         x: 110,
         y: 150,
         zIndex: 2
@@ -73,14 +73,22 @@ export class VolumeControl extends Lightning.Component {
   }
 
   _init() {
+    
     this.x0 = 115
     this.y0 = 115
     this.radius = 90
-    this.index = 1
     this.toggle = 0
     this.timeoutToggle = 0
     this.muteStateIdentifier = 0
-
+    this.noVolume = Storage.get("lastsetnovolume") || 0
+    if (this.noVolume != 0 && Storage.get("lastsetindex") == 0)
+     {
+     this.index = 0
+     percentage = 0
+     }else{
+    this.index=Storage.get("lastsetindex") || 100
+    percentage = Storage.get("lastsetvolume") || 100
+    }
     this.coordinates(percentage)
     this._setState('VolumeState')
     this.tag('ThunderVolumeService')._volumeUp(percentage)
@@ -134,6 +142,23 @@ export class VolumeControl extends Lightning.Component {
     clearInterval(this.flag)
   }
 
+ displayvolume()
+  {
+ Storage.set("lastsetindex", this.index)
+ Storage.set("lastsetnovolume", this.noVolume)
+   if (percentage < 10) {
+          this.tag('Volumepercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 120
+          })
+        } 
+   else {
+          this.tag('Volumepercentage').patch({
+            text: { fontSize: 32, text: percentage + '%' },
+            x: 110
+          })
+        }
+  }
   /**
    * For calculating the the coordinates of the point on the circle to which the marker should move upon keypress
    * @param {*} percentage
@@ -142,12 +167,15 @@ export class VolumeControl extends Lightning.Component {
 
   coordinates(percentage) {
     Log.info(percentage)
+    if(percentage == 100)
+      percentage = 99.99
     this.angle = 360 * (percentage / 100)
     if (percentage == 0) {
       endAngle = -86.4
     } else {
       endAngle = this.angle - 90
     }
+    
     this.radian = this.angle * (Math.PI / 180) - 0.5 * Math.PI
     this.x1 = this.x0 + this.radius * Math.cos(this.radian)
     this.y1 = this.y0 + this.radius * Math.sin(this.radian)
@@ -161,72 +189,64 @@ export class VolumeControl extends Lightning.Component {
    *Function to increase volume and update UI according to that
    */
   increaseVolume() {
+  console.log("Inside increase volume")
+  this.noVolume=0
+    this.timeout()
     if (this.index < 100) {
-      this.timeout()
       /**
        *  added to get back to volume state if volume increase key is pressed while in mute state
        * won't execute if already in volume state
        */
       if (this.index >= 0) {
+        console.log("Inside increase volume setting to volume state")
         this._setState('VolumeState')
+        this.tag('ThunderVolumeService')._volumeMute(false)
       }
       if (this.index <= 100) {
         this.index += 1
-        Log.info(this.index)
+        percentage += 1
+        console.log("Inside increase volume this.index=",this.index)
         this.coordinates(percentage)
         this.tag('ThunderVolumeService')._volumeUp(percentage)
       }
 
-      if (percentage < 100) {
-        percentage += 1
-        if (percentage < 10) {
-          this.tag('VolumePercentage').patch({
-            text: { fontSize: 32, text: percentage + '%' },
-            x: 120
-          })
-        } else {
-          this.tag('VolumePercentage').patch({
-            text: { fontSize: 32, text: percentage + '%' },
-            x: 110
-          })
-        }
+      if (percentage <= 100) {
+        this.displayvolume()
       }
     }
+    Storage.set("lastsetnovolume", this.noVolume)
   }
 
   /**
    *Function to decrease volume , goto mute if reduced below 1% and update UI accordingly
    */
   decreaseVolume() {
+    this.timeout()
     if (this.toggle == 0) {
-      this.timeout()
+      this.noVolume = 0
       if (this.index > 0) {
         this.index -= 1
-        Log.info(this.index)
+        console.log("Inside decrease volume this.index=",this.index)
         if (percentage > 0) {
           percentage -= 1
-          if (percentage < 10) {
-            this.tag('VolumePercentage').patch({
-              text: { fontSize: 32, text: percentage + '%' },
-              x: 120
-            })
-          } else {
-            this.tag('VolumePercentage').patch({
-              text: { fontSize: 32, text: percentage + '%' },
-              x: 110
-            })
-          }
+          this.displayvolume()
         }
         this.coordinates(percentage)
         this.tag('ThunderVolumeService')._volumeUp(percentage)
       }
-      if (this.index == 0) {
+      if (this.index == 0 || percentage == 0) {
+    
         this._setState('MuteState')
         this.tag('ThunderVolumeService')._volumeMute(true)
         this.index = 0
         percentage = 0
+        this.noVolume = 1
+        Storage.set("lastsetindex", this.index)
+        Storage.set("lastsetvolume", percentage)
+     
       }
     }
+    Storage.set("lastsetnovolume", this.noVolume)
   }
 
   /**
@@ -240,6 +260,7 @@ export class VolumeControl extends Lightning.Component {
     if (this.toggle == 0) {
       this._setState('MuteState')
       this.tag('ThunderVolumeService')._volumeMute(true)
+      this.noVolume = 1
     } else {
       this._setState('VolumeState')
       this.tag('ThunderVolumeService')._volumeMute(false)
@@ -250,25 +271,20 @@ export class VolumeControl extends Lightning.Component {
       this._setState('VolumeState')
       this.tag('ThunderVolumeService')._volumeMute(false)
       if (this.index == 0) {
-        this.index = 0 // to set volume marker to 1 % volume after mute instead of 0 %
-        Log.info(this.index, 'in mute state')
-        percentage = 0
-        if (percentage < 10) {
-          this.tag('VolumePercentage').patch({
-            text: { fontSize: 32, text: percentage + '%' },
-            x: 120
-          })
-        } else {
-          this.tag('VolumePercentage').patch({
-            text: { fontSize: 32, text: percentage + '%' },
-            x: 110
-          })
-        }
+        this.index = 1 // to set volume marker to 1 % volume after mute instead of 0 %
+        console.log("Inside mute volume",this.index)
+        percentage = 1
+        this.displayvolume()
         this.coordinates(percentage)
         this.tag('ThunderVolumeService')._volumeUp(percentage)
       }
     }
+    Storage.set("lastsetindex", this.index)
+    Storage.set("lastsetvolume", percentage)
+    Storage.set("lastsetnovolume", this.noVolume)
   }
+  
+ 
 
   /**
    * @static
@@ -288,17 +304,7 @@ export class VolumeControl extends Lightning.Component {
           this.tag('VolumeIcon').patch({ src: Utils.asset(ImageConstants.VOLUME_ICON) })
           this.tag('VolumeMarker').visible = true
           this.tag('VolumeBarGradient').visible = true
-          if (percentage < 10) {
-            this.tag('VolumePercentage').patch({
-              text: { fontSize: 32, text: percentage + '%' },
-              x: 120
-            })
-          } else {
-            this.tag('VolumePercentage').patch({
-              text: { fontSize: 32, text: percentage + '%' },
-              x: 110
-            })
-          }
+          this.displayvolume()
         }
 
         $exit() {
@@ -315,7 +321,8 @@ export class VolumeControl extends Lightning.Component {
           this.tag('VolumeIcon').patch({ src: Utils.asset(ImageConstants.MUTE_ICON) })
           this.tag('VolumeMarker').visible = false
           this.tag('VolumeBarGradient').visible = false
-          this.tag('VolumePercentage').patch({ text: { fontSize: 32, text: 'MUTE' }, x: 100 })
+          
+          this.tag('Volumepercentage').patch({ text: { fontSize: 32, text: 'MUTE' }, x: 100 })
         }
         $exit() {
           this.toggle = 0

@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 /* eslint-disable no-undef */
-import { Lightning, Utils, Log } from '@lightningjs/sdk'
+import { Lightning, Utils, Log, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { DiscoverRemoteInfo } from './DiscoverRemote'
@@ -51,7 +51,7 @@ export class Bluetooth extends Lightning.Component {
           x: 133,
           y: 54,
           text: {
-            text: 'Settings',
+            text: Language.translate('Settings'),
             fontSize: 28,
             textColor: Colors.TRANSPARENT_GREY,
             fontFace: 'Regular'
@@ -61,7 +61,7 @@ export class Bluetooth extends Lightning.Component {
           x: 82,
           y: 113,
           text: {
-            text: 'Bluetooth',
+            text: Language.translate('Bluetooth'),
             fontSize: 36,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Medium'
@@ -72,7 +72,7 @@ export class Bluetooth extends Lightning.Component {
           x: 82,
           y: 209,
           text: {
-            text: 'Remote Control',
+            text: Language.translate('Remote Control'),
             fontSize: 34,
             textColor: Colors.TRANSPARENT_GREY,
             fontFace: 'Regular'
@@ -82,7 +82,7 @@ export class Bluetooth extends Lightning.Component {
         DiscoverRemote: {
           x: 81,
           y: 268,
-          label: 'Discover Bluetooth Remote',
+          label: Language.translate('Discover Bluetooth Remote'),
           type: BluetoothTile
         },
         SavedRemotes: {

@@ -96,7 +96,7 @@ export class HomeScreen extends Lightning.Component {
   console.log(v["home"].bg_image)
   if(v["home"].bg_image)
   {
-  this.tag('TextureBg').patch({ src: Utils.asset(v["home"].bg_image)});
+   this.tag('TextureBg').patch({ src: v["home"].bg_image});
   
   }
  else if(v["home"].bg_color)
@@ -127,7 +127,7 @@ export class HomeScreen extends Lightning.Component {
         this.tag('Gallery')._reset()
         this._setState('GalleryState')
         break
-      case 'TV GUIDE':
+      case 'TV_GUIDE':
         this._setState('Guide')
         break
       case 'VOD':

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Utils, Lightning } from '@lightningjs/sdk'
+import { Utils, Lightning ,Language} from '@lightningjs/sdk'
 import { VODCategory } from './VodCategory'
 import { Colors } from '../../constants/ColorConstants'
 import { VODDescription } from './VodDescription'
@@ -75,7 +75,7 @@ export class VODScreen extends Lightning.Component {
             x: 43.5,
             y: 146.5,
             text: {
-              text: 'See All',
+              text: Language.translate('See All'),
               fontSize: 24,
               fontFace: 'Regular',
               textColor: Colors.TRANSPARENT_GREY

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Log } from '@lightningjs/sdk'
+import { Lightning, Log, Language } from '@lightningjs/sdk'
 import { Colors } from '../../../constants/ColorConstants'
 import { BluetoothTile } from './BluetoothTile'
 
@@ -47,7 +47,7 @@ export class BluetoothPairScreen extends Lightning.Component {
           x: 160,
           y: 430,
           text: {
-            text: 'Pair and Connect',
+            text: Language.translate('Pair and Connect'),
             fontSize: 58,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Regular'
@@ -57,7 +57,7 @@ export class BluetoothPairScreen extends Lightning.Component {
           x: 160,
           y: 518,
           text: {
-            text: 'To pair and connect your BT RCU \n \n1.Press and hold "OK" and "VOL UP" keys in RCU \n \n2. Select "Pair and Connect" option. \n \n3. Release the keys',
+            text: Language.translate('pair message'),
             fontSize: 21,
             textColor: Colors.LIGHTER_WHITE,
             fontFace: 'Regular'
@@ -72,8 +72,8 @@ export class BluetoothPairScreen extends Lightning.Component {
         h: 1080,
         color: Colors.BG_GREY
       },
-      PairButton: { x: 1041, y: 434, type: BluetoothTile, label: 'Pair and Connect' },
-      DontConnectButton: { x: 1041, y: 556, type: BluetoothTile, label: 'Disconnect' }
+      PairButton: { x: 1041, y: 434, type: BluetoothTile, label: Language.translate('Pair and Connect') },
+      DontConnectButton: { x: 1041, y: 556, type: BluetoothTile, label: Language.translate('Disconnect') }
     }
   }
 

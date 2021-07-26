@@ -18,7 +18,6 @@
    */
   import { Lightning, Log } from '@lightningjs/sdk'
   import ThunderJS from 'ThunderJS'
-  let version = ""
   
   /**
    * @export
@@ -27,7 +26,6 @@
    * Thunder  Diagnostic calls
    */
   export class ThunderDiagnosticService extends Lightning.Component {
-  
     _construct() {
       this.config = {
         host: '127.0.0.1',
@@ -40,6 +38,7 @@
 
         Log.error(err)
       }
+    
     }
   
     /**
@@ -58,7 +57,6 @@
             } else {
             Log.info('Diagnostic success', result)
             Log.info('Diagnostic success', result.version)
-            version = result.version.substr(0,3)
             let totalram=diagObj._bytesToSize(result.totalram);
             let freeram=diagObj._bytesToSize(result.freeram);
             let serialnumber=diagObj._ConvertStringToHex(result.serialnumber);
@@ -134,10 +132,7 @@
       return arrayy.join(" ");
    }
 
-  get version()
-  {
-  return version;
-  }
+
     
     
   }
