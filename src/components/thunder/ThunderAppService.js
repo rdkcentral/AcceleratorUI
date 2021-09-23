@@ -33,6 +33,7 @@ export class ThunderAppService extends Lightning.Component {
       port: '9998'
     }
     this.activeApp = ''
+    this.currentApp = ''
     try {
       this.thunderJS = ThunderJS(this.config)
     } catch (err) {
@@ -208,6 +209,7 @@ export class ThunderAppService extends Lightning.Component {
       })
       .then(() => {
         Log.info('Launch successful for MetroApps')
+        this.currentApp = appPlugin
         this.moveAppToFrontAndFocus(appPlugin)
       })
       .catch(err => {
@@ -228,6 +230,7 @@ export class ThunderAppService extends Lightning.Component {
     if (data.title == 'Youtube') {
       Log.info('Inside Youtube')
       this.activeApp = 'Cobalt'
+      this.currentApp = 'Cobalt'
       let response = ''
       var request = new XMLHttpRequest()
       //This is to get the state of a plugin, if activated already then proceed to resume. If not then activate
@@ -265,6 +268,7 @@ export class ThunderAppService extends Lightning.Component {
     }
     if (data.title == 'Netflix') {
         this.activeApp = 'Netflix';
+        this.currentApp = 'Netflix';
       Log.info('Launch Netflix !!!!');
       this.thunderJS
         .call('org.rdk.RDKShell', 'launch', {
@@ -283,6 +287,7 @@ export class ThunderAppService extends Lightning.Component {
     }
     if (data.title == 'Amazon') {
       this.activeApp = 'Amazon';
+      this.currentApp = 'Amazon';
       Log.info('Launch Amazon !!!!');
       
       /*this.thunderJS.Controller.activate({ callsign: 'Amazon' }, (err, result) => {
@@ -325,6 +330,7 @@ export class ThunderAppService extends Lightning.Component {
           Log.info('Plugin Value is  ' + plugin);
           this.setVisibility(plugin, true);
           this.activeApp = plugin;
+          this.currentApp = plugin;
         }, 5000);
       }
     });
@@ -336,6 +342,7 @@ export class ThunderAppService extends Lightning.Component {
   deactivateMetroPlugin() {
     //Deactivating via RDK shell
     this.thunderJS.call('org.rdk.RDKShell', 'destroy', { callsign: 'LightningApp' })
+    this.currentApp = ''
     this.exitPlugin()
   }
 
@@ -356,6 +363,7 @@ export class ThunderAppService extends Lightning.Component {
       Log.info('Setting Cobalt visibility false !!!!');
       this.setVisibility('Cobalt', false)
       this.activeApp = '';
+      this.currentApp = '';
     }
     if (this.activeApp == 'Netflix') {
       Log.info('Suspending Netflix app !!!!');
@@ -369,6 +377,7 @@ export class ThunderAppService extends Lightning.Component {
       Log.info('Setting Netflix visibility false !!!!');
       this.setVisibility('Netflix', false)
       this.activeApp = '';
+      this.currentApp = '';
     }
     if (this.activeApp == 'Amazon') {
       Log.info('Suspending Amazon app !!!!');
@@ -382,6 +391,7 @@ export class ThunderAppService extends Lightning.Component {
       Log.info('Setting Amazon visibility false !!!!');
       this.setVisibility('Amazon', false)
       this.activeApp = '';
+      this.currentApp = '';
     }
   }
 
@@ -466,21 +476,22 @@ export class ThunderAppService extends Lightning.Component {
          } )
    }
    
-      setViewResidentApp()
-    {
-     this.setVisibility('ResidentApp', true)
-     this.moveAppToFrontAndFocus('ResidentApp') 
-    }
-    setBacktoAppState()
-    {
-    this.moveAppToFrontAndFocus(this.activeApp)
-     this.setVisibility('ResidentApp', false)
-    }
-   moveToBack(clientName) {
-     this.thunderJS.call('org.rdk.RDKShell', 'moveToBack', { client: clientName }).then(result => {
-       Log.info(clientName + ' moveToBack Success', JSON.stringify(result))
-     }).catch(err => {
-       Log.error('Error in moving the app' + clientName + ' to back', err)
-     })
+     setViewResidentApp()
+   {
+    this.setVisibility('ResidentApp', true)
+    this.moveAppToFrontAndFocus('ResidentApp') 
    }
+   setBacktoAppState()
+   {
+   Log.info('Vtag:current App',this.currentApp)
+   this.moveAppToFrontAndFocus(this.currentApp)
+    this.setVisibility('ResidentApp', false)
+   }
+     moveToBack(clientName) {
+    this.thunderJS.call('org.rdk.RDKShell', 'moveToBack', { client: clientName }).then(result => {
+      Log.info(clientName + ' moveToBack Success', JSON.stringify(result))
+    }).catch(err => {
+      Log.error('Error in moving the app' + clientName + ' to back', err)
+    })
+  }
 }
