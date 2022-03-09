@@ -3,11 +3,14 @@
     "names": {
         "en": "English",
         "it": "Italian-Italiana",
-        "zh": "Chinese-中国人"
+        "zh": "Chinese-中国人",
+        "ml": "Malayalam-മലയാളം",
+        "hi": "Hindi-हिंदी"
     }
   },
   "en": "locale/translations/en.json",
   "it": "locale/translations/it.json",
-  "zh": "locale/translations/zh.json"
-  
+  "zh": "locale/translations/zh.json",
+  "ml": "locale/translations/ml.json",
+  "hi": "locale/translations/hi.json"
 }

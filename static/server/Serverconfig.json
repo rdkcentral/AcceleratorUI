@@ -1,6 +1,5 @@
 {
-      "Server_ip": "192.168.227.191",
-      "Server_port": "8080",
-      "serial_number": "OEABAgME9i"
-
+"SERVER_URL": "http://12.244.192.84:9999/CustomUI/",
+"OPERATOR_ID": "teuser",
+"ASSET_URL": "http://12.224.192.84:9999/"
 }

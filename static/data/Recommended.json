@@ -18,32 +18,21 @@
             "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
             "category": "Sports",
             "description": "",
-            "Duration": "1:00 hr",
+            "Duration": "3:30 min",
             "logoPath": "images/channels/Nationalgeographic.png",
             "name": "National geographic",
-	    "number": "002"
+	          "number": "002"
         },
-        {
-            "title": "Black Panther",
+        {        
+            "title": "BigBuckBunny",
             "url": "images/home/galleryview/recommended/Tile3.png",
-            "videourl": "http://127.0.0.1:50050/build/static/videos/BlackPanther/blackpanther.m3u8",
-            "category": "Action",
+            "videourl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8",
+            "category": "Animation",
             "description": "",
-            "Duration": "2:15 hr",
-	    "logoPath": "images/channels/StarMovies.png",
-            "name": "Star Select HD",
-            "number": "003"
-        },
-        {
-            "title": "No Time to Die",
-            "url": "images/home/galleryview/recommended/Tile4.png",
-            "videourl": "http://127.0.0.1:50050/build/static/videos/NoTimeToDie/notimetodie.m3u8",
-            "category": "Action",
-            "description": "",
-            "Duration": "2:43 hr",
+            "Duration": "9:56 min",
             "logoPath": "images/channels/HBO.png",
             "name": "HB0",
-	    "number": "004"
+	          "number": "003"
         }
     ]
 }

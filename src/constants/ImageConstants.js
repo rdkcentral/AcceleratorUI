@@ -1,23 +1,24 @@
 /*
-* If not stated otherwise in this file or this component's Licenses.txt file the
-* following copyright and licenses apply:
-*
-* Copyright © 2020 Tata Elxsi Limited
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * If not stated otherwise in this file or this component's Licenses.txt file the
+ * following copyright and licenses apply:
+ *
+ * Copyright © 2020 Tata Elxsi Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 export const ImageConstants = {
   TEXTURE: 'images/home/background-texture.png',
+  NO_NET: 'images/home/nonetwork.png',
   REWIND: 'images/player/Rewind.png',
   PAUSE_SELECTED: 'images/player/Pause_selected.png',
   FORWARD: 'images/player/Forward.png',
@@ -54,6 +55,9 @@ export const ImageConstants = {
   SETTINGS_ICON_NORMAL: 'images/menu/Settings-normal.png',
   SETTINGS_ICON_SELECTION: 'images/menu/Settings-selection.png',
   SETTINGS_ICON_SELECTED: 'images/menu/Settings-selected.png',
+  ABOUT_ICON_NORMAL: 'images/menu/About-normal.png',
+  ABOUT_ICON_SELECTION: 'images/menu/About-selection.png',
+  ABOUT_ICON_SELECTED: 'images/menu/About-selected.png',
   SETTINGS_BG: 'images/settings/settings-bg.png',
   SIDEBAR_SELECTION_GRADIENT: 'images/menu/ExpandedmenuselectionGradient.png',
   COLLAPSED_BACKGROUND: 'images/menu/Collapsed-transperancy.png',
@@ -89,5 +93,16 @@ export const ImageConstants = {
   BLUETOOTH_READY: 'images/settings/Bluetooth/Ready.png',
   DIAGNOSTICS: 'images/settings/diagnosticlogo.png',
   WIFILOGO: 'images/settings/wifilogo.png',
-  ETHERNET: 'images/info/ethernet.png'
+  RESETLOGO: 'images/settings/resetlogo.png',
+  POWERLOGO: 'images/settings/powerlogo.png',
+  NFXABOUTLOGO: 'images/about/nfxaboutlogo.png',
+  ETHERNET: 'images/info/ethernet.png',
+  FACTORY_ICON_NORMAL: 'images/menu/factory_normal.png',
+  FACTORY_ICON_SELECTION: 'images/menu/factory_selection.png',
+  FACTORY_ICON_SELECTED: 'images/menu/factory_selected.png',
+  LIVETV_NORMAL: 'images/menu/liveTV-normal.png',
+  LIVETV_SELECTION: 'images/menu/liveTV-selection.png',
+  LIVETV_SELECTED: 'images/menu/liveTV-selected.png',
+  SWITCH_ON: 'images/settings/switch-on-new.png',
+  SWITCH_OFF: 'images/settings/switch-off-new.png'
 }

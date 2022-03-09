@@ -4,3 +4,8 @@ dist
 releases
 .tmp
 build
+
+dist
+releases
+.tmp
+build
