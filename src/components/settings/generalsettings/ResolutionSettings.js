@@ -1,6 +1,6 @@
- /* eslint-disable semi */
- /* eslint-disable quotes */
- /* eslint-disable prettier/prettier */
+/* eslint-disable semi */
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
  /*
   * If not stated otherwise in this file or this component's Licenses.txt file the
   * following copyright and licenses apply:
@@ -100,11 +100,12 @@
            roll: true,
            rollMax: 1080,
            rollMin: 0,
+           clipping: true,
            invertDirection: true
          }
        },
        ThunderResolutionService: {
-      type: ThunderResolutionService
+         type: ThunderResolutionService
       }
      }
    }
@@ -153,18 +154,8 @@
          })
          this._setState('DiscoverResolution')
        }
-       else {  
-           this.tag('DiscoveredResolution').items = this.availableresolution.map((data, index) => {
-             if (this.currentresolution === data) {
-               return {
-                 ref: 'DiscoveredResolution' + index,
-                 type: GeneralSettingsTile,
-                 label: data,
-                 secondarylabel: 'Set',
-                 ready: false
-               }
-             }
-             else {
+       else { 
+       let tempres = this.availableresolution.map((data, index) => {
                return {
                  ref: 'DiscoveredResolution' + index,
                  type: GeneralSettingsTile,
@@ -172,8 +163,22 @@
                  secondarylabel: 'Not Set',
                  ready: false
                }
-             }
-           });
+             });     
+     for(var i=0;i<tempres.length;i++)
+     {
+       console.log("Ltag: tempres[i].label"+tempres[i].label)
+       if (this.currentresolution == tempres[i].label) {
+             tempres[i].secondarylabel = 'Set'
+             break
+       }
+     }
+     let tempval =  tempres[0]
+     tempres[0] = tempres[i]  
+     tempres[i] = tempval
+     console.log("Rtag: tempres"+JSON.stringify(tempres))
+     
+     this.tag('DiscoveredResolution').items = tempres 
+          
            this.tag('ResolutionControl').patch({
              text: { text: 'Available Resolutions' }
            })
@@ -188,17 +193,8 @@
      return [
        class DiscoverResolution extends this {
          $enter() {
-           /*if (this.removeFlag === 1) {
-             this.removeFlag = 0;
-             this.childList.remove(this.tag('ConnectingPage'))
-             this.tag('DiscoveredResolution').visible = false
-           }
-           else */
              this.tag('DiscoveredResolution').visible = true
-           //if (this.scanFlag === 1) {
-            // this.scanFlag = 0;
-             this.startScanResolution()
-          // }  
+             this.startScanResolution()  
          }
          _getFocused() {
            return this.tag('DiscoverResolution')
@@ -219,16 +215,7 @@
            this.tag('DiscoveredResolution').visible = true
          }
          _getFocused() {
-         if(this.flag ===0)
-          {
-           this.flag++
-            let highresIndex = this.availableresolution.indexOf(this.currentresolution)
-            return this.tag('DiscoveredResolution').items[highresIndex]      
-          }
-          else
-          {
           return this.tag('DiscoveredResolution').element
-          }
          }
          _handleUp() {
            if (0 === this.tag('DiscoveredResolution').index) {

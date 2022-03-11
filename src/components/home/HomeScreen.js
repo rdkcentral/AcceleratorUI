@@ -77,36 +77,29 @@ export class HomeScreen extends Lightning.Component {
     /**
      * DataService is called to add data in JSON files
      */
-    this.tag('TextureBg').patch({ src: Utils.asset(ImageConstants.TEXTURE)});
+    this.tag('TextureBg').patch({ src: Utils.asset(ImageConstants.TEXTURE) })
     this.dataObj = new DataService()
-   this.dataObj.getVodData().then(data => {
+    this.dataObj.getVodData().then(data => {
       this.tag('Vod').data = data[0]
     })
     this._setState('GalleryState')
-      
   }
-  
-  set items(v)
-  {
-  this.tag('Gallery').data = v[0]
+
+  set items(v) {
+    this.tag('Gallery').data = v[0]
   }
-  
-  set theme(v)
-  {
-  console.log(v["home"].bg_image)
-  if(v["home"].bg_image)
-  {
-   this.tag('TextureBg').patch({ src: v["home"].bg_image});
-  
-  }
- else if(v["home"].bg_color)
-  {   
-      this.tag('TextureBg').rect = true;
-      this.tag('TextureBg').color = v["home"].bg_color;
-  
-  }
-  this.tag('Settings').theme=v
-   this.tag('Gallery').theme=v
+
+  set theme(v) {
+    if (v['home']) {
+      if (v['home'].bg_image) {
+        this.tag('TextureBg').patch({ src: v['home'].bg_image })
+      } else if (v['home'].bg_color) {
+        this.tag('TextureBg').rect = true
+        this.tag('TextureBg').color = v['home'].bg_color
+      }
+      this.tag('Gallery').theme = v
+    }
+    this.tag('Settings').theme = v
   }
 
   set view(currentview) {

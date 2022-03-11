@@ -21,9 +21,9 @@ import { Tile } from './GalleryTile'
 import { ScrollableList } from './ScrollableList'
 import { ImageConstants } from '../../../constants/ImageConstants'
 import { Colors } from '../../../constants/ColorConstants'
-var List = [];
-var header_Font='Regular';
-var header_fontColor='0xfff1f1f1';
+var List = []
+var header_Font = 'Regular'
+var header_fontColor = '0xfff1f1f1'
 /**
  * @export
  * @class GalleryView
@@ -61,150 +61,157 @@ export class GalleryView extends Lightning.Component {
     }
   }
 
-    _init() {
-     const xhr = new XMLHttpRequest();    
-           xhr.open('GET', "http://"+ window.serverdata.Server_ip + ":" + window.serverdata.Server_port +"/CustomUI/getPosition?customer_id="+window.serverdata.serial_number);
-           xhr.responseType = 'json';
-           xhr.onload = () => {
-             if(xhr.status === 200) {
-              List = xhr.response;
-              this.getData()             
-             }  
-           };
-           xhr.send();
-           this.current = this.tag('GalleryRowList').element
-       this._setState('GalleryViewState') 
+  _init() {
+    const xhr = new XMLHttpRequest()
+    xhr.open(
+      'GET',
+      window.serverdata.SERVER_URL +
+        'HomeAppsPositionConfig?operator_id=' +
+        window.serverdata.OPERATOR_ID
+    )
+    xhr.responseType = 'json'
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        List = xhr.response
+        this.getData()
       }
+    }
+    xhr.send()
+    this.current = this.tag('GalleryRowList').element
+    this._setState('GalleryViewState')
+  }
 
   getData() {
-      for (var i = 0; i < List.length; i++) {
-        if (List[i] == "Recommended for you") {
-          this.tag('GalleryRowList').items = {
-            Recommended: {
-              type: ScrollableList,
-              horizontal: true,
-              itemSize: 520,
-              spacing: 70,
-              rollMax: 1400,
-              headerFont:header_Font,
-              headerfontColor:header_fontColor
-            }
+    for (var i = 0; i < List.length; i++) {
+      if (List[i] == 'Recommended for you') {
+        this.tag('GalleryRowList').items = {
+          Recommended: {
+            type: ScrollableList,
+            horizontal: true,
+            itemSize: 520,
+            spacing: 70,
+            rollMax: 1400,
+            headerFont: header_Font,
+            headerfontColor: header_fontColor
           }
         }
-        else if (List[i] == "premium Apps") {
-          this.tag('GalleryRowList').items = {
-            Apps: {
-              type: ScrollableList,
-              horizontal: true,
-              itemSize: 260,
-              spacing: 20,
-              headerFont:header_Font,
-             headerfontColor:header_fontColor
-            }
+      } else if (List[i] == 'premium Apps') {
+        this.tag('GalleryRowList').items = {
+          Apps: {
+            type: ScrollableList,
+            horizontal: true,
+            itemSize: 260,
+            spacing: 20,
+            headerFont: header_Font,
+            headerfontColor: header_fontColor
           }
         }
-        else if (List[i] == "metro Apps") {
-          this.tag('GalleryRowList').items = {
-            MetroApps: {
-              type: ScrollableList,
-              horizontal: true,
-              itemSize: 260,
-              spacing: 20,
-              headerFont:header_Font,
-              headerfontColor:header_fontColor
-            }
+      } else if (List[i] == 'metro Apps') {
+        this.tag('GalleryRowList').items = {
+          MetroApps: {
+            type: ScrollableList,
+            horizontal: true,
+            itemSize: 260,
+            spacing: 20,
+            headerFont: header_Font,
+            headerfontColor: header_fontColor
           }
         }
       }
-      if(List.indexOf("Recommended for you") == 0) {
-        this.tag('GalleryRowList').itemSize = 400;
-        this.tag('GalleryRowList').items[2].patch({ y: -140, alpha: 1 })
-      } else if(List.indexOf("Recommended for you") == 1) {
-        this.tag('GalleryRowList').itemSize = 250;
-        this.tag('GalleryRowList').items[2].patch({ y: 140, alpha: 1 })
-      }      
+    }
+    if (List.indexOf('Recommended for you') == 0) {
+      this.tag('GalleryRowList').itemSize = 400
+      this.tag('GalleryRowList').items[2].patch({ y: -140, alpha: 1 })
+    } else if (List.indexOf('Recommended for you') == 1) {
+      this.tag('GalleryRowList').itemSize = 250
+      this.tag('GalleryRowList').items[2].patch({ y: 140, alpha: 1 })
+    }
   }
-  
-  set theme(v)
-  {
-  console.log(v["home"].bg_image)
- 
-   header_Font= v["home"].fontFace;
-   header_fontColor =v["home"].text_fontColor
+
+  set theme(v) {
+    console.log(v['home'].bg_image)
+
+    header_Font = v['home'].fontFace
+    header_fontColor = v['home'].text_fontColor
   }
   /**
    * Sets data in Tile component through data passed from JSON file
    */
-   
+
   set data(v) {
-    if(List.length == 0) {
-      List = ["Recommended for you","premium Apps","metro Apps"]
+    if (List.length == 0) {
+      List = ['Recommended for you', 'premium Apps', 'metro Apps']
       this.getData()
     }
-    for(var i=0;i<v.length;i++)
-  {
-  if(v[i].ref == "Recommended for you ")
-  {
-    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].header = Language.translate(v[i].data.header)|| ""
-    this.tag('GalleryRowList').items[List.indexOf("Recommended for you")].items = (v[i].data.assets || []).map((data, index) => {
-      return {
-        ref: 'Tile_' + index,
-        type: Tile,
-        image: data.url,
-        category: data.category,
-        title: data.title,
-        duration: data.Duration,
-        w: 500,
-        h: 282,
-        offset: 30,
-        scaleX: 1.1,
-        scaleY: 1.1,
-        highlight: true,
-        videoData: {
-          title: data.title,
-          videourl: data.videourl,
-          name: data.name,
-          category: data.category,
-          logoPath: data.logoPath,
-          number: data.number
-        }
+    for (var i = 0; i < v.length; i++) {
+      if (v[i].ref == 'Recommended for you ') {
+        this.tag('GalleryRowList').items[List.indexOf('Recommended for you')].header =
+          Language.translate(v[i].data.header) || ''
+        this.tag('GalleryRowList').items[List.indexOf('Recommended for you')].items = (
+          v[i].data.assets || []
+        ).map((data, index) => {
+          return {
+            ref: 'Tile_' + index,
+            type: Tile,
+            image: data.url,
+            category: data.category,
+            title: data.title,
+            duration: data.Duration,
+            w: 500,
+            h: 282,
+            offset: 30,
+            scaleX: 1.1,
+            scaleY: 1.1,
+            highlight: true,
+            videoData: {
+              title: data.title,
+              videourl: data.videourl,
+              name: data.name,
+              category: data.category,
+              logoPath: data.logoPath,
+              number: data.number
+            }
+          }
+        })
       }
-    })
-  }
-  if(v[i].ref == "Premium Apps")
-    {
-    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].header = Language.translate(v[i].data.header)|| ""
-    this.tag('GalleryRowList').items[List.indexOf("premium Apps")].items = (v[i].data.assets || []).map((data, index) => {
-      return {
-        ref: 'Tile_' + index,
-        type: Tile,
-        image: data.url,
-        w: 240,
-        h: 135,
-        scaleX: 1.2,
-        scaleY: 1.2,
-        appData: { url: data.appUrl, title: data.title }
+      if (v[i].ref == 'Premium Apps') {
+        this.tag('GalleryRowList').items[List.indexOf('premium Apps')].header =
+          Language.translate(v[i].data.header) || ''
+        this.tag('GalleryRowList').items[List.indexOf('premium Apps')].items = (
+          v[i].data.assets || []
+        ).map((data, index) => {
+          return {
+            ref: 'Tile_' + index,
+            type: Tile,
+            image: data.url,
+            w: 240,
+            h: 135,
+            scaleX: 1.2,
+            scaleY: 1.2,
+            appData: { url: data.appUrl, title: data.title }
+          }
+        })
       }
-    })
-  }
-  if(v[i].ref == "Metrological Appstore Experience")
-    {
-   //this.tag('GalleryRowList').items[List.indexOf("metro Apps")].patch({ y: 140, alpha: 1 })
-    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].header = Language.translate(v[i].data.header)|| ""
-    this.tag('GalleryRowList').items[List.indexOf("metro Apps")].items = (v[i].data.assets || []).map((data, index) => {
-      return {
-        ref: 'Tile_' + index,
-        type: Tile,
-        image: data.url,
-        w: 240,
-        h: 135,
-        scaleX: 1.2,
-        scaleY: 1.2,
-        appUrl: data.appUrl
+      if (v[i].ref == 'Metrological Appstore Experience') {
+        //this.tag('GalleryRowList').items[List.indexOf("metro Apps")].patch({ y: 140, alpha: 1 })
+        this.tag('GalleryRowList').items[List.indexOf('metro Apps')].header =
+          Language.translate(v[i].data.header) || ''
+        this.tag('GalleryRowList').items[List.indexOf('metro Apps')].items = (
+          v[i].data.assets || []
+        ).map((data, index) => {
+          return {
+            ref: 'Tile_' + index,
+            type: Tile,
+            image: data.url,
+            w: 240,
+            h: 135,
+            scaleX: 1.2,
+            scaleY: 1.2,
+            appUrl: data.appUrl
+          }
+        })
       }
-    })
-  }
-  }
+    }
   }
 
   _focus() {

@@ -21,9 +21,8 @@ import App from './App.js'
 import { ConfigService } from './service/serverconfig'
 
 new ConfigService().getserverData().then(data => {
-    window.serverdata =  data[0].data;
-      console.log("Constructor serverdata:",serverdata);
-});
+  window.serverdata = data[0].data
+})
 export default function() {
-return Launch(App, ...arguments)
+  return Launch(App, ...arguments)
 }

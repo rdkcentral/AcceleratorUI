@@ -1,12 +1,12 @@
 {
   "assets": [
     {
-      "name": "VR Playhouse",
+      "name": "Star Movies Select",
       "number": "001",
-      "logoPath": "images/channels/VRPlayhouse.png",
-      "title": "VR Playhouse Sizzle Reel",
-      "category": "AR/VR",
-      "videourl": "https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560.m3u8"
+      "logoPath": "images/channels/StarMovies.png",
+      "title": "Tears of Steel",
+      "category": "Science Fiction",
+      "videourl": "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8"
     },
     {
       "name": "National geographic",
@@ -17,12 +17,12 @@
       "videourl": "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     },
     {
-      "name": "Star Movies",
+      "name": "HB0",
       "number": "003",
-      "logoPath": "images/channels/StarMovies.png",
-      "title": "Star Trek",
-      "category": "Science-fiction",
-      "videourl": "https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8"
+      "logoPath": "images/channels/HBO.png",
+      "title": "BigBuckBunny",
+      "category": "Animation",
+      "videourl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/hls/BigBuckBunny.m3u8"
     }
   ]
 }
